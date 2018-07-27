@@ -14,13 +14,16 @@ RUN apt-get update \
 &&  apt-get clean \
 &&  rm -rf /var/lib/apt/lists/*
 
-COPY iped-3.14.3 /root/IPED
-WORKDIR /root/
-RUN git clone --branch sleuthkit-4.6.0 https://github.com/sleuthkit/sleuthkit
-WORKDIR /root/sleuthkit
-RUN unzip /root/IPED/iped-3.14.2/sources/tsk-iped-patch-zip-4.6.0-p01.zip
-RUN patch -p1 < sleuthkit-4.6.0-patch01/tsk-4.6.0-p01.patch
-RUN ./bootstrap && \
-    ./configure --prefix=/usr && \
-    make all install
+#creates .mplayer/config
 RUN mplayer
+
+COPY --from=ipeddocker/sleuthkit:sleuthkit-4.6.0-patch01 /usr/local/src/sleuthkit/sleuthkit.tar.gz /tmp/
+RUN tar xkf /tmp/sleuthkit.tar.gz -C /
+RUN ldconfig
+
+WORKDIR /opt
+RUN git clone https://github.com/keydet89/RegRipper2.8.git
+RUN echo '/usr/bin/perl /opt/RegRipper2.8/rip.pl "$@"' > /usr/bin/rip
+RUN chmod +x /usr/bin/rip
+
+COPY iped-3.14.3 /root/IPED
