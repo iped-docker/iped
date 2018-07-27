@@ -27,3 +27,4 @@ RUN echo '/usr/bin/perl /opt/RegRipper2.8/rip.pl "$@"' > /usr/bin/rip
 RUN chmod +x /usr/bin/rip
 
 COPY iped-3.14.3 /root/IPED
+RUN echo tskJarPath = /usr/share/java/Tsk_DataModel.jar >> /root/IPED/LocalConfig.txt
