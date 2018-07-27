@@ -1,24 +1,18 @@
-FROM ubuntu:xenial-20180417
-RUN apt-get update      && \
-      apt-get install -y software-properties-common     && \
-      add-apt-repository ppa:openjdk-r/ppa -y     && \
-      apt-get update && \
-      apt-get install -y \
-        openjdk-8-jre \
-        ant \
-        git \
-        unzip \
-        libafflib-dev zlib1g-dev libewf-dev libvmdk-dev \
-        build-essential automake libtool \
-        tesseract-ocr tesseract-ocr-por tesseract-ocr-osd \
-        libparse-win32registry-perl \
-        libesedb-utils \
-        imagemagick \
-        libmsiecf-utils \
-        libpff1 \
-        mplayer && \
-      apt-get clean && \
-      rm -rf /var/lib/apt/lists/*
+FROM openjdk:8-jre-slim
+RUN apt-get update \
+&&  apt-get install -y \
+      git \
+      mplayer \
+      tesseract-ocr tesseract-ocr-por tesseract-ocr-osd \
+      libparse-win32registry-perl \
+      libesedb-utils \
+      graphicsmagick \
+      libmsiecf-utils \
+      libafflib-dev zlib1g-dev libewf-dev libvmdk-dev \
+      libxtst6 libxi6 \
+      libpff1 \
+&&  apt-get clean \
+&&  rm -rf /var/lib/apt/lists/*
 
 COPY iped-3.14.3 /root/IPED
 WORKDIR /root/
