@@ -1,4 +1,4 @@
-FROM openjdk:8-jre-slim
+FROM openjdk:8u171-jre-stretch
 RUN apt-get update \
 &&  apt-get install -y \
       git \
