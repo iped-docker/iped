@@ -30,7 +30,6 @@ COPY iped/iped-3.14.3 /root/IPED/iped
 COPY iped/mplayer /root/IPED/mplayer
 COPY iped/optional_jars /root/IPED/optional_jars
 COPY iped/regripper /root/IPED/regripper
-RUN echo >> /root/IPED/iped/LocalConfig.txt
-RUN echo tskJarPath = /usr/share/java/sleuthkit-4.6.0.jar >> /root/IPED/iped/LocalConfig.txt
+COPY LocalConfig.txt /root/IPED/iped/LocalConfig.txt
 WORKDIR /root/IPED/iped
 ENV LC_ALL C.UTF-8
