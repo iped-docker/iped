@@ -40,7 +40,7 @@ COPY iped-webapi .
 
 ENV IPED_VER 3.14.3
 RUN chmod -R a+rwX /usr/local/src/iped/
-RUN ln -s /usr/local/src/iped/iped/target/release/iped-$IPED_VER /iped/
+RUN ln -s /usr/local/src/iped/iped/target/release/iped-$IPED_VER /iped
 RUN cp target/release/iped-webapi.jar /iped
 
 WORKDIR /usr/local/src/iped/iped/resources/config
