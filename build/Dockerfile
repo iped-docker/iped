@@ -1,58 +1,45 @@
-FROM ipeddocker/dependencies:3.13.5
+FROM ipeddocker/dependencies:3.14.3
 
-ENV GIT_SSL_NO_VERIFY=true
-ENV LANG C.UTF-8
-ARG GITLAB_IP
-ENV GITLAB_IP=${GITLAB_IP}
+RUN wget -P /tmp/ http://mirror.nbtelecom.com.br/apache/maven/maven-3/3.5.3/binaries/apache-maven-3.5.3-bin.tar.gz
+RUN tar xkf /tmp/apache-maven-3.5.3-bin.tar.gz -C /opt/
+RUN ln -s /opt/apache-maven-3.5.3/bin/mvn /bin/
 
-ENV IPED_AHOCORASICK_VER=v1.0
+RUN mvn install:install-file \
+      -Dfile=/usr/share/java/sleuthkit-4.6.0.jar \
+      -DgroupId=org.sleuthkit \
+      -DartifactId=tsk-datamodel \
+      -Dversion=4.6.0 \
+      -Dpackaging=jar \
+      -DgeneratePom=true
+
 WORKDIR /usr/local/src/iped/iped-ahocorasick/
-RUN git clone https://$GITLAB_IP/gitlab/iped/iped-ahocorasick.git .
-RUN git checkout $IPED_AHOCORASICK_VER
-ENV MVN_OPTIONS="-Dmaven.compiler.source=1.8 -Dmaven.compiler.target=1.8"
-RUN mvn $MVN_OPTIONS install
+COPY iped-ahocorasick .
+RUN mvn install
 
-ENV IPED_UTILS_VER=3.13.5
 WORKDIR /usr/local/src/iped/iped-utils/
-RUN git clone https://$GITLAB_IP/gitlab/iped/iped-utils.git .
-RUN git checkout $IPED_UTILS_VER
-ENV MVN_OPTIONS="-Dmaven.compiler.source=1.8 -Dmaven.compiler.target=1.8"
-RUN mvn $MVN_OPTIONS install
+COPY iped-utils .
+RUN mvn install
 
-ENV IPED_PARSERS_VER=3.13.5
 WORKDIR /usr/local/src/iped/iped-parsers/
-RUN git clone https://$GITLAB_IP/gitlab/iped/iped-parsers.git .
-RUN git checkout $IPED_PARSERS_VER
-ENV MVN_OPTIONS="-Dmaven.compiler.source=1.8 -Dmaven.compiler.target=1.8"
+COPY iped-parsers .
 RUN mvn $MVN_OPTIONS install
 
-ENV IPED_VIEWERS_VER=3.13.5
 WORKDIR /usr/local/src/iped/iped-viewers/
-RUN git clone https://$GITLAB_IP/gitlab/iped/iped-viewers.git .
-RUN git checkout $IPED_VIEWERS_VER
-ENV MVN_OPTIONS="-Dmaven.compiler.source=1.8 -Dmaven.compiler.target=1.8"
+COPY iped-viewers .
 RUN mvn $MVN_OPTIONS install
 
-ENV IPED_VER=3.13.5
 WORKDIR /usr/local/src/iped/iped/
-RUN git clone https://$GITLAB_IP/gitlab/iped/iped.git .
-RUN git checkout $IPED_VER
-RUN grep FSDirectory -l src/main/java/dpf/sp/gpinf/indexer/process/ -r | xargs sed -e 's,FSDirectory,NIOFSDirectory,g' -i
-ENV MVN_OPTIONS="-Dmaven.compiler.source=1.8 -Dmaven.compiler.target=1.8"
+COPY iped .
 RUN mvn $MVN_OPTIONS install ||  mvn $MVN_OPTIONS install
 
-ENV IPED_WEBAPI_VER=3.13.5
 WORKDIR /usr/local/src/iped/iped-webapi/
-RUN git clone https://$GITLAB_IP/gitlab/atila.alr/iped-webapi.git .
-RUN git checkout $IPED_WEBAPI_VER
-ENV MVN_OPTIONS="-Dmaven.compiler.source=1.8 -Dmaven.compiler.target=1.8"
+COPY iped-webapi .
 RUN mvn $MVN_OPTIONS install
 
-#RUN sed -e 's/getInstance().logConfiguration.getSystemOut()/System.out/' -i /usr/local/src/iped/iped/src/main/java/dpf/sp/gpinf/indexer/IndexFiles.java
-
+ENV IPED_VER 3.14.3
 RUN chmod -R a+rwX /usr/local/src/iped/
-RUN ln -s /usr/local/src/iped/iped/target/release/iped-$IPED_VER /iped
-RUN cp target/release/iped-webapi.jar /iped/ 
+RUN ln -s /usr/local/src/iped/iped/target/release/iped-$IPED_VER /iped/
+RUN cp target/release/iped-webapi.jar /iped
 
 WORKDIR /usr/local/src/iped/iped/resources/config
 RUN mv -n IPEDConfig.txt conf/
@@ -60,7 +47,7 @@ RUN ln -s conf/IPEDConfig.txt IPEDConfig.txt
 RUN mv -n  LocalConfig.txt conf/
 RUN ln -s conf/LocalConfig.txt LocalConfig.txt
 RUN echo >> conf/LocalConfig.txt
-RUN echo 'tskJarPath = /share/java/Tsk_DataModel.jar' >> conf/LocalConfig.txt
+RUN echo 'tskJarPath = /share/java/sleuthkit-4.6.0.jar' >> conf/LocalConfig.txt
 RUN cp IPEDConfig.txt /iped/
 RUN cp LocalConfig.txt /iped/
 RUN cp -a conf/ /iped/
