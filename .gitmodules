@@ -1,3 +1,21 @@
 [submodule "build/m2"]
 	path = build/m2
 	url = git@github.com:iped-docker/m2.git
+[submodule "build/iped-ahocorasick"]
+	path = build/iped-ahocorasick
+	url = https://10.61.242.12/gitlab/iped/iped-ahocorasick.git
+[submodule "build/iped"]
+	path = build/iped
+	url = https://10.61.242.12/gitlab/iped/iped.git
+[submodule "build/iped-parsers"]
+	path = build/iped-parsers
+	url = https://10.61.242.12/gitlab/iped/iped-parsers.git
+[submodule "build/iped-utils"]
+	path = build/iped-utils
+	url = https://10.61.242.12/gitlab/iped/iped-utils.git
+[submodule "build/iped-viewers"]
+	path = build/iped-viewers
+	url = https://10.61.242.12/gitlab/iped/iped-viewers.git
+[submodule "build/iped-webapi"]
+	path = build/iped-webapi
+	url = https://10.61.242.12/gitlab/iped/iped-webapi.git
