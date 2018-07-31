@@ -1,0 +1,3 @@
+[submodule "build/m2"]
+	path = build/m2
+	url = git@github.com:iped-docker/m2.git
