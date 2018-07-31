@@ -1,8 +1,10 @@
-FROM ipeddocker/dependencies:3.14.3
+FROM ipeddocker/dependencies
 
 RUN wget -P /tmp/ http://mirror.nbtelecom.com.br/apache/maven/maven-3/3.5.3/binaries/apache-maven-3.5.3-bin.tar.gz
 RUN tar xkf /tmp/apache-maven-3.5.3-bin.tar.gz -C /opt/
 RUN ln -s /opt/apache-maven-3.5.3/bin/mvn /bin/
+
+COPY m2 /root/.m2/
 
 RUN mvn install:install-file \
       -Dfile=/usr/share/java/sleuthkit-4.6.0.jar \
@@ -14,27 +16,27 @@ RUN mvn install:install-file \
 
 WORKDIR /usr/local/src/iped/iped-ahocorasick/
 COPY iped-ahocorasick .
-RUN mvn install
+RUN mvn -o install
 
 WORKDIR /usr/local/src/iped/iped-utils/
 COPY iped-utils .
-RUN mvn install
+RUN mvn -o install
 
 WORKDIR /usr/local/src/iped/iped-parsers/
 COPY iped-parsers .
-RUN mvn $MVN_OPTIONS install
+RUN mvn -o install
 
 WORKDIR /usr/local/src/iped/iped-viewers/
 COPY iped-viewers .
-RUN mvn $MVN_OPTIONS install
+RUN mvn -o install
 
 WORKDIR /usr/local/src/iped/iped/
 COPY iped .
-RUN mvn $MVN_OPTIONS install ||  mvn $MVN_OPTIONS install
+RUN mvn -o install
 
 WORKDIR /usr/local/src/iped/iped-webapi/
 COPY iped-webapi .
-RUN mvn $MVN_OPTIONS install
+RUN mvn -o install
 
 ENV IPED_VER 3.14.3
 RUN chmod -R a+rwX /usr/local/src/iped/

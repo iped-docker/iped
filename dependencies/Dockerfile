@@ -11,6 +11,7 @@ RUN apt-get update \
       libafflib-dev zlib1g-dev libewf-dev libvmdk-dev \
       libxtst6 libxi6 \
       libpff1 \
+      openjfx \
 &&  apt-get clean \
 &&  rm -rf /var/lib/apt/lists/*
 

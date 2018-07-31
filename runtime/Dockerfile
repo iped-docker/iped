@@ -1,4 +1,4 @@
-FROM ipeddocker/dependencies:3.14.3
+FROM ipeddocker/dependencies
 
 COPY iped/iped-3.14.3 /root/IPED/iped
 COPY iped/mplayer /root/IPED/mplayer
