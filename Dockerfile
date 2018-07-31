@@ -26,5 +26,11 @@ RUN git clone https://github.com/keydet89/RegRipper2.8.git
 RUN echo '/usr/bin/perl /opt/RegRipper2.8/rip.pl "$@"' > /usr/bin/rip
 RUN chmod +x /usr/bin/rip
 
-COPY iped-3.14.3 /root/IPED
-RUN echo tskJarPath = /usr/share/java/sleuthkit-4.6.0.jar >> /root/IPED/LocalConfig.txt
+COPY iped/iped-3.14.3 /root/IPED/iped
+COPY iped/mplayer /root/IPED/mplayer
+COPY iped/optional_jars /root/IPED/optional_jars
+COPY iped/regripper /root/IPED/regripper
+RUN echo >> /root/IPED/iped/LocalConfig.txt
+RUN echo tskJarPath = /usr/share/java/sleuthkit-4.6.0.jar >> /root/IPED/iped/LocalConfig.txt
+WORKDIR /root/IPED/iped
+ENV LC_ALL C.UTF-8
