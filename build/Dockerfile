@@ -36,7 +36,7 @@ RUN mvn -o install
 
 WORKDIR /usr/local/src/iped/iped-webapi/
 COPY iped-webapi .
-RUN mvn -o install
+#RUN mvn -o install
 
 ENV IPED_VER 3.14.3
 RUN chmod -R a+rwX /usr/local/src/iped/
