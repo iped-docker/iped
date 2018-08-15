@@ -16,11 +16,11 @@ indexTempOnSSD = true
 
 # Habilite caso a pasta de saída -o esteja em disco SSD. Nesse caso o índice é criado diretamente
 # na pasta de saída e não na pasta temporária, diminuindo o requisito de espaço livre no temp.
-outputOnSSD = true
+outputOnSSD = false
 
 # Número de threads de processamento: "default" utiliza o número de processadores.
 # Caso haja problemas de consumo de memória, configurar um valor pequeno e/ou aumentar memória heap do java (-Xms)
-numThreads = default
+numThreads = 12
 
 # Caminho para base de hashes (KFF) do IPED. É altamente recomendado armazenar a base num disco SSD
 # sob pena de impactar o tempo de processamento. Pode-se importar base NSRL via opção -importkff. 
