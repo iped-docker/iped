@@ -39,7 +39,7 @@ COPY iped-webapi .
 #RUN mvn -o install
 
 ENV IPED_VER 3.14.3
-RUN chmod -R a+rwX /usr/local/src/iped/
+#RUN chmod -R a+rwX /usr/local/src/iped/
 RUN ln -s /usr/local/src/iped/iped/target/release/iped-$IPED_VER /iped
 RUN cp target/release/iped-webapi.jar /iped
 
@@ -49,7 +49,7 @@ RUN ln -s conf/IPEDConfig.txt IPEDConfig.txt
 RUN mv -n  LocalConfig.txt conf/
 RUN ln -s conf/LocalConfig.txt LocalConfig.txt
 RUN echo >> conf/LocalConfig.txt
-RUN echo 'tskJarPath = /share/java/sleuthkit-4.6.0.jar' >> conf/LocalConfig.txt
+RUN echo 'tskJarPath = /usr/share/java/sleuthkit-4.6.0.jar' >> conf/LocalConfig.txt
 RUN cp IPEDConfig.txt /iped/
 RUN cp LocalConfig.txt /iped/
 RUN cp -a conf/ /iped/
@@ -69,4 +69,7 @@ WORKDIR /iped/
 COPY entrypoint.sh /
 ENTRYPOINT ["/entrypoint.sh"]
 
-CMD bash -xc 'java -Djava.awt.headless=true -Xmx$Xmx -jar /iped/iped.jar -d $IMAGE -o $OUTPUT --nologfile --nogui --portable'
+##CMD bash -xc 'java -Djava.awt.headless=true -Xmx$Xmx -jar /iped/iped.jar -d $IMAGE -o $OUTPUT --nologfile --nogui --portable'
+RUN mkdir -p /usr/local/src/sleuthkit/bindings/java/dist/T
+RUN cp /usr/share/java/sleuthkit-4.6.0.jar /usr/local/src/sleuthkit/bindings/java/dist/Tsk_DataModel.jar
+CMD bash
