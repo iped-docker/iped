@@ -161,3 +161,5 @@ RUN xdg-mime default vlc.desktop audio/ogg \
 && xdg-mime default vlc.desktop audio/x-mod \
 && xdg-mime default vlc.desktop audio/x-s3m \
 && xdg-mime default vlc.desktop audio/x-xm
+
+RUN sed -i 's/geteuid/getppid/' /usr/bin/vlc
