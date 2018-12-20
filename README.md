@@ -1,6 +1,6 @@
 # IPED dockerfiles
 
-There are 3 Dockerfiles in this repository:
+There are 2 Dockerfiles in this repository:
 
 - dependencies: basic runtime environment, with openjdk and libraries. Used by the other 2 docker images.
 
