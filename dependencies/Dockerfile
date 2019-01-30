@@ -1,35 +1,36 @@
-FROM openjdk:8u171-jdk-stretch
-RUN apt-get update \
-&&  apt-get install -y \
+# FROM openjdk:8u171-jdk-stretch
+FROM ubuntu:18.04
+
+RUN apt-get update && apt-get install -y \
+      openjdk-8-jre \
       git \
-      mplayer \
+      autoconf automake autopoint libtool pkg-config yasm \
+#      mplayer \
       tesseract-ocr tesseract-ocr-por tesseract-ocr-osd \
       libparse-win32registry-perl \
       libesedb-utils \
-      imagemagick \
       libmsiecf-utils \
       libafflib-dev zlib1g-dev libewf-dev libvmdk-dev \
       libxtst6 libxi6 \
       libpff1 \
       openjfx \
-&&  apt-get clean \
-&&  rm -rf /var/lib/apt/lists/*
-
-#creates .mplayer/config
-RUN mplayer
-
-COPY --from=ipeddocker/sleuthkit:sleuthkit-4.6.0-patch01 /usr/local/src/sleuthkit/sleuthkit.tar.gz /tmp/
-RUN tar xkf /tmp/sleuthkit.tar.gz -C /
-RUN ldconfig
-
-WORKDIR /opt
-RUN git clone https://github.com/keydet89/RegRipper2.8.git
-RUN echo '/usr/bin/perl /opt/RegRipper2.8/rip.pl "$@"' > /usr/bin/rip
-RUN chmod +x /usr/bin/rip
-
-
-RUN apt-get update \
-&&  apt-get install -y \
+      rifiuti \
+      rifiuti2 \
+#      ffmpeg \
+      libimage-exiftool-perl \
+      libscca-utils \
+      libevtx-utils \
+      libevt-utils \
+      libjpeg-dev \
+      libtiff-dev \
+      libpng-dev \
+      libwmf-dev \
+      libgif-dev \
+      libheif-dev \
+      libwebp-dev \
+      librsvg2-dev \
+      libopenexr-dev \
+# PRECISAMOS DISSO ATILA?
       xdg-utils \
       vlc \
       libgl1-mesa-dri \
@@ -40,9 +41,45 @@ RUN apt-get update \
 &&  apt-get clean \
 &&  rm -rf /var/lib/apt/lists/*
 
+
+COPY --from=ipeddocker/sleuthkit:sleuthkit-4.6.0-patch01 /usr/local/src/sleuthkit/sleuthkit.tar.gz /tmp/
+RUN tar xkf /tmp/sleuthkit.tar.gz -C /
+RUN ldconfig
+
+
+WORKDIR /opt
+ADD http://www.mplayerhq.hu/MPlayer/releases/MPlayer-1.3.0.tar.gz .
+RUN tar xvzf MPlayer-1.3.0.tar.gz
+WORKDIR /opt/MPlayer-1.3.0 
+RUN ./configure --prefix=/usr
+RUN make all install
+#creates .mplayer/config
+RUN mplayer
+
+
+WORKDIR /opt
+RUN git clone https://github.com/libyal/libagdb.git
+WORKDIR /opt/libagdb
+RUN ./synclibs.sh
+RUN ./autogen.sh
+RUN ./configure --prefix=/usr
+RUN make all install
+
+WORKDIR /opt
+RUN git clone --branch "7.0.8-14" https://github.com/ImageMagick/ImageMagick
+WORKDIR /opt/ImageMagick
+RUN ./configure --prefix=/usr
+RUN make all install
+
+WORKDIR /root/IPED
+RUN git clone https://github.com/keydet89/RegRipper2.8.git
+RUN mv RegRipper2.8 regripper
+RUN /bin/bash -c "sed -i 's/catfile(\"plugins\")/catfile(\"\/root\/IPED\/regripper\/plugins\")/g' /root/IPED/regripper/rip.pl" 
+
 ENV LC_ALL C.UTF-8
 
 RUN mkdir -p /root/.local/share/applications/
+RUN mkdir -p /root/.config
 RUN xdg-mime default vlc.desktop audio/ogg \
 && xdg-mime default vlc.desktop audio/vorbis \
 && xdg-mime default vlc.desktop audio/x-vorbis \
