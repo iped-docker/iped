@@ -1,11 +1,9 @@
-# FROM openjdk:8u171-jdk-stretch
 FROM ubuntu:18.04
 
 RUN apt-get update && apt-get install -y \
       openjdk-8-jre \
       git \
       autoconf automake autopoint libtool pkg-config yasm \
-#      mplayer \
       tesseract-ocr tesseract-ocr-por tesseract-ocr-osd \
       libparse-win32registry-perl \
       libesedb-utils \
@@ -16,7 +14,6 @@ RUN apt-get update && apt-get install -y \
       openjfx \
       rifiuti \
       rifiuti2 \
-#      ffmpeg \
       libimage-exiftool-perl \
       libscca-utils \
       libevtx-utils \
@@ -30,7 +27,6 @@ RUN apt-get update && apt-get install -y \
       libwebp-dev \
       librsvg2-dev \
       libopenexr-dev \
-# PRECISAMOS DISSO ATILA?
       xdg-utils \
       vlc \
       libgl1-mesa-dri \
