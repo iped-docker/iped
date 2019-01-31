@@ -1,6 +1,6 @@
 FROM ipeddocker/dependencies
 
-COPY iped/iped-3.15.1 /root/IPED/iped
+COPY iped/iped-3.15.3 /root/IPED/iped
 COPY iped/optional_jars /root/IPED/optional_jars
 COPY LocalConfig.txt /root/IPED/iped/
 

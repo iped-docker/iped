@@ -44,7 +44,7 @@ RUN ldconfig
 
 
 WORKDIR /opt
-ADD http://www.mplayerhq.hu/MPlayer/releases/MPlayer-1.3.0.tar.gz .
+RUN GET http://www.mplayerhq.hu/MPlayer/releases/MPlayer-1.3.0.tar.gz > MPlayer-1.3.0.tar.gz
 RUN tar xvzf MPlayer-1.3.0.tar.gz
 WORKDIR /opt/MPlayer-1.3.0 
 RUN ./configure --prefix=/usr
