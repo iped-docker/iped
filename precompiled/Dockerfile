@@ -1,6 +1,8 @@
-FROM ipeddocker/dependencies
+ARG  VERSION=3.15.6 
+FROM ipeddocker/dependencies:${VERSION}
+ARG  VERSION
 
-COPY iped/iped-3.15.3 /root/IPED/iped
+COPY iped/iped-${VERSION} /root/IPED/iped
 COPY iped/optional_jars /root/IPED/optional_jars
 COPY LocalConfig.txt /root/IPED/iped/
 
