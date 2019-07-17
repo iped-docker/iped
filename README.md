@@ -6,6 +6,3 @@ There are 2 Dockerfiles in this repository:
 
 - precompiled: Adds the precompiled IPED to the basic environment (which is ipeddocker/dependencies).
 
-## Requirements
-
-- precompiled/iped <- unpack your precompiled IPED distibution zip file here.
