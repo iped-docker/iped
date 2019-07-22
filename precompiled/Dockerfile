@@ -2,6 +2,7 @@ ARG  VERSION=3.15.6
 FROM alpine as unzipper
 ARG  VERSION
 WORKDIR /root/IPED
+RUN  apk add --no-cache wget
 RUN  wget https://servicos.dpf.gov.br/ferramentas/IPED/${VERSION}/IPED-${VERSION}-with-extra-tools.zip
 RUN  unzip IPED-${VERSION}-with-extra-tools.zip
 RUN  ln -s iped-${VERSION} iped
