@@ -195,4 +195,9 @@ RUN xdg-mime default vlc.desktop audio/ogg \
 && xdg-mime default vlc.desktop audio/x-s3m \
 && xdg-mime default vlc.desktop audio/x-xm
 
+# allows the use of vlc as root
 RUN sed -i 's/geteuid/getppid/' /usr/bin/vlc
+
+# commenting line to avoid a bug where clicking on a gallery image would not
+# open the image in the viewer
+RUN sed -i 's/^assistive_/#assistive_/' /etc/java-8-openjdk/accessibility.properties
