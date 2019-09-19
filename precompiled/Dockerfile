@@ -3,14 +3,23 @@ FROM alpine as unzipper
 ARG  VERSION
 WORKDIR /root/IPED
 RUN  apk add --no-cache wget
-RUN  wget https://servicos.dpf.gov.br/ferramentas/IPED/${VERSION}/IPED-${VERSION}-with-extra-tools.zip
-RUN  unzip IPED-${VERSION}-with-extra-tools.zip
-RUN  ln -s iped-${VERSION} iped
-RUN  rm IPED-${VERSION}-with-extra-tools.zip 
 
-FROM ipeddocker/dependencies:${VERSION}
+# RUN  wget https://servicos.dpf.gov.br/ferramentas/IPED/${VERSION}/IPED-${VERSION}-with-extra-tools.zip
+RUN  wget https://sepinf.ditec.pf.gov.br/dav/Temp/IPED-3.15.6-APFS_patch_experimental.zip
+RUN mv IPED-3.15.6-APFS_patch_experimental.zip IPED-3.15.6.zip
+
+COPY IPED-${VERSION}.zip /root/IPED
+RUN  unzip IPED-${VERSION}.zip
+RUN  ln -s iped-${VERSION} iped
+RUN  rm IPED-${VERSION}.zip 
+
+FROM ipeddocker/dependencies:3.15.6
 COPY --from=unzipper /root/IPED /root/IPED
 COPY LocalConfig.txt /root/IPED/iped/
+
+COPY --from=tsk-apfs /usr/local/src/sleuthkit/bindings/java/dist/sleuthkit-4.6.5.jar /root/IPED
+COPY --from=tsk-apfs /usr/local/src/sleuthkit/sleuthkit.tar.gz /root/IPED
+RUN tar xf /root/IPED/sleuthkit.tar.gz -C /
 
 # Desabilitando o agdbinfo que esta bugado
 COPY ExternalParsers.xml /root/IPED/iped/conf/ExternalParsers.xml

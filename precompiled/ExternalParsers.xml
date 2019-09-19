@@ -138,8 +138,7 @@
      </mime-types>
      <output-charset>ISO-8859-1</output-charset>
   </parser>
-
-<!--  
+  
   <parser>
 	 <name>SuperFetchParser</name>
 	 <win-tool-path>tools/libagdb/</win-tool-path>
@@ -153,6 +152,5 @@
      </mime-types>
      <output-charset>ISO-8859-1</output-charset>
   </parser>
--->
-
+  
 </external-parsers>
