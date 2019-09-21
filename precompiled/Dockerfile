@@ -5,10 +5,10 @@ WORKDIR /root/IPED
 RUN  apk add --no-cache wget
 
 # RUN  wget https://servicos.dpf.gov.br/ferramentas/IPED/${VERSION}/IPED-${VERSION}-with-extra-tools.zip
-RUN  wget https://sepinf.ditec.pf.gov.br/dav/Temp/IPED-3.15.6-APFS_patch_experimental.zip
+RUN wget --no-check-certificate --user 'xxx' --password 'xxx' https://10.61.86.11/dav/Temp/IPED-3.15.6-APFS_patch_experimental.zip
 RUN mv IPED-3.15.6-APFS_patch_experimental.zip IPED-3.15.6.zip
 
-COPY IPED-${VERSION}.zip /root/IPED
+# COPY IPED-${VERSION}.zip /root/IPED
 RUN  unzip IPED-${VERSION}.zip
 RUN  ln -s iped-${VERSION} iped
 RUN  rm IPED-${VERSION}.zip 
