@@ -18,7 +18,7 @@ We use /mnt folder as default. Adjust this to your environment.
     - Download LED and decompress it on /mnt/led folder.
     - Download iped's KFF and decompress it on /mnt/kff folder.
 
-5 - Adust LocalConfig.txt and IPEDConfig.txt to your environment 
+5 - Adjust LocalConfig.txt and IPEDConfig.txt to your environment 
 
 6 - Become superuser (sudo su)
 
