@@ -1,0 +1,45 @@
+FROM nvidia/cuda:10.2-base 
+
+
+ENV TZ=Brazil/East
+ENV DEBIAN_FRONTEND=noninteractive
+ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
+ENV SAL_USE_VCLPLUGIN="gtk"
+# ENV JAVA_HOME=/usr/lib/jvm/jdk1.8.0_231
+# ENV JDK_HOME=/usr/lib/jvm/jdk1.8.0_231
+# ENV JRE_HOME=/usr/lib/jvm/jdk1.8.0_231/jre/
+# ENV J2REDIR=/usr/lib/jvm/jdk1.8.0_231/jre/
+# ENV J2SDKDIR=/usr/lib/jvm/jdk1.8.0_231/
+# ENV PATH=/usr/lib/jvm/jdk1.8.0_231/bin:$PATH
+
+
+#
+#
+# 
+#
+WORKDIR /root
+RUN apt-get update && apt-get install -y libparse-win32registry-perl \
+      vim \
+      less \
+      wget \
+      unzip \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
+#
+#
+# Copiando dependencias iped
+#
+COPY --from=dependencies:iped-3.16.3_apfs-minimal /tmp/*.tar.gz /tmp/
+WORKDIR /tmp
+RUN ls *.tar.gz | awk '{system("tar --skip-old-files -C / -xzf "$1);}' && \
+    ldconfig && rm /tmp/*.tar.gz
+
+WORKDIR /root/IPED/
+RUN wget --progress=bar:force https://github.com/lfcnassif/IPED/releases/download/3.17.1/IPED-3.17.1.zip -O iped.zip
+RUN unzip iped.zip && rm iped.zip && ln -s iped-3.17.1 iped
+# COPY LocalConfig.txt /root/IPED/iped/
+# COPY IPEDConfig.txt /root/IPED/iped/
+# Copiando o perfil fastrobust
+# COPY ./fastrobust /root/IPED/iped/profiles/pt-BR/fastrobust
+# COPY ./pedorobust /root/IPED/iped/profiles/pt-BR/pedorobust
+
+WORKDIR /root/IPED/iped
