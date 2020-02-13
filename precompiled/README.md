@@ -22,11 +22,15 @@ We use /mnt folder as default. Adjust this to your environment.
 
 6 - Become superuser (sudo su)
 
-7 - Build the IPED docker images: # docker build -t ipeddocker/iped:dependencies -f Dockerfile-iped-dependencies . && \ 
-                                    docker build -t ipeddocker/iped:processor -f Dockerfile-iped-procesor . &&  \
-                                    docker build -t ipeddocker/iped:client -f Dockerfile-iped-client .
+7 - Build the IPED docker images: 
+
+        docker build -t ipeddocker/iped:dependencies -f Dockerfile-iped-dependencies . && \ 
+        docker build -t ipeddocker/iped:processor -f Dockerfile-iped-procesor . &&  \
+        docker build -t ipeddocker/iped:client -f Dockerfile-iped-client .
                            
-8 - (OPTIONAL) Build AI.DESK docker image: # docker build -t ipeddocker/aidesk -f Dockerfile-aidesk .
+8 - (OPTIONAL) Build AI.DESK docker image: 
+
+        docker build -t ipeddocker/aidesk -f Dockerfile-aidesk .
 
 ## Adjusting the environment for execution
 
