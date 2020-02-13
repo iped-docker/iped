@@ -37,7 +37,7 @@ We use /mnt folder as default. Adjust this to your environment.
 
 10 - Restart the terminal 
 
-## Execute the containers
+## Executing the containers
 
 ### IPED docker
 
