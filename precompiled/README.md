@@ -1,6 +1,6 @@
 # Instructions to build docker container for IPED e AIDESK
 
-We use /mnt folder as default. Ajust this to your environment. 
+We use /mnt folder as default. Adjust this to your environment. 
 
 
 ## Docker Image Build 
@@ -17,7 +17,7 @@ We use /mnt folder as default. Ajust this to your environment.
     - Download LED and decompress it on /mnt/led folder.
     - Download iped's KFF and decompress it on /mnt/kff folder.
 
-5 - Ajust LocalConfig.txt and IPEDConfig.txt to your environment 
+5 - Adust LocalConfig.txt and IPEDConfig.txt to your environment 
 
 6 - Become superuser (sudo su)
 
@@ -27,7 +27,7 @@ We use /mnt folder as default. Ajust this to your environment.
                            
 8 - (OPTIONAL) Build AI.DESK docker image: # docker build -t ipeddocker/aidesk -f Dockerfile-aidesk .
 
-## Ajusting the environment for execution
+## Adjusting the environment for execution
 
 9 - Insert the folowing lines on the .bashrc 
 
