@@ -35,9 +35,9 @@ RUN ls *.tar.gz | awk '{system("tar --skip-old-files -C / -xzf "$1);}' && \
 WORKDIR /root/IPED/
 RUN wget --progress=bar:force https://github.com/lfcnassif/IPED/releases/download/3.17.1/IPED-3.17.1.zip -O iped.zip
 RUN unzip iped.zip && rm iped.zip && ln -s iped-3.17.1 iped
-# COPY LocalConfig.txt /root/IPED/iped/
-# COPY IPEDConfig.txt /root/IPED/iped/
-# Copiando o perfil fastrobust
+COPY LocalConfig.txt /root/IPED/iped/
+COPY IPEDConfig.txt /root/IPED/iped/
+# Copying custom profiles
 # COPY ./fastrobust /root/IPED/iped/profiles/pt-BR/fastrobust
 # COPY ./pedorobust /root/IPED/iped/profiles/pt-BR/pedorobust
 
