@@ -41,12 +41,12 @@ We use /mnt folder as default. Adjust this to your environment.
 
 ### IPED docker
 
-    # dkr -v /mnt/evidences:/evidences -v /mnt/led/:/mnt/led -v /mnt/ipedtmp:/mnt/ipedtmp -v /mnt/PhotoDNA:/mnt/PhotoDNA -v /mnt/kff:/mnt/kff ipeddocker/iped:processor java -jar iped/iped.jar -d /evidences/
+    dkr -v /mnt/evidences:/evidences -v /mnt/led/:/mnt/led -v /mnt/ipedtmp:/mnt/ipedtmp -v /mnt/PhotoDNA:/mnt/PhotoDNA -v /mnt/kff:/mnt/kff ipeddocker/iped:processor java -jar ./iped/iped.jar -d /evidences/test/test.dd -o -d /evidences/test/iped-output
 
 
 ### AIDESK Docker
 
-    # dkr -e AIDESK_BASE_PATH=/mnt/ipedtmp/aidesk-tmp/ --gpus '"device=1"' -v `pwd`/aidesk_dist:/root/IPED/aidesk -v /mnt/evidences:/evidences -v /mnt/led/:/mnt/led -v /mnt/ipedtmp:/mnt/ipedtmp -v /mnt/PhotoDNA:/mnt/PhotoDNA -v /mnt/kff:/mnt/kff ipeddocker/aidesk bash
+    dkr -e AIDESK_BASE_PATH=/mnt/ipedtmp/aidesk-tmp/ --gpus '"device=1"' -v `pwd`/aidesk_dist:/root/IPED/aidesk -v /mnt/evidences:/evidences -v /mnt/led/:/mnt/led -v /mnt/ipedtmp:/mnt/ipedtmp -v /mnt/PhotoDNA:/mnt/PhotoDNA -v /mnt/kff:/mnt/kff ipeddocker/aidesk bash
 
 
 
