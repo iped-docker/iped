@@ -1,4 +1,4 @@
-# Instructions to build docker container for IPED e AIDESK
+# Instructions to build docker containers for IPED e AIDESK
 
 We use /mnt folder as default. Adjust this to your environment. 
 
