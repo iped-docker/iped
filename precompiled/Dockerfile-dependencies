@@ -1,0 +1,165 @@
+FROM ubuntu:18.04
+
+RUN apt-get update && apt-get install -y \
+      git \
+      build-essential \
+      libafflib-dev zlib1g-dev libewf-dev unzip patch libssl-dev \
+      autoconf automake autopoint libtool pkg-config yasm gettext wget \
+      libaa1-dev libasound2-dev libcaca-dev libcdparanoia-dev libdca-dev \
+      libdirectfb-dev libenca-dev libfontconfig1-dev libfreetype6-dev \
+      libfribidi-dev libgif-dev libgl1-mesa-dev libjack-jackd2-dev libopenal1 libpulse-dev \
+      libsdl1.2-dev libvdpau-dev libxinerama-dev libxv-dev libxvmc-dev libxxf86dga-dev \
+      libxxf86vm-dev librtmp-dev libsctp-dev libass-dev libfaac-dev libsmbclient-dev libtheora-dev \
+      libogg-dev libxvidcore-dev libspeex-dev libvpx-dev libdv4-dev \
+      libopencore-amrnb-dev libopencore-amrwb-dev libmp3lame-dev liblivemedia-dev libtwolame-dev \
+      libmad0-dev libgsm1-dev libbs2b-dev liblzo2-dev ladspa-sdk libfaad-dev \
+      libmpg123-dev libopus-dev libbluray-dev libaacs-dev \
+      libjpeg-dev \
+      libtiff-dev \
+      libpng-dev \
+      libwmf-dev \
+      libgif-dev \
+      libheif-dev \
+      libwebp-dev \
+      librsvg2-dev \
+      libopenexr-dev \
+      vim \
+      less\
+      openjdk-8-jdk
+
+
+#
+# Instalações sem dependencias
+# Para evitar o java11
+WORKDIR /root/pkgs
+RUN apt-get download ant
+RUN ls *.deb | awk '{system("dpkg-deb -x "$1" /")}'
+
+
+WORKDIR /opt
+RUN git clone https://github.com/blackbagtech/sleuthkit-APFS/
+WORKDIR /opt/sleuthkit-APFS/
+RUN git reset --hard ef57fc6e21e1ff84857f727a358f1cf7890585d6
+COPY iped/iped-3.16.3/sources/tsk-iped-patch-zip-4.6.5-p04.zip .
+RUN unzip tsk-iped-patch-zip-4.6.5-p04.zip
+RUN patch -p1 < sleuthkit-4.6.5-APFS-patch04/tsk-4.6.5-apfs-p04.patch
+# Correção repositorio ivy
+COPY ivy.patch .
+RUN patch -p0 < ivy.patch
+RUN ./bootstrap
+RUN ./configure --prefix=/tmp/sleuthkit/usr/
+RUN make
+RUN make install
+
+
+WORKDIR /opt
+RUN wget --progress=bar:force http://www.mplayerhq.hu/MPlayer/releases/MPlayer-1.4.tar.gz
+RUN tar xvzf MPlayer-1.4.tar.gz
+WORKDIR /opt/MPlayer-1.4
+RUN ./configure --prefix=/tmp/mplayer/usr
+RUN make all install
+# Codecs
+WORKDIR /tmp/mplayer/usr/lib
+RUN wget --progress=bar:force http://www.mplayerhq.hu/MPlayer/releases/codecs/all-20110131.tar.bz2
+RUN tar xvjf all-20110131.tar.bz2
+RUN mv all-20110131 codecs
+RUN rm all-20110131.tar.bz2
+
+WORKDIR /opt
+RUN git clone https://github.com/libyal/libagdb.git
+WORKDIR /opt/libagdb
+RUN ./synclibs.sh
+RUN ./autogen.sh
+RUN ./configure --prefix=/tmp/libagdb/usr
+RUN make all install
+
+WORKDIR /opt
+RUN git clone --branch="20191221" https://github.com/libyal/libevtx
+WORKDIR /opt/libevtx
+RUN ./synclibs.sh
+RUN ./autogen.sh
+RUN ./configure --prefix=/tmp/libevtx/usr
+RUN make all install
+
+WORKDIR /opt
+RUN git clone https://github.com/libyal/libevt
+WORKDIR /opt/libevt
+RUN ./synclibs.sh
+RUN ./autogen.sh
+RUN ./configure --prefix=/tmp/libevt/usr
+RUN make all install
+
+WORKDIR /opt
+RUN git clone https://github.com/libyal/libscca
+WORKDIR /opt/libscca
+RUN ./synclibs.sh
+RUN ./autogen.sh
+RUN ./configure --prefix=/tmp/libscca/usr
+RUN make all install
+
+WORKDIR /opt
+RUN git clone https://github.com/libyal/libesedb
+WORKDIR /opt/libesedb
+RUN ./synclibs.sh
+RUN ./autogen.sh
+RUN ./configure --prefix=/tmp/libesedb/usr
+RUN make all install
+
+WORKDIR /opt
+RUN git clone https://github.com/libyal/libpff
+WORKDIR /opt/libpff
+RUN ./synclibs.sh
+RUN ./autogen.sh
+RUN ./configure --prefix=/tmp/libpff/usr
+RUN make all install
+
+WORKDIR /opt
+RUN git clone https://github.com/libyal/libmsiecf
+WORKDIR /opt/libmsiecf
+RUN ./synclibs.sh
+RUN ./autogen.sh
+RUN ./configure --prefix=/tmp/libmsiecf/usr
+RUN make all install
+
+WORKDIR /opt
+RUN git clone https://github.com/abelcheung/rifiuti2
+WORKDIR /opt/rifiuti2
+RUN autoreconf -f -i -v
+RUN ./configure --prefix=/tmp/rifiuti2/usr
+RUN make all install
+
+WORKDIR /opt
+RUN git clone --branch "7.0.8-14" https://github.com/ImageMagick/ImageMagick
+WORKDIR /opt/ImageMagick
+RUN ./configure --prefix=/tmp/imagemagick/usr
+RUN make all install
+
+#
+# Ajustes finais, compactação das dependecias e libs
+#
+WORKDIR /tmp/mplayer
+RUN tar cvzf /tmp/mplayer.tar.gz ./usr
+WORKDIR /tmp/libagdb
+RUN tar cvzf /tmp/libagdb.tar.gz ./usr
+WORKDIR /tmp/libevtx
+RUN tar cvzf /tmp/libevtx.tar.gz ./usr
+WORKDIR /tmp/libevt
+RUN tar cvzf /tmp/libevt.tar.gz ./usr
+WORKDIR /tmp/libscca
+RUN tar cvzf /tmp/libscca.tar.gz ./usr
+WORKDIR /tmp/libesedb
+RUN tar cvzf /tmp/libesedb.tar.gz ./usr
+WORKDIR /tmp/libpff
+RUN tar cvzf /tmp/libpff.tar.gz ./usr
+WORKDIR /tmp/libmsiecf
+RUN tar cvzf /tmp/libmsiecf.tar.gz ./usr
+WORKDIR /tmp/rifiuti2
+RUN tar cvzf /tmp/rifiuti2.tar.gz ./usr
+WORKDIR /tmp/imagemagick
+RUN tar cvzf /tmp/imagemagick.tar.gz ./usr
+WORKDIR /tmp/sleuthkit
+RUN tar cvzf /tmp/sleuthkit.tar.gz ./usr
+#
+RUN tar czf /tmp/libs.tar.gz /lib
+RUN tar czf /tmp/usrlibs.tar.gz /usr/lib
+# RUN tar czf /tmp/usrshare.tar.gz /usr/share
