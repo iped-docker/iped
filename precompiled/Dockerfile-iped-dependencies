@@ -155,4 +155,3 @@ RUN tar cvzf /tmp/sleuthkit.tar.gz ./usr
 #
 RUN tar czf /tmp/libs.tar.gz /lib
 RUN tar czf /tmp/usrlibs.tar.gz /usr/lib
-# RUN tar czf /tmp/usrshare.tar.gz /usr/share
