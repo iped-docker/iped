@@ -1,18 +1,6 @@
 FROM ipeddocker/iped:processor 
 
 
-ENV TZ=Brazil/East
-ENV DEBIAN_FRONTEND=noninteractive
-ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
-ENV SAL_USE_VCLPLUGIN="gtk"
-# ENV JAVA_HOME=/usr/lib/jvm/jdk1.8.0_231
-# ENV JDK_HOME=/usr/lib/jvm/jdk1.8.0_231
-# ENV JRE_HOME=/usr/lib/jvm/jdk1.8.0_231/jre/
-# ENV J2REDIR=/usr/lib/jvm/jdk1.8.0_231/jre/
-# ENV J2SDKDIR=/usr/lib/jvm/jdk1.8.0_231/
-# ENV PATH=/usr/lib/jvm/jdk1.8.0_231/bin:$PATH
-
-
 #
 #
 # Para abrir o iped-search no docker
