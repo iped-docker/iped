@@ -1,20 +1,16 @@
 FROM nvidia/cuda:10.2-base 
 
-
 ENV TZ=Brazil/East
 ENV DEBIAN_FRONTEND=noninteractive
 ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
 ENV SAL_USE_VCLPLUGIN="gtk"
-# ENV JAVA_HOME=/usr/lib/jvm/jdk1.8.0_231
-# ENV JDK_HOME=/usr/lib/jvm/jdk1.8.0_231
-# ENV JRE_HOME=/usr/lib/jvm/jdk1.8.0_231/jre/
-# ENV J2REDIR=/usr/lib/jvm/jdk1.8.0_231/jre/
-# ENV J2SDKDIR=/usr/lib/jvm/jdk1.8.0_231/
-# ENV PATH=/usr/lib/jvm/jdk1.8.0_231/bin:$PATH
+ENV JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/
+ENV JDK_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+ENV JRE_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+ENV J2REDIR=/usr/lib/jvm/java-8-openjdk-amd64/jre/
+ENV J2SDKDIR=/usr/lib/jvm/java-8-openjdk-amd64
+ENV PATH=/usr/lib/jvm/java-8-openjdk-amd64/bin:$PATH
 
-
-#
-#
 # 
 #
 WORKDIR /root
@@ -23,8 +19,11 @@ RUN apt-get update && apt-get install -y libparse-win32registry-perl \
       less \
       wget \
       unzip \
+      openjfx=8u161-b12-1ubuntu2 \
+      libgl1-mesa-dri \
+      tesseract-ocr tesseract-ocr-por tesseract-ocr-osd \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
-#
+
 #
 # Copiando dependencias iped
 #
