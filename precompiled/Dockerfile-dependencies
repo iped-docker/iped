@@ -37,15 +37,8 @@ RUN ls *.deb | awk '{system("dpkg-deb -x "$1" /")}'
 
 
 WORKDIR /opt
-RUN git clone https://github.com/blackbagtech/sleuthkit-APFS/
+RUN git clone https://github.com/lfcnassif/sleuthkit-APFS
 WORKDIR /opt/sleuthkit-APFS/
-RUN git reset --hard ef57fc6e21e1ff84857f727a358f1cf7890585d6
-COPY iped/iped-3.16.3/sources/tsk-iped-patch-zip-4.6.5-p04.zip .
-RUN unzip tsk-iped-patch-zip-4.6.5-p04.zip
-RUN patch -p1 < sleuthkit-4.6.5-APFS-patch04/tsk-4.6.5-apfs-p04.patch
-# Correção repositorio ivy
-COPY ivy.patch .
-RUN patch -p0 < ivy.patch
 RUN ./bootstrap
 RUN ./configure --prefix=/tmp/sleuthkit/usr/
 RUN make
