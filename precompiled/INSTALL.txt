@@ -1,0 +1,84 @@
+Instruções para criar os conteiners docker para IPED e AIDESK
+
+Usamos a pasta /mnt para colocar os drives externos montados na docker. Ajusta pra ficar melhor no teu ambiente. Essa docker executa no ambiente X também. 
+
+
+**************************************************************
+             Build nas imagens
+**************************************************************
+
+1 - Instalar o docker. Aqui estou com a versão 19.03.5. Usar a partir dessa caso venha a usar GPU.
+# apt-get update && apt-get install -y docker
+
+
+2 -  Descompactar e entrar no diretório da docker iped-aidesk.
+# tar xzvf precompiled_docker_dist
+# cd precompiled_dist
+
+3 - baixar o jdk-8u231-linux-x64.tar.gz da Oracle e descompactar no diretório atual. De repente coloco no DAV, mas talvez seja mais rápido tu baixar ai.
+# tar xvzf jdk-8u231-linux-x64.tar.gz
+
+4 - baixar do DAV o IPED-3.16.2-with-extra-tools.zip e descompactar na pasta "iped"
+# mkdir iped && cd iped && unzip ../IPED-3.16.3-with-extra-tools.zip
+
+5 - Prerequisitos do IPED no DAV:
+    - Baixar do DAV o PhotoDNA (https://sepinf.ditec.dpf.gov.br/dav/Softwares/Analise%20de%20Midias/PhotoDNA/). Colocar o jar na pasta iped/optional_jars e os hashes na pasta /mnt/PhotoDNA (ou qualquer outra pasta local).
+    - Baixar o LED e descompactar na pasta /mnt/led/V1.25.01
+    - Baixar o KFF e descompactar na pasta /mnt/kff
+
+6 - Ajustar o LocalConfig.txt e o IPEDConfig.txt para se ajustar ao teu ambiente. 
+
+7 - Colocar a pasta "aidesk_dist" no diretorio "precompiled_dist" 
+
+
+8 - vai para o precompiled_dist novamente para dar o build nas imagens.
+# cd precompiled_dist
+# sudo su
+(root)# docker build -t dependencies:iped-3.16.3_apfs-minimal -f Dockerfile-dependencies . && docker build -t ipeddocker/iped:3.16.3_apfs-cuda -f Dockerfile-iped-cuda . &&  docker build -t ipeddocker/iped:3.16.3_apfs-minimal_aidesk -f Dockerfile-aidesk-minimal .
+
+
+*************************************************************
+ Ajustando o ambiente 
+*************************************************************
+
+8 - insere os comandos abaixo no final do .bashrc do teu usuário
+
+xhost +
+
+dkr () { sudo docker run --rm -it -v "`pwd`":"`pwd`":Z -e DISPLAY -e GDK_BACKEND -e GDK_SCALE -e GDK_DPI_SCALE -e QT_DEVICE_PIXEL_RATIO -e LANG=C.UTF-8 -e LC_ALL=C.UTF-8 --device /dev/dri --device /dev/snd -v /etc/localtime:/etc/localtime:ro -v /tmp/.X11-unix/:/tmp/.X11-unix/ "$@"; }
+
+9 - Reiniciar o terminal para pegar as configurações 
+
+
+
+*************************************************************
+Execução dos conteiners 
+*************************************************************
+
+10 - Execução do conteiner docker do IPED
+
+# dkr -v /mnt/operacoes:/operacoes -v /mnt/led/V1.25.01:/mnt/led -v /mnt/ipedtmp:/mnt/ipedtmp -v /mnt/PhotoDNA:/mnt/PhotoDNA -v /mnt/kff:/mnt/kff ipeddocker/iped:3.16.2_apfs-minimal bash
+
+
+ou 11 - Execução do conteiner docker do AIDESK
+
+# dkr -v /mnt/operacoes:/operacoes -v /mnt/led/V1.25.01:/mnt/led -v /mnt/ipedtmp:/mnt/ipedtmp -v /mnt/PhotoDNA:/mnt/PhotoDNA -v /mnt/kff:/mnt/kff ipeddocker/iped:3.16.2_apfs-minimal_aidesk bash
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
