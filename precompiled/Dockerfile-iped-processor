@@ -43,4 +43,7 @@ COPY ./optional_jars/* /root/IPED/optional_jars/
 # COPY ./fastrobust /root/IPED/iped/profiles/pt-BR/fastrobust
 # COPY ./pedorobust /root/IPED/iped/profiles/pt-BR/pedorobust
 
+# Creating mplayer config
+RUN mplayer
+
 WORKDIR /root/IPED/iped
