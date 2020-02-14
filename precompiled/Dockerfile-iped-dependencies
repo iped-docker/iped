@@ -68,8 +68,8 @@ RUN git clone --branch="20191221" https://github.com/libyal/libevtx \
     && cd /opt/libevtx \ 
     && ./synclibs.sh \
     && ./autogen.sh \
-    && ./configure --prefix=/usr
-    && make all install
+    && ./configure --prefix=/usr \
+    && make all install \
     && rm -rf /opt/libevtx
 
 WORKDIR /opt
@@ -77,8 +77,8 @@ RUN git clone https://github.com/libyal/libevt \
     && cd /opt/libevt \
     && ./synclibs.sh \
     && ./autogen.sh \
-    && ./configure --prefix=/usr
-    && make all install
+    && ./configure --prefix=/usr \
+    && make all install \
     && rm -rf /opt/libevt
 
 WORKDIR /opt
@@ -121,14 +121,14 @@ WORKDIR /opt
 RUN git clone https://github.com/abelcheung/rifiuti2 \
     && cd /opt/rifiuti2 \
     && autoreconf -f -i -v \
-    && ./configure --prefix=/usr
-    && make all install
+    && ./configure --prefix=/usr \
+    && make all install \
     && rm -rf /opt/rifiuti2
 
 WORKDIR /opt
 RUN git clone --branch "7.0.8-14" https://github.com/ImageMagick/ImageMagick \
     && cd /opt/ImageMagick \
-    && ./configure --prefix=/usr
+    && ./configure --prefix=/usr \
     && make all install \
     && rm -rf /opt/ImageMagick
 
