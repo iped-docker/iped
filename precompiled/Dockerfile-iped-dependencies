@@ -1,5 +1,6 @@
-FROM ubuntu:18.04
+FROM nvidia/cuda:10.2-base
 
+WORKDIR /root/pkgs
 RUN apt-get update && apt-get install -y \
       git \
       build-essential \
@@ -26,133 +27,103 @@ RUN apt-get update && apt-get install -y \
       vim \
       less\
       openjdk-8-jdk \
+      && apt-get download ant && ls *.deb | awk '{system("dpkg-deb -x "$1" /")}'
       && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 
-#
-# Instalações sem dependencias
-# Para evitar o java11
-WORKDIR /root/pkgs
-RUN apt-get download ant
-RUN ls *.deb | awk '{system("dpkg-deb -x "$1" /")}'
-
+WORKDIR /opt
+RUN git clone https://github.com/lfcnassif/sleuthkit-APFS \
+    && cd /opt/sleuthkit-APFS/ \
+    && ./bootstrap \ 
+    && ./configure --prefix=/usr/ \
+    && make && make install \
+    && rm -rf /opt/sleuthkit-APFS/
 
 WORKDIR /opt
-RUN git clone https://github.com/lfcnassif/sleuthkit-APFS
-WORKDIR /opt/sleuthkit-APFS/
-RUN ./bootstrap
-RUN ./configure --prefix=/tmp/sleuthkit/usr/
-RUN make
-RUN make install
-
-
-WORKDIR /opt
-RUN wget --progress=bar:force http://www.mplayerhq.hu/MPlayer/releases/MPlayer-1.4.tar.gz
-RUN tar xvzf MPlayer-1.4.tar.gz
-WORKDIR /opt/MPlayer-1.4
-RUN ./configure --prefix=/tmp/mplayer/usr
-RUN make all install
-# Codecs
-WORKDIR /tmp/mplayer/usr/lib
-RUN wget --progress=bar:force http://www.mplayerhq.hu/MPlayer/releases/codecs/all-20110131.tar.bz2
-RUN tar xvjf all-20110131.tar.bz2
-RUN mv all-20110131 codecs
-RUN rm all-20110131.tar.bz2
+RUN wget --progress=bar:force http://www.mplayerhq.hu/MPlayer/releases/MPlayer-1.4.tar.gz \
+    && tar xvzf MPlayer-1.4.tar.gz \
+    && cd /opt/MPlayer-1.4 \
+    && cd ./configure --prefix=/usr \
+    && make all install \
+    && cd /usr/lib \
+    && wget --progress=bar:force http://www.mplayerhq.hu/MPlayer/releases/codecs/all-20110131.tar.bz2 \
+    && tar xvjf all-20110131.tar.bz2 && mv all-20110131 codecs && rm all-20110131.tar.bz2
 
 WORKDIR /opt
-RUN git clone https://github.com/libyal/libagdb.git
-WORKDIR /opt/libagdb
-RUN ./synclibs.sh
-RUN ./autogen.sh
-RUN ./configure --prefix=/tmp/libagdb/usr
-RUN make all install
+RUN git clone https://github.com/libyal/libagdb.git \
+    && cd /opt/libagdb \
+    && ./synclibs.sh \
+    && ./autogen.sh \    
+    && ./configure --prefix=/usr \ 
+    && make all install \
+    && rm -rf /opt/libagdb
 
 WORKDIR /opt
-RUN git clone --branch="20191221" https://github.com/libyal/libevtx
-WORKDIR /opt/libevtx
-RUN ./synclibs.sh
-RUN ./autogen.sh
-RUN ./configure --prefix=/tmp/libevtx/usr
-RUN make all install
+RUN git clone --branch="20191221" https://github.com/libyal/libevtx \
+    && cd /opt/libevtx \ 
+    && ./synclibs.sh \
+    && ./autogen.sh \
+    && ./configure --prefix=/usr
+    && make all install
+    && rm -rf /opt/libevtx
 
 WORKDIR /opt
-RUN git clone https://github.com/libyal/libevt
-WORKDIR /opt/libevt
-RUN ./synclibs.sh
-RUN ./autogen.sh
-RUN ./configure --prefix=/tmp/libevt/usr
-RUN make all install
+RUN git clone https://github.com/libyal/libevt \
+    && cd /opt/libevt \
+    && ./synclibs.sh \
+    && ./autogen.sh \
+    && ./configure --prefix=/usr
+    && make all install
+    && rm -rf /opt/libevt
 
 WORKDIR /opt
-RUN git clone https://github.com/libyal/libscca
-WORKDIR /opt/libscca
-RUN ./synclibs.sh
-RUN ./autogen.sh
-RUN ./configure --prefix=/tmp/libscca/usr
-RUN make all install
+RUN git clone https://github.com/libyal/libscca \
+    && cd /opt/libscca \
+    && ./synclibs.sh \
+    && ./autogen.sh \
+    && ./configure --prefix=/usr \
+    && make all install \
+    && rm -rf /opt/libscca
 
 WORKDIR /opt
-RUN git clone https://github.com/libyal/libesedb
-WORKDIR /opt/libesedb
-RUN ./synclibs.sh
-RUN ./autogen.sh
-RUN ./configure --prefix=/tmp/libesedb/usr
-RUN make all install
+RUN git clone https://github.com/libyal/libesedb \
+    && cd /opt/libesedb \
+    && ./synclibs.sh \
+    && ./autogen.sh \
+    && ./configure --prefix=/usr
+    && make all install \
+    && rm -rf /opt/libesedb
 
 WORKDIR /opt
-RUN git clone https://github.com/libyal/libpff
-WORKDIR /opt/libpff
-RUN ./synclibs.sh
-RUN ./autogen.sh
-RUN ./configure --prefix=/tmp/libpff/usr
-RUN make all install
+RUN git clone https://github.com/libyal/libpff \
+    && cd /opt/libpff \
+    && ./synclibs.sh \
+    && ./autogen.sh \
+    && ./configure --prefix=/usr \ 
+    && make all install \
+    && rm -rf /opt/libpff
 
 WORKDIR /opt
-RUN git clone https://github.com/libyal/libmsiecf
-WORKDIR /opt/libmsiecf
-RUN ./synclibs.sh
-RUN ./autogen.sh
-RUN ./configure --prefix=/tmp/libmsiecf/usr
-RUN make all install
+RUN git clone https://github.com/libyal/libmsiecf \
+    && cd /opt/libmsiecf \
+    && ./synclibs.sh \
+    && ./autogen.sh \
+    && ./configure --prefix=/usr \
+    && make all install \
+    && rm -rf /opt/libmsiecf
 
 WORKDIR /opt
-RUN git clone https://github.com/abelcheung/rifiuti2
-WORKDIR /opt/rifiuti2
-RUN autoreconf -f -i -v
-RUN ./configure --prefix=/tmp/rifiuti2/usr
-RUN make all install
+RUN git clone https://github.com/abelcheung/rifiuti2 \
+    && cd /opt/rifiuti2 \
+    && autoreconf -f -i -v \
+    && ./configure --prefix=/usr
+    && make all install
+    && rm -rf /opt/rifiuti2
 
 WORKDIR /opt
-RUN git clone --branch "7.0.8-14" https://github.com/ImageMagick/ImageMagick
-WORKDIR /opt/ImageMagick
-RUN ./configure --prefix=/tmp/imagemagick/usr
-RUN make all install
+RUN git clone --branch "7.0.8-14" https://github.com/ImageMagick/ImageMagick \
+    && cd /opt/ImageMagick \
+    && ./configure --prefix=/usr
+    && make all install \
+    && rm -rf /opt/ImageMagick
 
-#
-# Ajustes finais, compactação das dependecias e libs
-#
-WORKDIR /tmp/mplayer
-RUN tar cvzf /tmp/mplayer.tar.gz ./usr
-WORKDIR /tmp/libagdb
-RUN tar cvzf /tmp/libagdb.tar.gz ./usr
-WORKDIR /tmp/libevtx
-RUN tar cvzf /tmp/libevtx.tar.gz ./usr
-WORKDIR /tmp/libevt
-RUN tar cvzf /tmp/libevt.tar.gz ./usr
-WORKDIR /tmp/libscca
-RUN tar cvzf /tmp/libscca.tar.gz ./usr
-WORKDIR /tmp/libesedb
-RUN tar cvzf /tmp/libesedb.tar.gz ./usr
-WORKDIR /tmp/libpff
-RUN tar cvzf /tmp/libpff.tar.gz ./usr
-WORKDIR /tmp/libmsiecf
-RUN tar cvzf /tmp/libmsiecf.tar.gz ./usr
-WORKDIR /tmp/rifiuti2
-RUN tar cvzf /tmp/rifiuti2.tar.gz ./usr
-WORKDIR /tmp/imagemagick
-RUN tar cvzf /tmp/imagemagick.tar.gz ./usr
-WORKDIR /tmp/sleuthkit
-RUN tar cvzf /tmp/sleuthkit.tar.gz ./usr
-#
-RUN tar czf /tmp/libs.tar.gz /lib
-RUN tar czf /tmp/usrlibs.tar.gz /usr/lib
