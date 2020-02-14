@@ -48,7 +48,7 @@ WORKDIR /opt
 RUN wget --progress=bar:force http://www.mplayerhq.hu/MPlayer/releases/MPlayer-1.4.tar.gz \
     && tar xvzf MPlayer-1.4.tar.gz \
     && cd /opt/MPlayer-1.4 \
-    && cd ./configure --prefix=/usr \
+    && ./configure --prefix=/usr \
     && make all install \
     && cd /usr/lib \
     && wget --progress=bar:force http://www.mplayerhq.hu/MPlayer/releases/codecs/all-20110131.tar.bz2 \
