@@ -131,3 +131,13 @@ RUN git clone --branch "7.0.8-14" https://github.com/ImageMagick/ImageMagick \
     && make all install \
     && rm -rf /opt/ImageMagick
 
+ENV TZ=Brazil/East
+ENV DEBIAN_FRONTEND=noninteractive
+ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
+ENV SAL_USE_VCLPLUGIN="gtk"
+ENV JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/
+ENV JDK_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+ENV JRE_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+ENV J2REDIR=/usr/lib/jvm/java-8-openjdk-amd64/jre/
+ENV J2SDKDIR=/usr/lib/jvm/java-8-openjdk-amd64
+ENV PATH=/usr/lib/jvm/java-8-openjdk-amd64/bin:$PATH
