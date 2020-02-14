@@ -142,3 +142,7 @@ ENV JRE_HOME=/usr/lib/jvm/java-8-openjdk-amd64
 ENV J2REDIR=/usr/lib/jvm/java-8-openjdk-amd64/jre/
 ENV J2SDKDIR=/usr/lib/jvm/java-8-openjdk-amd64
 ENV PATH=/usr/lib/jvm/java-8-openjdk-amd64/bin:$PATH
+
+# Creating mplayer config
+RUN mplayer
+
