@@ -1,36 +1,4 @@
-FROM nvidia/cuda:10.2-base 
-
-ENV TZ=Brazil/East
-ENV DEBIAN_FRONTEND=noninteractive
-ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
-ENV SAL_USE_VCLPLUGIN="gtk"
-ENV JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/
-ENV JDK_HOME=/usr/lib/jvm/java-8-openjdk-amd64
-ENV JRE_HOME=/usr/lib/jvm/java-8-openjdk-amd64
-ENV J2REDIR=/usr/lib/jvm/java-8-openjdk-amd64/jre/
-ENV J2SDKDIR=/usr/lib/jvm/java-8-openjdk-amd64
-ENV PATH=/usr/lib/jvm/java-8-openjdk-amd64/bin:$PATH
-
-# 
-#
-WORKDIR /root
-RUN apt-get update && apt-get install -y libparse-win32registry-perl \
-      vim \
-      less \
-      wget \
-      unzip \
-      openjfx=8u161-b12-1ubuntu2 \
-      libgl1-mesa-dri \
-      tesseract-ocr tesseract-ocr-por tesseract-ocr-osd \
-    && apt-get clean && rm -rf /var/lib/apt/lists/*
-
-#
-# Copiando dependencias iped
-#
-COPY --from=ipeddocker/iped:dependencies /tmp/*.tar.gz /tmp/
-WORKDIR /tmp
-RUN ls *.tar.gz | awk '{system("tar --skip-old-files -C / -xzf "$1);}' && \
-    ldconfig && rm /tmp/*.tar.gz
+FROM ipeddocker/iped:dependencies 
 
 WORKDIR /root/IPED/
 RUN wget --progress=bar:force https://github.com/lfcnassif/IPED/releases/download/3.17.1/IPED-3.17.1.zip -O iped.zip
@@ -43,7 +11,5 @@ COPY ./optional_jars/* /root/IPED/optional_jars/
 # COPY ./fastrobust /root/IPED/iped/profiles/pt-BR/fastrobust
 # COPY ./pedorobust /root/IPED/iped/profiles/pt-BR/pedorobust
 
-# Creating mplayer config
-RUN mplayer
 
 WORKDIR /root/IPED/iped
