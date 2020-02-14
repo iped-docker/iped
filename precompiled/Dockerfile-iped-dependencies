@@ -25,7 +25,8 @@ RUN apt-get update && apt-get install -y \
       libopenexr-dev \
       vim \
       less\
-      openjdk-8-jdk
+      openjdk-8-jdk \
+      && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 
 #
