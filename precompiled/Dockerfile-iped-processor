@@ -27,7 +27,7 @@ RUN apt-get update && apt-get install -y libparse-win32registry-perl \
 #
 # Copiando dependencias iped
 #
-COPY --from=dependencies:iped-3.16.3_apfs-minimal /tmp/*.tar.gz /tmp/
+COPY --from=ipeddocker/iped:dependencies /tmp/*.tar.gz /tmp/
 WORKDIR /tmp
 RUN ls *.tar.gz | awk '{system("tar --skip-old-files -C / -xzf "$1);}' && \
     ldconfig && rm /tmp/*.tar.gz
