@@ -37,7 +37,7 @@ We use /mnt folder as default. Adjust this to your environment.
 9 - Insert the folowing lines on the .bashrc 
 
     xhost +
-    dkr () { sudo docker run --rm -it -v "`pwd`":"`pwd`":Z -e DISPLAY -e GDK_BACKEND -e GDK_SCALE -e GDK_DPI_SCALE -e QT_DEVICE_PIXEL_RATIO -e LANG=C.UTF-8 -e LC_ALL=C.UTF-8 --device /dev/dri --device /dev/snd -v /etc/localtime:/etc/localtime:ro -v /tmp/.X11-unix/:/tmp/.X11-unix/ "$@"; }
+    dkr () { sudo docker run --rm -it -v "`pwd`":"`pwd`":Z -e DISPLAY -e GDK_BACKEND -e GDK_SCALE -e GDK_DPI_SCALE -e QT_DEVICE_PIXEL_RATIO -e LANG=C.UTF-8 -e LC_ALL=C.UTF-8 -e NO_AT_BRIDGE=1 --device /dev/dri --device /dev/snd -v /etc/localtime:/etc/localtime:ro -v /tmp/.X11-unix/:/tmp/.X11-unix/ "$@"; }
 
 10 - Restart the terminal 
 
