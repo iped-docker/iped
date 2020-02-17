@@ -140,5 +140,6 @@ RUN sed -i 's/geteuid/getppid/' /usr/bin/vlc
 # open the image in the viewer
 RUN sed -i 's/^assistive_/#assistive_/' /etc/java-8-openjdk/accessibility.properties
 
+ENV SAL_USE_VCLPLUGIN="gtk"
 
 WORKDIR /root/IPED/iped
