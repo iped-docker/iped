@@ -29,6 +29,8 @@ RUN apt-get update && apt-get install -y \
       openjdk-8-jdk \
       unzip \
       openjfx=8u161-b12-1ubuntu2 \
+      libopenjfx-java=8u161-b12-1ubuntu2 \
+      libopenjfx-jni=8u161-b12-1ubuntu2 \
       libgl1-mesa-dri \
       libparse-win32registry-perl \
       tesseract-ocr tesseract-ocr-por tesseract-ocr-osd \
