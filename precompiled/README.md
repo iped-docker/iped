@@ -14,7 +14,8 @@ We use /mnt folder as default. Adjust this to your environment.
 
 4 - Download optional IPED dependencies:
 
-    - PhotoDNA: put jar on "optional_jars" folder and the hashes on /mnt/PhotoDNA folder
+    - PhotoDNA: put jar on "optional_jars" folder and the hashes on /mnt/PhotoDNA folder.
+    - Stanford NLP Models: put jar on "optional_jars" folder.
     - Download LED and decompress it on /mnt/led folder.
     - Download iped's KFF and decompress it on /mnt/kff folder.
 
