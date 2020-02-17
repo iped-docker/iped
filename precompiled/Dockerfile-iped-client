@@ -141,14 +141,4 @@ RUN sed -i 's/geteuid/getppid/' /usr/bin/vlc
 RUN sed -i 's/^assistive_/#assistive_/' /etc/java-8-openjdk/accessibility.properties
 
 
-ENV SAL_USE_VCLPLUGIN="gtk"
-ENV JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre/
-ENV JDK_HOME=/usr/lib/jvm/java-8-openjdk-amd64
-ENV JRE_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre/
-ENV J2REDIR=/usr/lib/jvm/java-8-openjdk-amd64/jre/
-ENV J2SDKDIR=/usr/lib/jvm/java-8-openjdk-amd64
-ENV PATH=/usr/lib/jvm/java-8-openjdk-amd64/jre/bin:$PATH
-
-
-
 WORKDIR /root/IPED/iped
