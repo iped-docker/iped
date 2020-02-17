@@ -24,8 +24,8 @@ We use /mnt folder as default. Adjust this to your environment.
 
 7 - Build the IPED docker images: 
 
-        docker build -t ipeddocker/iped:dependencies -f Dockerfile-iped-dependencies . && \ 
-        docker build -t ipeddocker/iped:processor -f Dockerfile-iped-processor . &&  \
+        docker build -t ipeddocker/iped:dependencies -f Dockerfile-iped-dependencies . && \
+        docker build -t ipeddocker/iped:processor -f Dockerfile-iped-processor . && \
         docker build -t ipeddocker/iped:client -f Dockerfile-iped-client .
                            
 8 - (OPTIONAL) Build AI.DESK docker image: 
