@@ -3,8 +3,6 @@ FROM ipeddocker/iped:dependencies
 WORKDIR /root/IPED/
 RUN wget --progress=bar:force https://github.com/lfcnassif/IPED/releases/download/3.17.1/IPED-3.17.1.zip -O iped.zip \
     && unzip iped.zip && rm iped.zip && ln -s iped-3.17.1 iped
-WORKDIR /root/IPED/optional_jars/
-RUN wget --progress=bar:force https://nlp.stanford.edu/software/stanford-english-corenlp-2018-10-05-models.jar
 COPY ./optional_jars/* .
 COPY LocalConfig.txt /root/IPED/iped/
 COPY IPEDConfig.txt /root/IPED/iped/profiles/pt-BR/default/
@@ -13,7 +11,7 @@ COPY IPEDConfig.txt /root/IPED/iped/profiles/en/default/
 # COPY ./fastrobust /root/IPED/iped/profiles/pt-BR/fastrobust
 # COPY ./pedorobust /root/IPED/iped/profiles/pt-BR/pedorobust
 
-ENV SAL_USE_VCLPLUGIN="gtk"
+
 ENV JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre/
 ENV JDK_HOME=/usr/lib/jvm/java-8-openjdk-amd64
 ENV JRE_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre/
