@@ -5,7 +5,7 @@
 ## to build:
 
 ```
-docker build . -t ipeddocker/iped
+docker build precompiled -t ipeddocker/iped
 ```
 
 ## to use:
