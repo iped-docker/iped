@@ -15,8 +15,8 @@ Install Docker version 19.03.5 and above if you want to use GPU's.
 2. (Optional) Download optional IPED dependencies:
     The default config files are configured to use these directories:
     
-    - PhotoDNA: /mnt/PhotoDNA and /root/IPED/iped/optional_jars
-    - Stanford NLP Models: /root/IPED/iped/optional_jars
+    - PhotoDNA: /mnt/PhotoDNA and /root/IPED/optional_jars
+    - Stanford NLP Models: /root/IPED/optional_jars
     - LED: /mnt/led folder
     - KFF: /mnt/kff folder
     
