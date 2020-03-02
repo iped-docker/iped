@@ -2,46 +2,43 @@
 
 ![CI](https://github.com/iped-docker/iped/workflows/CI/badge.svg)
 
-We use /mnt folder as default. Adjust this to your environment. 
+![Docker hub](https://dockeri.co/image/ipeddocker/iped)
 
 Install Docker version 19.03.5 and above if you want to use GPU's.
 
 ## Docker Image Build 
+1.  ```
+    git clone https://github.com/iped-docker/iped
+    cd iped
+    ```
+    
+2. (Optional) Download optional IPED dependencies:
+    The default config files are configured to use these directories:
+    
+    - PhotoDNA: /mnt/PhotoDNA and /root/IPED/iped/optional_jars
+    - Stanford NLP Models: /root/IPED/iped/optional_jars
+    - LED: /mnt/led folder
+    - KFF: /mnt/kff folder
+    
+    If these directories are empty, the entrypoint.sh will disable these features.
 
+    Adjust LocalConfig.txt and IPEDConfig.txt to your environment 
 
-2 - # git clone https://github.com/iped-docker/iped
-
-3 - # cd iped
-
-4 - Download optional IPED dependencies:
-
-    - PhotoDNA: put jar on "optional_jars" folder and the hashes on /mnt/PhotoDNA folder.
-    - Stanford NLP Models: put jar on "optional_jars" folder.
-    - Download LED and decompress it on /mnt/led folder.
-    - Download iped's KFF and decompress it on /mnt/kff folder.
-
-5 - Adjust LocalConfig.txt and IPEDConfig.txt to your environment 
-
-6 - Build the IPED docker images: 
-
-        docker build -t ipeddocker/iped:dependencies -f Dockerfile-iped-dependencies . && \
-        docker build -t ipeddocker/iped:processor -f Dockerfile-iped-processor . && \
-        docker build -t ipeddocker/iped:client -f Dockerfile-iped-client .
-                           
-7 - (OPTIONAL) Build AI.DESK docker image: 
-
-        docker build -t ipeddocker/aidesk -f Dockerfile-aidesk .
-
+3.  Build the IPED docker images: 
+    ```
+    make
+    docker build . -t ipeddocker/iped
+    ```
 ## Adjusting the environment for execution
 
-8 - Insert the folowing lines into .bashrc 
+The script dkr.source creates a bash function dkr that extends the docker command, setting some usefull docker options.
 
-    xhost +
-    dkr () { docker run --rm -it -v "`pwd`":"`pwd`":Z -e DISPLAY -e GDK_BACKEND -e GDK_SCALE -e GDK_DPI_SCALE -e QT_DEVICE_PIXEL_RATIO -e LANG=C.UTF-8 -e LC_ALL=C.UTF-8 -e NO_AT_BRIDGE=1 --device /dev/dri --device /dev/snd -v /etc/localtime:/etc/localtime:ro -v /tmp/.X11-unix/:/tmp/.X11-unix/ "$@"; }
-    export -f dkr
+To use it:
 
-9 - Restart the terminal 
-
+```
+source dkr.source
+dkr ipeddocker/iped
+```
 ## Executing the containers
 
 ### IPED docker
