@@ -164,6 +164,8 @@ ENV J2SDKDIR=/usr/lib/jvm/java-8-openjdk-amd64
 ENV PATH=/usr/lib/jvm/java-8-openjdk-amd64/jre/bin:$PATH
 
 WORKDIR /root/IPED/iped
+COPY entrypoint.sh /
+ENTRYPOINT /entrypoint.sh
 
 # Para abrir o iped-search no docker
 RUN apt-get update && apt-get install -y libreoffice libreoffice-java-common \
