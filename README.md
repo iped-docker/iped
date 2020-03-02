@@ -17,8 +17,8 @@ Install Docker version 19.03.5 and above if you want to use GPU's.
     
     - PhotoDNA: /mnt/PhotoDNA and /root/IPED/optional_jars
     - Stanford NLP Models: /root/IPED/optional_jars
-    - LED: /mnt/led folder
-    - KFF: /mnt/kff folder
+    - LED: /mnt/led 
+    - KFF: /mnt/kff 
     
     If these directories are empty, the entrypoint.sh will disable these features.
 
