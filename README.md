@@ -29,6 +29,30 @@ Install Docker version 19.03.5 and above if you want to use GPU's.
     make
     docker build . -t ipeddocker/iped
     ```
+    
+    What is inside dkr.source:
+    ```
+    #!/bin/bash
+    dkr () 
+    {
+      xhost +
+      docker run --rm -it -v "`pwd`":"`pwd`":Z \
+              -e DISPLAY -e GDK_BACKEND \
+              -e GDK_SCALE \
+              -e SAL_USE_VCLPLUGIN=gen \
+              -e GDK_DPI_SCALE \
+              -e QT_DEVICE_PIXEL_RATIO \
+              -e LANG=C.UTF-8 \
+              -e LC_ALL=C.UTF-8 \
+              -e NO_AT_BRIDGE=1 \
+              --device /dev/dri \
+              --device /dev/snd \
+              -v /etc/localtime:/etc/localtime:ro \
+              -v /tmp/.X11-unix/:/tmp/.X11-unix/ "$@"
+    }
+    export -f dkr
+    ```
+
 ## Adjusting the environment for execution
 
 The script dkr.source creates a bash function dkr that extends the docker command, setting some usefull docker options.
