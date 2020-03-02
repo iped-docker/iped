@@ -9,10 +9,14 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - name: Test
+      run: echo test
     - name: Check if Dockerfile is Dockerfile-processor + Dockerfile-client.in
-      run: |
-        DIFFS=$(diff <(cat Dockerfile-processor Dockerfile-client.in) Dockerfile | wc -l)
-        if (( DIFFS > 0 ))
+      run: |    
+        cat Dockerfile-processor Dockerfile-client.in > test
+        DIFFS="$(diff test Dockerfile )"
+        if [[ ! -z "$DIFFS" ]]
         then
+          echo "$DIFFS"
           exit 1
         fi
