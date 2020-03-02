@@ -9,9 +9,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Run a one-line script
-      run: echo Hello, world!
-    - name: Run a multi-line script
+    - name: Check if Dockerfile is Dockerfile-processor + Dockerfile-client.in
       run: |
-        echo Add other actions to build,
-        exit 1
+        DIFFS=$(diff <(cat Dockerfile-processor Dockerfile-client.in) Dockerfile | wc -l)
+        if (( DIFFS > 0 ))
+        then
+          exit 1
+        fi
