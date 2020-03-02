@@ -165,4 +165,4 @@ ENV PATH=/usr/lib/jvm/java-8-openjdk-amd64/jre/bin:$PATH
 
 WORKDIR /root/IPED/iped
 COPY entrypoint.sh /
-ENTRYPOINT /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
