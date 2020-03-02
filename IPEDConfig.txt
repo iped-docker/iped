@@ -91,7 +91,7 @@ enableCarving = true
 
 # Habilita carving que recupera arquivos conhecidos da base do LED baseado no início (64K) do arquivo.
 # Necessário habilitar "addUnallocated" e configurar "ledWkffPath". 
-enableKFFCarving = false
+enableKFFCarving = true
 
 # Habilita carving específico de arquivos known.met do e-Mule. Necessário habilitar "addUnallocated". 
 enableKnownMetCarving = true
