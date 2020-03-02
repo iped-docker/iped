@@ -166,9 +166,9 @@ ENV PATH=/usr/lib/jvm/java-8-openjdk-amd64/jre/bin:$PATH
 WORKDIR /root/IPED/iped
 
 # Para abrir o iped-search no docker
+      #libcanberra-gtk2-module \
 RUN apt-get update && apt-get install -y libreoffice libreoffice-java-common \
       libreoffice-gtk2 \
-      libcanberra-gtk2-module \
       libgnome2-0 \
       xdg-utils \
       gnome-shell \
