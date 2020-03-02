@@ -47,7 +47,7 @@ We use /mnt folder as default. Adjust this to your environment.
 
 ### IPED docker
 
-    dkr -v /mnt/evidences:/evidences -v /mnt/led/:/mnt/led -v /mnt/ipedtmp:/mnt/ipedtmp -v /mnt/PhotoDNA:/mnt/PhotoDNA -v /mnt/kff:/mnt/kff ipeddocker/iped:processor java -jar iped.jar -d /evidences/test/test.dd -o /evidences/test/iped-output
+    dkr -v /mnt/evidences:/evidences -v /mnt/optional_jars:/root/IPED/optional_jars -v /mnt/led/:/mnt/led -v /mnt/ipedtmp:/mnt/ipedtmp -v /mnt/PhotoDNA:/mnt/PhotoDNA -v /mnt/kff:/mnt/kff ipeddocker/iped:processor java -jar iped.jar -d /evidences/test/test.dd -o /evidences/test/iped-output
 
 
 ### AIDESK Docker
