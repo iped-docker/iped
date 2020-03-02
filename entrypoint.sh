@@ -27,7 +27,7 @@ sed -i -e "s/enablePhotoDNA =.*/enablePhotoDNA = $PHOTODNA/" /root/IPED/iped/pro
 
 # Setting LED related flags
 # sed -i -e "s/enableLedDie =.*/enableLedDie = $LED/" /root/IPED/iped/IPEDConfig.txt
-sed -i -e "s/enableLedDie =.*/enableLedDie = $LED/" /root/ILED/iped/profiles/*/default/IPEDConfig.txt
+sed -i -e "s/enableLedDie =.*/enableLedDie = $LED/" /root/IPED/iped/profiles/*/default/IPEDConfig.txt
 # sed -i -e "s/enableLedWkff =.*/enableLedWkff = $LED/" /root/IPED/iped/IPEDConfig.txt
 sed -i -e "s/enableLedWkff =.*/enableLedWkff = $LED/" /root/IPED/iped/profiles/*/default/IPEDConfig.txt
 
