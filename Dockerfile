@@ -168,7 +168,6 @@ WORKDIR /root/IPED/iped
 # Para abrir o iped-search no docker
 RUN apt-get update && apt-get install -y libreoffice libreoffice-java-common \
       libreoffice-gtk2 \
-      libcanberra-gtk2-module \
       libgnome2-0 \
       xdg-utils \
       gnome-shell \
