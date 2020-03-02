@@ -1,5 +1,5 @@
 ## Optional Jars
 
-Add your custom optional jar files here to be added on the docker (PhotoDNA for example). 
+The folder "optional_jars" will be used as a volume due the large size it can achieve (with corenlp models and stuff). 
 
-The optional jar files "stanford-corenlp" and "java-dbx" are already added to default distribution.
+To use it, put your optional jars on a folder and mount it as a volume on the /root/IPED/optional_jars folder (Example: -v /mnt/optional_jars:/root/IPED/optional_jars).
