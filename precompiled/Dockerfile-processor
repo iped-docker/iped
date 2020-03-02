@@ -141,9 +141,11 @@ ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
 # Creating mplayer config
 RUN mplayer
 
+ENV IPED_VERSION=3.17.1
+
 WORKDIR /root/IPED/
-RUN wget --progress=bar:force https://github.com/lfcnassif/IPED/releases/download/3.17.1/IPED-3.17.1.zip -O iped.zip \
-    && unzip iped.zip && rm iped.zip && ln -s iped-3.17.1 iped
+RUN wget --progress=bar:force https://github.com/lfcnassif/IPED/releases/download/$IPED_VERSION/IPED-$IPED_VERSION.zip -O iped.zip \
+    && unzip iped.zip && rm iped.zip && ln -s iped-$IPED_VERSION iped
 # optional_jars will be a volume due its size
 # COPY ./optional_jars/* ./
 COPY LocalConfig.txt /root/IPED/iped/
