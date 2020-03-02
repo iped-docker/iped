@@ -30,6 +30,7 @@ sed -i -e "s/enablePhotoDNA =.*/enablePhotoDNA = $PHOTODNA/" /root/IPED/iped/pro
 sed -i -e "s/enableLedDie =.*/enableLedDie = $LED/" /root/IPED/iped/profiles/*/default/IPEDConfig.txt
 # sed -i -e "s/enableLedWkff =.*/enableLedWkff = $LED/" /root/IPED/iped/IPEDConfig.txt
 sed -i -e "s/enableLedWkff =.*/enableLedWkff = $LED/" /root/IPED/iped/profiles/*/default/IPEDConfig.txt
+sed -i -e "s/enableKFFCarving =.*/enableKFFCarving = $LED/" /root/IPED/iped/profiles/*/default/IPEDConfig.txt
 
 # Setting KFF related flags
 # sed -i -e "s/enableKff =.*/enableKff = $KFF/" /root/IPED/iped/IPEDConfig.txt
