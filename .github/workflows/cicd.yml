@@ -27,9 +27,9 @@ jobs:
     - name: pull latest (for cache)
       run: docker pull ipeddocker/iped:latest || echo could not pull
     - name: Docker build processor
-      run: docker build . -t ipeddocker/iped:processor_${GITHUB_REF#refs/tags/} -f Dockerfile-processor
+      run: docker build --cache-from ipeddocker/iped:latest . -t ipeddocker/iped:processor_${GITHUB_REF#refs/tags/} -f Dockerfile-processor
     - name: Docker build latest
-      run: docker build . -t ipeddocker/iped:latest
+      run: docker build --cache-from ipeddocker/iped:latest . -t ipeddocker/iped:latest
     - name: Docker push latest
       run: docker push ipeddocker/iped:latest
     - name: Docker push - processor
