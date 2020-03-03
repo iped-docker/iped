@@ -157,8 +157,8 @@ COPY IPEDConfig.txt /root/IPED/iped/profiles/en/default/
 # FastRobust: Disable IndexUnknownFiles and enable excludeKffIgnorable, externalParsers and robustImageReading
 #    General analysis cases where processing errors are occurring
 #   
-COPY /root/IPED/iped/profiles/pt-BR/forensic /root/IPED/iped/profiles/pt-BR/fastrobust
-COPY /root/IPED/iped/profiles/en/forensic /root/IPED/iped/profiles/en/fastrobust
+RUN cp -r /root/IPED/iped/profiles/pt-BR/forensic /root/IPED/iped/profiles/pt-BR/fastrobust
+RUN cp -r /root/IPED/iped/profiles/en/forensic /root/IPED/iped/profiles/en/fastrobust
 RUN sed -i -e "s/indexUnknownFiles =.*/indexUnknownFiles = false/" /root/IPED/iped/profiles/*/fastrobust/IPEDConfig.txt
 RUN sed -i -e "s/excludeKffIgnorable =.*/excludeKffIgnorable = true/" /root/IPED/iped/profiles/*/fastrobust/IPEDConfig.txt
 RUN sed -i -e "s/robustImageReading =.*/robustImageReading = true/" /root/IPED/iped/profiles/*/fastrobust/conf/AdvancedConfig.txt
@@ -167,8 +167,8 @@ RUN sed -i -e "s/enableExternalParsing =.*/enableExternalParsing = true/" /root/
 # PedoRobust: enable excludeKffIgnorable, externalParsers and robustImageReading
 #   For child abuse cases where processing errors are occurring
 #
-COPY /root/IPED/iped/profiles/pt-BR/pedo /root/IPED/iped/profiles/pt-BR/pedorobust
-COPY /root/IPED/iped/profiles/en/pedo /root/IPED/iped/profiles/en/pedorobust
+RUN cp -r /root/IPED/iped/profiles/pt-BR/pedo /root/IPED/iped/profiles/pt-BR/pedorobust
+RUN cp -r /root/IPED/iped/profiles/en/pedo /root/IPED/iped/profiles/en/pedorobust
 RUN sed -i -e "s/excludeKffIgnorable =.*/excludeKffIgnorable = true/" /root/IPED/iped/profiles/*/pedorobust/IPEDConfig.txt
 RUN sed -i -e "s/robustImageReading =.*/robustImageReading = true/" /root/IPED/iped/profiles/*/pedorobust/conf/AdvancedConfig.txt
 RUN sed -i -e "s/enableExternalParsing =.*/enableExternalParsing = true/" /root/IPED/iped/profiles/*/pedorobust/conf/AdvancedConfig.txt
