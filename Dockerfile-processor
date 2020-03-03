@@ -165,7 +165,7 @@ sed -i -e "s/robustImageReading =.*/robustImageReading = true/" /root/IPED/iped/
 sed -i -e "s/enableExternalParsing =.*/enableExternalParsing = true/" /root/IPED/iped/profiles/*/fastrobust/conf/AdvancedConfig.txt
 #
 # PedoRobust: enable excludeKffIgnorable, externalParsers and robustImageReading
-#   For child abuse cases where processing errors are occuring
+#   For child abuse cases where processing errors are occurring
 #
 COPY /root/IPED/iped/profiles/pt-BR/pedo /root/IPED/iped/profiles/pt-BR/pedorobust
 COPY /root/IPED/iped/profiles/en/pedo /root/IPED/iped/profiles/en/pedorobust
