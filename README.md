@@ -20,6 +20,7 @@ Install Docker version 19.03.5 and above if you want to use GPU's.
     - Stanford NLP Models: /root/IPED/optional_jars
     - LED: /mnt/led 
     - KFF: /mnt/kff 
+    - Temporary dir: /mnt/ipedtmp
     
     If these directories are empty, the entrypoint.sh will disable these features.
 
