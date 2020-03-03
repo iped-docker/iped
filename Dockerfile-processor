@@ -151,9 +151,27 @@ RUN wget --progress=bar:force https://github.com/lfcnassif/IPED/releases/downloa
 COPY LocalConfig.txt /root/IPED/iped/
 COPY IPEDConfig.txt /root/IPED/iped/profiles/pt-BR/default/
 COPY IPEDConfig.txt /root/IPED/iped/profiles/en/default/
-# Copying custom profiles
-# COPY ./fastrobust /root/IPED/iped/profiles/pt-BR/fastrobust
-# COPY ./pedorobust /root/IPED/iped/profiles/pt-BR/pedorobust
+
+# Creating custom Profiles
+# 
+# FastRobust: Disable IndexUnknownFiles and enable excludeKffIgnorable, externalParsers and robustImageReading
+#    General analysis cases where processing errors are occurring
+#   
+COPY /root/IPED/iped/profiles/pt-BR/forensic /root/IPED/iped/profiles/pt-BR/fastrobust
+COPY /root/IPED/iped/profiles/en/forensic /root/IPED/iped/profiles/en/fastrobust
+sed -i -e "s/indexUnknownFiles =.*/indexUnknownFiles = true/" /root/IPED/iped/profiles/*/fastrobust/IPEDConfig.txt
+sed -i -e "s/excludeKffIgnorable =.*/excludeKffIgnorable = true/" /root/IPED/iped/profiles/*/fastrobust/IPEDConfig.txt
+sed -i -e "s/robustImageReading =.*/robustImageReading = true/" /root/IPED/iped/profiles/*/fastrobust/conf/AdvancedConfig.txt
+sed -i -e "s/enableExternalParsing =.*/enableExternalParsing = true/" /root/IPED/iped/profiles/*/fastrobust/conf/AdvancedConfig.txt
+#
+# PedoRobust: enable excludeKffIgnorable, externalParsers and robustImageReading
+#   For child abuse cases where processing errors are occuring
+#
+COPY /root/IPED/iped/profiles/pt-BR/pedo /root/IPED/iped/profiles/pt-BR/pedorobust
+COPY /root/IPED/iped/profiles/en/pedo /root/IPED/iped/profiles/en/pedorobust
+sed -i -e "s/excludeKffIgnorable =.*/excludeKffIgnorable = true/" /root/IPED/iped/profiles/*/pedorobust/IPEDConfig.txt
+sed -i -e "s/robustImageReading =.*/robustImageReading = true/" /root/IPED/iped/profiles/*/pedorobust/conf/AdvancedConfig.txt
+sed -i -e "s/enableExternalParsing =.*/enableExternalParsing = true/" /root/IPED/iped/profiles/*/pedorobust/conf/AdvancedConfig.txt
 
 
 ENV JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre/
