@@ -20,3 +20,5 @@ jobs:
           echo "$DIFFS"
           exit 1
         fi
+    - name: Docker build
+      run: docker build . -t ipeddocker/iped
