@@ -159,7 +159,7 @@ COPY IPEDConfig.txt /root/IPED/iped/profiles/en/default/
 #   
 COPY /root/IPED/iped/profiles/pt-BR/forensic /root/IPED/iped/profiles/pt-BR/fastrobust
 COPY /root/IPED/iped/profiles/en/forensic /root/IPED/iped/profiles/en/fastrobust
-sed -i -e "s/indexUnknownFiles =.*/indexUnknownFiles = true/" /root/IPED/iped/profiles/*/fastrobust/IPEDConfig.txt
+sed -i -e "s/indexUnknownFiles =.*/indexUnknownFiles = false/" /root/IPED/iped/profiles/*/fastrobust/IPEDConfig.txt
 sed -i -e "s/excludeKffIgnorable =.*/excludeKffIgnorable = true/" /root/IPED/iped/profiles/*/fastrobust/IPEDConfig.txt
 sed -i -e "s/robustImageReading =.*/robustImageReading = true/" /root/IPED/iped/profiles/*/fastrobust/conf/AdvancedConfig.txt
 sed -i -e "s/enableExternalParsing =.*/enableExternalParsing = true/" /root/IPED/iped/profiles/*/fastrobust/conf/AdvancedConfig.txt
