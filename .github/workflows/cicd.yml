@@ -24,6 +24,8 @@ jobs:
     - uses: actions/checkout@v2
     - name: Docker login
       run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_TOKEN }}
+    - name: pull latest (for cache)
+      run: docker pull ipeddocker/iped:latest || echo could not pull
     - name: Docker build processor
       run: docker build . -t ipeddocker/iped:processor_${GITHUB_REF#refs/tags/} -f Dockerfile-processor
     - name: Docker build latest
