@@ -1,6 +1,6 @@
 # IPED dockerfiles with AIDESK
 
-![CI](https://github.com/iped-docker/iped/workflows/CI/badge.svg)
+![CI/CD](https://github.com/iped-docker/iped/workflows/CI/CD/badge.svg)
 
 ![Docker hub](https://dockeri.co/image/ipeddocker/iped)
 
