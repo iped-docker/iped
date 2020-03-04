@@ -3,25 +3,14 @@ name: CI/CD
 on: [push]
 
 jobs:
-  check_Dockerfile:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - name: Check if Dockerfile is Dockerfile-processor + Dockerfile-client.in
-      run: |    
-        cat Dockerfile-processor Dockerfile-client.in > test
-        DIFFS="$(diff test Dockerfile )"
-        if [[ ! -z "$DIFFS" ]]
-        then
-          echo "$DIFFS"
-          exit 1
-        fi
   build:
     needs: [check_Dockerfile]
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/')
     steps:
     - uses: actions/checkout@v2
+    - name: make Dockerfile
+      run: make
     - name: Docker login
       run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_TOKEN }}
     - name: pull latest (for cache)
