@@ -9,7 +9,7 @@ Install Docker version 19.03.5 and above if you want to use GPU's.
 
 ### Before you begin, fast tips for rapid deployment
 ##### FAST TIP Num.1: If you just want to use the latest docker (without building or customizing it), go directly to "Adjusting the environment for execution" section and follow the instructions until the end of the page.
-##### FAST TIP Num.2: If you just want to process the evidences with latest docker, in text mode and without analysis interface on linux (graphical analysis of the resulting case can be made after in another computer for example, running Windows or Linux), use the following command:
+##### FAST TIP Num.2: If you just want to process the evidences with latest docker (again, without building or customizing it), in text mode and without analysis interface on linux (graphical analysis of the resulting case can be made after in another computer for example, running Windows or Linux), use the following command:
 
 ```
 sudo docker run -v /mnt/evidences:/evidences \ 
