@@ -4,7 +4,6 @@ on: [push]
 
 jobs:
   build:
-    needs: [check_Dockerfile]
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/')
     steps:
