@@ -32,6 +32,8 @@ sudo docker run -v /mnt/evidences:/evidences \
                  -d /evidences/test/test.dd \
                  -o /evidences/test/iped-output
 ```
+Of course, in both cases you'll have to change the volumes to reflect your environment.
+
 ##### FAST TIP Num.3: Help can be achieved with the command:
 ```
 sudo docker run ipeddocker/iped:processor java -jar iped.jar
