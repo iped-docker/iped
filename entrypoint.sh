@@ -3,7 +3,7 @@ set -e
 PHOTODNA=false
 LED=false
 KFF=false
-if [ -d /mnt/PhotoDNA ] && [ ! -z "$(ls /mnt/PhotoDNA)" ] && [ ! -z "$(ls /root/IPED/optional_jars/photodna-*.jar)" ] 
+if [ -d /mnt/PhotoDNA ] && [ ! -z "$(ls /mnt/PhotoDNA)" ] && [ ! -z "$(ls /root/IPED/optional_jars/ | grep photodna)" ] 
 then
         PHOTODNA=true
 fi
@@ -38,4 +38,4 @@ sed -i -e "s/enableKFFCarving =.*/enableKFFCarving = $LED/" /root/IPED/iped/prof
 sed -i -e "s/enableKff =.*/enableKff = $KFF/" /root/IPED/iped/profiles/*/default/IPEDConfig.txt
 
 # no arguments = bash, otherwise exec then
-[ -z "$@" ] && /bin/bash || exec "$@"
+exec "$@"
