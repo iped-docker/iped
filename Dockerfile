@@ -6,9 +6,9 @@ RUN apt-get update && apt-get install -y libreoffice libreoffice-java-common \
       libgnome2-0 \
       xdg-utils \
       gnome-shell \
-      openjfx \
-      libopenjfx-java \
-      libopenjfx-jni \
+      openjfx=8u161-b12-1ubuntu2 \
+      libopenjfx-java=8u161-b12-1ubuntu2 \
+      libopenjfx-jni=8u161-b12-1ubuntu2 \
       libgl1-mesa-dri \
       vlc \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
