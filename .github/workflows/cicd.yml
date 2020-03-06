@@ -8,21 +8,27 @@ jobs:
     if: startsWith(github.ref, 'refs/tags/') || contains(github.event.head_commit.message, 'cicd.yml')
     steps:
     - uses: actions/checkout@v2
-    - name: make Dockerfile
-      run: make
+      
     - name: Docker login
       run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_TOKEN }}
+      
     - name: pull latest (for cache)
       run: docker pull ipeddocker/iped:latest || echo could not pull
+      
     - name: Docker build processor
-      run: docker build --cache-from ipeddocker/iped:latest . -t ipeddocker/iped:processor -f Dockerfile-processor
+      run: docker build --cache-from ipeddocker/iped:latest . -f Dockerfile-processor -t ipeddocker/iped:processor
+      
     - name: Docker build latest
-      run: docker build . -t ipeddocker/iped:latest
+      run: docker build --cache-from ipeddocker/iped:latest . -t ipeddocker/iped:latest
+      
     - name: Docker push latest
       run: docker push ipeddocker/iped:latest
+      
     - name: Docker push processor
       run: docker push ipeddocker/iped:processor
+      
     - name: Docker push - semver
+      if: startsWith(github.ref, 'refs/tags/')
       run: |
         docker tag ipeddocker/iped:latest ipeddocker/iped:${GITHUB_REF#refs/tags/}
         docker tag ipeddocker/iped:processor ipeddocker/iped:processor_${GITHUB_REF#refs/tags/} 
