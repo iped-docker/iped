@@ -5,7 +5,7 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
-    if: startsWith(github.ref, 'refs/tags/')
+    if: startsWith(github.ref, 'refs/tags/') || contains(github.event.head_commit.message, 'cicd.yml')
     steps:
     - uses: actions/checkout@v2
     - name: make Dockerfile
