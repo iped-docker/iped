@@ -17,7 +17,7 @@ jobs:
     - name: Docker build processor
       run: docker build --cache-from ipeddocker/iped:latest . -t ipeddocker/iped:processor -f Dockerfile-processor
     - name: Docker build latest
-      run: docker build --cache-from ipeddocker/iped:latest . -t ipeddocker/iped:latest
+      run: docker build . -t ipeddocker/iped:latest
     - name: Docker push latest
       run: docker push ipeddocker/iped:latest
     - name: Docker push processor
