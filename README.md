@@ -13,9 +13,9 @@ sudo docker run ipeddocker/iped:processor java -jar iped.jar
 
 ## About the container "flavors"
 
-       - ipeddocker/iped - Full processing and analysis capable environment (larger container)
+- ipeddocker/iped - Full processing and analysis capable environment (larger container)
 
-       - ipeddocker/iped:processor - Environment optimized for evidence processing (smaller container)
+- ipeddocker/iped:processor - Environment optimized for evidence processing (smaller container)
 
 ## Adjusting the environment for execution
 
