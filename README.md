@@ -116,6 +116,9 @@ Of course, in both cases you'll have to change the volumes to reflect your envir
 
 
 ## Docker Image Build 
+    
+Docker images are already automatically built. The following instructions are meant for those who want to build the images from source.
+
 1. Clone the repository
  
     ```
