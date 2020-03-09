@@ -32,8 +32,7 @@ What is inside dkr.source:
       xhost +
       docker run --rm -it -v "`pwd`":"`pwd`":Z \
               -e DISPLAY -e GDK_BACKEND \
-              -e GDK_SCALE \
-              -e SAL_USE_VCLPLUGIN=gen \
+              -e GDK_SCALE \             
               -e GDK_DPI_SCALE \
               -e QT_DEVICE_PIXEL_RATIO \
               -e LANG=C.UTF-8 \
