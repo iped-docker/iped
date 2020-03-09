@@ -9,8 +9,10 @@ RUN apt-get update && apt-get install -y libreoffice libreoffice-java-common \
       openjfx=8u161-b12-1ubuntu2 \
       libopenjfx-java=8u161-b12-1ubuntu2 \
       libopenjfx-jni=8u161-b12-1ubuntu2 \
-      libgl1-mesa-dri \
+      libgl1-mesa-dri \      
       vlc \
+      glmark2 \
+      mesa-utils \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 
