@@ -1,6 +1,7 @@
 FROM ipeddocker/iped:processor
 
 # Para abrir o iped-search no docker
+# 
 RUN apt-get update && apt-get install -y libreoffice libreoffice-java-common \
       libreoffice-gtk2 \      
       xdg-utils \
