@@ -21,10 +21,12 @@ jobs:
     - name: Docker build latest
       run: docker build --cache-from ipeddocker/iped:latest . -t ipeddocker/iped:latest
       
-    - name: Docker push latest
+    - name: Docker push latest (if master)
+      if: github.ref == 'refs/heads/master'
       run: docker push ipeddocker/iped:latest
       
-    - name: Docker push processor
+    - name: Docker push processor (if master)
+      if: github.ref == 'refs/heads/master'
       run: docker push ipeddocker/iped:processor
       
     - name: Docker push - semver
