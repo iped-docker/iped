@@ -5,7 +5,7 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
-    if: startsWith(github.ref, 'refs/tags/') || contains(github.event.head_commit.message, 'cicd.yml')
+    if: startsWith(github.ref, 'refs/tags/') || github.ref == 'refs/heads/master'
     steps:
     - uses: actions/checkout@v2
       
