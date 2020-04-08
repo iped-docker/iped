@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM ubuntu:18.04 as builder
 
 # if we install mavean and openjdk-8 at the same time
 # openjdk-11-jdk-headless is also installed
