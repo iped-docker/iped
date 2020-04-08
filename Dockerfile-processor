@@ -1,4 +1,45 @@
-FROM nvidia/cudagl:10.2-base
+FROM ubuntu:18.04
+
+# if we install mavean and openjdk-8 at the same time
+# openjdk-11-jdk-headless is also installed
+# so we install them in 2 phases
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+      openjdk-8-jdk-headless \
+      openjfx=8u161-b12-1ubuntu2 \
+      libopenjfx-java=8u161-b12-1ubuntu2 \
+      libopenjfx-jni=8u161-b12-1ubuntu2 \
+      git \
+    && apt-get install -y --no-install-recommends \
+      maven \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /usr/local/src/
+
+RUN git clone https://github.com/lfcnassif/IPED.git
+
+WORKDIR /usr/local/src/IPED/
+RUN git checkout origin/#62_continue_processing
+
+RUN mvn install --projects :iped-parent -am
+RUN mvn install --projects :iped-api -am
+RUN mvn install --projects :iped-utils -am
+RUN mvn install --projects :iped-parsers -am
+RUN mvn install --projects :java-libpst -am
+RUN mvn install --projects :java-dbf -am
+RUN mvn install --projects :iped-parsers-impl -am
+RUN mvn install --projects :iped-viewers -am
+RUN mvn install --projects :iped-viewers-api -am
+RUN mvn install --projects :iped-viewers-impl -am
+RUN mvn install --projects :iped-carvers -am
+RUN mvn install --projects :iped-ahocorasick -am
+RUN mvn install --projects :iped-carvers-api -am
+RUN mvn install --projects :iped-carvers-impl -am
+RUN mvn install --projects :iped-geo -am
+RUN mvn install --projects :iped-engine -am
+RUN mvn install --projects :iped-app -am
+
+FROM nvidia/cuda:10.2-base
 
 WORKDIR /root/pkgs
 RUN apt-get update && apt-get install -y \
@@ -137,11 +178,11 @@ ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
 # Creating mplayer config
 RUN mplayer
 
-ENV IPED_VERSION=3.17.1
+ENV IPED_VERSION=3.17.2
 
 WORKDIR /root/IPED/
-RUN wget --progress=bar:force https://github.com/lfcnassif/IPED/releases/download/$IPED_VERSION/IPED-$IPED_VERSION.zip -O iped.zip \
-    && unzip iped.zip && rm iped.zip && ln -s iped-$IPED_VERSION iped
+COPY --from=builder /usr/local/src/IPED/ ./
+RUN ln -s iped-$IPED_VERSION iped
 # optional_jars will be a volume due its size
 # COPY ./optional_jars/* ./
 COPY LocalConfig.txt /root/IPED/iped/
