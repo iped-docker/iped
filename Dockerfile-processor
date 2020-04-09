@@ -140,7 +140,7 @@ RUN mplayer
 ENV IPED_VERSION=3.17.2
 
 WORKDIR /root/IPED/
-COPY --from=ipeddocker/iped:fromsource /usr/local/src/IPED/ ./
+COPY --from=ipeddocker/iped:fromsource /usr/local/src/IPED/target/release/ ./
 RUN ln -s iped-$IPED_VERSION iped
 # optional_jars will be a volume due its size
 # COPY ./optional_jars/* ./
