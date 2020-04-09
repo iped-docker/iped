@@ -2,15 +2,33 @@ name: CI/CD
 
 on: [push]
 
+env:
+  VERSION: ${{env.VERSION}}
+
 jobs:
-  build:
+  fromsource:
     runs-on: ubuntu-latest
-    if: startsWith(github.ref, 'refs/tags/') || contains(github.event.head_commit.message, 'cicd.yml')
+    if: startsWith(github.ref, 'refs/tags/')
     steps:
     - uses: actions/checkout@v2
       
     - name: Docker login
       run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_TOKEN }}
+      
+    - name: pull fromsource (for cache)
+      run: docker pull ipeddocker/iped:fromsource || echo could not pull
+      
+    - name: Docker build fromsource
+      run: docker build --cache-from ipeddocker/iped:fromsource . -f Dockerfile-build -t ipeddocker/iped:fromsource
+
+    - name: Docker push fromsource
+      run: docker push ipeddocker/iped:fromsource
+      
+    - name: Docker push - semver
+      if: startsWith(github.ref, 'refs/tags/')
+      run: |
+        docker tag ipeddocker/iped:fromsource ipeddocker/iped:fromsource_${{env.VERSION}}
+        docker push ipeddocker/iped:fromsource_${{env.VERSION}}
       
     - name: pull latest (for cache)
       run: docker pull ipeddocker/iped:latest || echo could not pull
@@ -18,21 +36,16 @@ jobs:
     - name: Docker build processor
       run: docker build --cache-from ipeddocker/iped:latest . -f Dockerfile-processor -t ipeddocker/iped:processor
       
+    - name: Docker build processor
+      run: docker build --cache-from ipeddocker/iped:latest . -f Dockerfile-processor -t ipeddocker/iped:processor
+      
     - name: Docker build latest
       run: docker build --cache-from ipeddocker/iped:latest . -t ipeddocker/iped:latest
-      
-    - name: Docker push latest (if master)
-      if: github.ref == 'refs/heads/master'
-      run: docker push ipeddocker/iped:latest
-      
-    - name: Docker push processor (if master)
-      if: github.ref == 'refs/heads/master'
-      run: docker push ipeddocker/iped:processor
       
     - name: Docker push - semver
       if: startsWith(github.ref, 'refs/tags/')
       run: |
-        docker tag ipeddocker/iped:latest ipeddocker/iped:${GITHUB_REF#refs/tags/}
-        docker tag ipeddocker/iped:processor ipeddocker/iped:processor_${GITHUB_REF#refs/tags/} 
-        docker push ipeddocker/iped:${GITHUB_REF#refs/tags/}
-        docker push ipeddocker/iped:processor_${GITHUB_REF#refs/tags/}
+        docker tag ipeddocker/iped:latest ipeddocker/iped:${{env.VERSION}}
+        docker tag ipeddocker/iped:processor ipeddocker/iped:processor_${{env.VERSION}} 
+        docker push ipeddocker/iped:${{env.VERSION}}
+        docker push ipeddocker/iped:processor_${{env.VERSION}}
