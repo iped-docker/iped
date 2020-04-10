@@ -3,7 +3,7 @@ name: CI/CD
 on: [push]
 
 env:
-  VERSION: ${{env.VERSION}}
+  VERSION: ${GITHUB_REF#refs/tags/}
 
 jobs:
   fromsource:
