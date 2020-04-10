@@ -19,7 +19,7 @@ jobs:
       run: docker pull ipeddocker/iped:fromsource || echo could not pull
       
     - name: Docker build fromsource
-      run: docker build --cache-from ipeddocker/iped:fromsource . -f Dockerfile-build -t ipeddocker/iped:fromsource
+      run: docker build --cache-from ipeddocker/iped:fromsource . -f Dockerfile-fromsource -t ipeddocker/iped:fromsource
 
     - name: Docker push fromsource
       run: docker push ipeddocker/iped:fromsource
