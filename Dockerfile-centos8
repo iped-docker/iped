@@ -1,0 +1,79 @@
+FROM alpine as unpacker
+RUN apk --no-cache add unzip
+ENV IPED_VERSION=3.18.2
+WORKDIR /root/IPED/
+COPY IPED-${IPED_VERSION}_and_extra_tools.zip .
+RUN unzip IPED-${IPED_VERSION}_and_extra_tools.zip
+RUN rm IPED-${IPED_VERSION}_and_extra_tools.zip
+RUN ln -s iped-${IPED_VERSION} iped
+
+
+FROM centos:8
+
+RUN dnf -y install epel-release
+
+# libyal dependencies
+RUN curl https://forensics.cert.org/cert-forensics-tools-release-el8.rpm -o /tmp/cert-forensics-tools-release-el8.rpm \
+ && dnf install -y /tmp/cert-forensics-tools-release-el8.rpm \
+ && rm /tmp/cert-forensics-tools-release-el8.rpm
+
+# to install mplayer
+RUN curl https://download1.rpmfusion.org/free/el/rpmfusion-free-release-8.noarch.rpm -o /tmp/rpmfusion-free-release-8.noarch.rpm \
+ && dnf install -y /tmp/rpmfusion-free-release-8.noarch.rpm \
+ && rm /tmp/rpmfusion-free-release-8.noarch.rpm
+
+# to use dnf config-manager
+RUN dnf -y install \
+      dnf-plugins-core \
+ && dnf clean all
+
+# to find mplayer dependencies
+RUN dnf config-manager --set-enabled PowerTools
+
+RUN dnf install -y \
+# SuperFetch
+      libagdb-tools \
+# Windows XML Event Log
+      libevtx-tools \
+# Windows Event Log
+      libevt-tools \
+# Windows Prefetch File
+      libscca-tools \
+# Extensible Storage Engine DB
+      libesedb-tools \
+# MS Outlook
+      libpff-tools \
+# Microsoft Internet Explorer Cache File
+      libmsiecf-tools \
+# MS Windows recycle bin
+      rifiuti \
+# regripper dependencies
+      perl-Parse-Win32Registry perl-Encode \
+# other dependencies
+      java-1.8.0-openjdk \
+      ImageMagick \
+      mplayer \
+      tesseract tesseract-langpack-por tesseract-osd \
+# utilities
+      unzip \
+      less \
+      vim \
+ && dnf clean all
+
+RUN mkdir /root/.mplayer/
+RUN touch /root/.mplayer/config
+
+ENV IPED_VERSION=3.18.2
+WORKDIR /root/IPED/
+COPY --from=unpacker /root/IPED/ /root/IPED/
+WORKDIR /root/IPED/iped
+
+RUN dnf install -y \
+      sleuthkit \
+ && dnf clean all
+
+ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
+
+COPY entrypoint.sh /
+ENTRYPOINT ["/entrypoint.sh"]
+CMD /bin/bash
