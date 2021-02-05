@@ -1,4 +1,4 @@
-FROM nvidia/cudagl:10.2-base
+FROM nvidia/cudagl:11.2.0-runtime-ubuntu20.04
 
 WORKDIR /root/pkgs
 RUN apt-get update && apt-get install -y \
