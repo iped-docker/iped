@@ -3,6 +3,8 @@ set -e
 PHOTODNA=false
 LED=false
 KFF=false
+PROJECTVIC=false
+
 if [ -d /mnt/PhotoDNA ] && [ ! -z "$(ls /mnt/PhotoDNA)" ] && [ ! -z "$(ls /root/IPED/optional_jars/ | grep photodna)" ] 
 then
         PHOTODNA=true
@@ -17,6 +19,12 @@ if [ -d /mnt/kff ] && [ ! -z "$(ls /mnt/kff)" ]
 then
         KFF=true
 fi
+
+if [ -d /mnt/ProjectVic ] && [ ! -z "$(ls /mnt/ProjectVic)" ]
+then
+        PROJECTVIC=true
+fi
+
 
 #
 # Note: Changes in the root IPEDConfig.txt are avoided in the new IPED Version
@@ -36,6 +44,10 @@ sed -i -e "s/enableKFFCarving =.*/enableKFFCarving = $LED/" /root/IPED/iped/prof
 # Setting KFF related flags
 # sed -i -e "s/enableKff =.*/enableKff = $KFF/" /root/IPED/iped/IPEDConfig.txt
 sed -i -e "s/enableKff =.*/enableKff = $KFF/" /root/IPED/iped/profiles/*/default/IPEDConfig.txt
+
+#ProjectVic Settings
+sed -i -e "s/enableProjectVicHashLookup =.*/enableProjectVicHashLookup = $PROJECTVIC/" /root/IPED/iped/profiles/*/default/IPEDConfig.txt
+sed -i -e "s/enableProjectVicHashLookup =.*/enableProjectVicHashLookup = $PROJECTVIC/" /root/IPED/iped/profiles/*/pedo*/IPEDConfig.txt
 
 # no arguments = bash, otherwise exec then
 exec "$@"
