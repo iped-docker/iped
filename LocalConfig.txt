@@ -29,6 +29,9 @@ kffDb = /mnt/kff/kff.db
 # Diretório contendo a base de hashes de alerta de pornografia infantil do LED.
 ledWkffPath = /mnt/led/pedo/wkff
 
+# Full path to ProjectVic json hashset file with child sexual abuse material hashes (ask the hashset directly to them).
+projectVicHashSetPath = /mnt/ProjectVic/latest.json
+
 # Caminho para arquivo contendo lista de hashes photoDNA para confronto.
 # Deve conter um photodna por linha e, opcionalmente, outras informações na mesma linha, delimitadas por *
 photoDNAHashDatabase = /mnt/PhotoDNA/PhotoDNAChildPornHashes.txt
