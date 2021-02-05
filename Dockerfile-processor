@@ -146,8 +146,10 @@ RUN wget --progress=bar:force https://github.com/sepinf-inc/IPED/releases/downlo
 # optional_jars will be a volume due its size
 # COPY ./optional_jars/* ./
 COPY LocalConfig.txt /root/IPED/iped/
-COPY IPEDConfig.txt /root/IPED/iped/profiles/pt-BR/default/
-COPY IPEDConfig.txt /root/IPED/iped/profiles/en/default/
+
+# With entry point change, IPEDConfig.txt copy is not needed
+#COPY IPEDConfig.txt /root/IPED/iped/profiles/pt-BR/default/
+#COPY IPEDConfig.txt /root/IPED/iped/profiles/en/default/
 
 # Creating custom Profiles
 # 
