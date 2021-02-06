@@ -5,7 +5,9 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
 
 WORKDIR /root/pkgs
-RUN apt-get update && apt-get install -y \
+RUN wget -q -O - https://download.bell-sw.com/pki/GPG-KEY-bellsoft | apt-key add - \
+    && echo "deb [arch=amd64] https://apt.bell-sw.com/ stable main" | tee /etc/apt/sources.list.d/bellsoft.list \
+    && apt-get update && apt-get install -y \
       git \
       build-essential \
       libafflib-dev zlib1g-dev libewf-dev unzip patch libssl-dev \
@@ -29,12 +31,12 @@ RUN apt-get update && apt-get install -y \
       librsvg2-dev \
       libopenexr-dev \
       vim \
-      less\
-      openjdk-8-jdk \
+      less\      
       unzip \
       libparse-win32registry-perl \
       tesseract-ocr tesseract-ocr-por tesseract-ocr-osd \
-      graphviz \
+      graphviz \  
+      bellsoft-java8-full \
       && apt-get download ant && ls *.deb | awk '{system("dpkg-deb -x "$1" /")}' \
       && apt-get clean && rm -rf /var/lib/apt/lists/*
 
@@ -57,6 +59,8 @@ RUN wget --progress=bar:force http://www.mplayerhq.hu/MPlayer/releases/MPlayer-1
     && wget --progress=bar:force http://www.mplayerhq.hu/MPlayer/releases/codecs/all-20110131.tar.bz2 \
     && tar xvjf all-20110131.tar.bz2 && mv all-20110131 codecs && rm all-20110131.tar.bz2
 
+
+# The lib only have branch master
 WORKDIR /opt
 RUN git clone https://github.com/libyal/libagdb.git \
     && cd /opt/libagdb \
@@ -76,7 +80,7 @@ RUN git clone --branch="20200709" https://github.com/libyal/libevtx \
     && rm -rf /opt/libevtx
 
 WORKDIR /opt
-RUN git clone https://github.com/libyal/libevt \
+RUN git clone --branch="20200926" https://github.com/libyal/libevt \
     && cd /opt/libevt \
     && ./synclibs.sh \
     && ./autogen.sh \
@@ -85,7 +89,7 @@ RUN git clone https://github.com/libyal/libevt \
     && rm -rf /opt/libevt
 
 WORKDIR /opt
-RUN git clone https://github.com/libyal/libscca \
+RUN git clone --branch="20200717" https://github.com/libyal/libscca \
     && cd /opt/libscca \
     && ./synclibs.sh \
     && ./autogen.sh \
@@ -94,7 +98,7 @@ RUN git clone https://github.com/libyal/libscca \
     && rm -rf /opt/libscca
 
 WORKDIR /opt
-RUN git clone https://github.com/libyal/libesedb \
+RUN git clone --branch="20200418" https://github.com/libyal/libesedb \
     && cd /opt/libesedb \
     && ./synclibs.sh \
     && ./autogen.sh \
@@ -103,7 +107,7 @@ RUN git clone https://github.com/libyal/libesedb \
     && rm -rf /opt/libesedb
 
 WORKDIR /opt
-RUN git clone https://github.com/libyal/libpff \
+RUN git clone --branch="20180714" https://github.com/libyal/libpff \
     && cd /opt/libpff \
     && ./synclibs.sh \
     && ./autogen.sh \
@@ -112,7 +116,7 @@ RUN git clone https://github.com/libyal/libpff \
     && rm -rf /opt/libpff
 
 WORKDIR /opt
-RUN git clone https://github.com/libyal/libmsiecf \
+RUN git clone --branch="20200710" https://github.com/libyal/libmsiecf \
     && cd /opt/libmsiecf \
     && ./synclibs.sh \
     && ./autogen.sh \
@@ -121,7 +125,7 @@ RUN git clone https://github.com/libyal/libmsiecf \
     && rm -rf /opt/libmsiecf
 
 WORKDIR /opt
-RUN git clone https://github.com/abelcheung/rifiuti2 \
+RUN git clone --branch="0.7.0" https://github.com/abelcheung/rifiuti2 \
     && cd /opt/rifiuti2 \
     && autoreconf -f -i -v \
     && ./configure --prefix=/usr \
@@ -129,7 +133,7 @@ RUN git clone https://github.com/abelcheung/rifiuti2 \
     && rm -rf /opt/rifiuti2
 
 WORKDIR /opt
-RUN git clone --branch "7.0.8-14" https://github.com/ImageMagick/ImageMagick \
+RUN git clone --branch "7.0.10-61" https://github.com/ImageMagick/ImageMagick \
     && cd /opt/ImageMagick \
     && ./configure --prefix=/usr \
     && make all install \
