@@ -5,9 +5,6 @@ FROM ipeddocker/iped:processor
 RUN apt-get update && apt-get install -y libreoffice libreoffice-java-common \
       libreoffice-gtk2 \      
       xdg-utils \
-      openjfx=8u161-b12-1ubuntu2 \
-      libopenjfx-java=8u161-b12-1ubuntu2 \
-      libopenjfx-jni=8u161-b12-1ubuntu2 \
       libgl1-mesa-dri \
       vlc \
       packagekit-gtk3-module \
