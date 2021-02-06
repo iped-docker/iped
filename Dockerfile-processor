@@ -67,7 +67,7 @@ RUN git clone https://github.com/libyal/libagdb.git \
     && rm -rf /opt/libagdb
 
 WORKDIR /opt
-RUN git clone --branch="20191221" https://github.com/libyal/libevtx \
+RUN git clone --branch="20200709" https://github.com/libyal/libevtx \
     && cd /opt/libevtx \ 
     && ./synclibs.sh \
     && ./autogen.sh \
