@@ -107,8 +107,10 @@ RUN git clone --branch="20200418" https://github.com/libyal/libesedb \
     && make all install \
     && rm -rf /opt/libesedb
 
+
+# libpff without branch also, because latest release got problems
 WORKDIR /opt
-RUN git clone --branch="20180714" https://github.com/libyal/libpff \
+RUN git clone https://github.com/libyal/libpff \
     && cd /opt/libpff \
     && ./synclibs.sh \
     && ./autogen.sh \
