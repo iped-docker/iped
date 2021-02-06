@@ -1,5 +1,9 @@
 FROM nvidia/cudagl:11.2.0-runtime-ubuntu20.04
 
+ENV TZ=Brazil/East
+ENV DEBIAN_FRONTEND=noninteractive
+ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
+
 WORKDIR /root/pkgs
 RUN apt-get update && apt-get install -y \
       git \
@@ -131,9 +135,6 @@ RUN git clone --branch "7.0.8-14" https://github.com/ImageMagick/ImageMagick \
     && make all install \
     && rm -rf /opt/ImageMagick
 
-ENV TZ=Brazil/East
-ENV DEBIAN_FRONTEND=noninteractive
-ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
 
 # Creating mplayer config
 RUN mplayer
