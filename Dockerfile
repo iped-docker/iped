@@ -136,9 +136,9 @@ RUN xdg-mime default vlc.desktop audio/ogg \
 # allows the use of vlc as root
 RUN sed -i 's/geteuid/getppid/' /usr/bin/vlc
 
-# commenting line to avoid a bug where clicking on a gallery image would not
-# open the image in the viewer
-RUN sed -i 's/^assistive_/#assistive_/' /etc/java-8-openjdk/accessibility.properties
+## commenting line to avoid a bug where clicking on a gallery image would not
+## open the image in the viewer
+#RUN sed -i 's/^assistive_/#assistive_/' /etc/java-8-openjdk/accessibility.properties
 
 # For libreoffice java plugin use
 ENV SAL_USE_VCLPLUGIN="gtk"
