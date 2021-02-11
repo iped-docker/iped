@@ -5,6 +5,12 @@ LED=false
 KFF=false
 PROJECTVIC=false
 
+if [ -d /mnt/optional_jars ]
+then
+        cd /root/IPED/optional_jars/ && find /mnt/optional_jars | xargs ln -s 
+fi
+
+
 if [ -d /mnt/PhotoDNA ] && [ ! -z "$(ls /mnt/PhotoDNA)" ] && [ ! -z "$(ls /root/IPED/optional_jars/ | grep photodna)" ] 
 then
         PHOTODNA=true
