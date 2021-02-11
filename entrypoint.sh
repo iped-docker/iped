@@ -183,12 +183,12 @@ done
 
 sed -i -e "s|.*\"phone-region\":.*|\"phone-region\":\"${COUNTRY}\"|" /root/IPED/iped/profiles/*/*/conf/GraphConfig.json
 for v in \
-        iped_phone-region
+        iped_phone_region
 do
         echo ${v} = ${!v}
         if [ "${!v}" ]
         then
-                sed -i -e "s|.*\"${v#iped_}\":.*|\"${v#iped_}\":\"${!v}\"|" /root/IPED/iped/profiles/*/*/conf/GraphConfig.json
+                sed -i -e "s|.*\"$(echo ${v#iped_}| sed 's/_/-/g')\":.*|\"$(echo ${v#iped_}| sed 's/_/-/g')\":\"${!v}\"|" /root/IPED/iped/profiles/*/*/conf/GraphConfig.json
         fi
 done
 
