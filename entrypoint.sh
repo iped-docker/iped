@@ -8,7 +8,7 @@ COUNTRY='BR'
 
 if [ -d /mnt/optional_jars ]
 then
-        cd /root/IPED/optional_jars/ && find /mnt/optional_jars | xargs ln -s 
+        cd /root/IPED/optional_jars/ && find /mnt/optional_jars -type f | xargs ln -s 
 fi
 
 
