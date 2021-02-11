@@ -27,7 +27,7 @@ numThreads = 12
 kffDb = /mnt/kff/kff.db
 
 # Diretório contendo a base de hashes de alerta de pornografia infantil do LED.
-ledWkffPath = /mnt/led/pedo/wkff
+ledWkffPath = /mnt/led/wkff
 
 # Full path to ProjectVic json hashset file with child sexual abuse material hashes (ask the hashset directly to them).
 projectVicHashSetPath = /mnt/ProjectVic/latest.json
@@ -38,7 +38,7 @@ photoDNAHashDatabase = /mnt/PhotoDNA/PhotoDNAChildPornHashes.txt
 
 # Arquivo de dados utilizado pelo DIE (Detecção de Imagens Explícitas). 
 # Necessário apontar para arquivo de dados presente no LED versão 1.21 ou superior.
-ledDie = /mnt/led/pedo/die/rfdie.dat
+ledDie = /mnt/led/die/rfdie.dat
 
 # Caminho absoluto obrigatório para o Tsk_DataModel.jar compilado em sistemas Linux ou MacOS.
 # É distribuída versão com patch para Windows com diversas correções de bugs e otimizações. 
