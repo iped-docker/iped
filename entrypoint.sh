@@ -181,9 +181,9 @@ do
 done
 
 
-sed -i -e "s|.*\"phone_region\":.*|\"phone_region\":\"${COUNTRY}\"|" /root/IPED/iped/profiles/*/*/conf/GraphConfig.json
+sed -i -e "s|.*\"phone-region\":.*|\"phone-region\":\"${COUNTRY}\"|" /root/IPED/iped/profiles/*/*/conf/GraphConfig.json
 for v in \
-        iped_phone_region
+        iped_phone-region
 do
         echo ${v} = ${!v}
         if [ "${!v}" ]
