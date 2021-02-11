@@ -4,6 +4,7 @@ PHOTODNA=false
 LED=false
 KFF=false
 PROJECTVIC=false
+COUNTRY='BR'
 
 if [ -d /mnt/optional_jars ]
 then
@@ -176,6 +177,18 @@ do
         if [ "${!v}" ]
         then
                 sed -i -e "s|.*${v#iped_} =.*|${v#iped_} = ${!v}|" /root/IPED/iped/profiles/*/*/conf/AdvancedConfig.txt
+        fi
+done
+
+
+sed -i -e "s|.*\"phone_region\":.*|\"phone_region\":\"${COUNTRY}\"|" /root/IPED/iped/profiles/*/*/conf/GraphConfig.json
+for v in \
+        iped_phone_region
+do
+        echo ${v} = ${!v}
+        if [ "${!v}" ]
+        then
+                sed -i -e "s|.*\"${v#iped_}\":.*|\"${v#iped_}\":\"${!v}\"|" /root/IPED/iped/profiles/*/*/conf/GraphConfig.json
         fi
 done
 
