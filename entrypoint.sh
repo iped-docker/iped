@@ -82,7 +82,7 @@ for v in \
         iped_optional_jars \
         iped_regripperFolder
 do
-        echo ${v} = ${!v}
+        echo ${v}=${!v}
         if [ "${!v}" ]
         then
                 sed -i -e "s|.*${v#iped_} =.*|${v#iped_} = ${!v}|" /root/IPED/iped/LocalConfig.txt
@@ -122,7 +122,7 @@ for v in \
         iped_enableVideoThumbs \
         iped_enableHTMLReport
 do
-        echo ${v} = ${!v}
+        echo ${v}=${!v}
         if [ "${!v}" ]
         then
                 sed -i -e "s|.*${v#iped_} =.*|${v#iped_} = ${!v}|" /root/IPED/iped/profiles/*/*/IPEDConfig.txt
@@ -173,7 +173,7 @@ for v in \
         iped_openImagesCacheWarmUpEnabled \
         iped_openImagesCacheWarmUpThreads
 do
-        echo ${v} = ${!v}
+        echo ${v}=${!v}
         if [ "${!v}" ]
         then
                 sed -i -e "s|.*${v#iped_} =.*|${v#iped_} = ${!v}|" /root/IPED/iped/profiles/*/*/conf/AdvancedConfig.txt
@@ -185,7 +185,7 @@ sed -i -e "s|.*\"phone-region\":.*|\"phone-region\":\"${COUNTRY}\",|" /root/IPED
 for v in \
         iped_phone_region
 do
-        echo ${v} = ${!v}
+        echo ${v}=${!v}
         if [ "${!v}" ]
         then
                 sed -i -e "s|.*\"$(echo ${v#iped_}| sed 's/_/-/g')\":.*|\"$(echo ${v#iped_}| sed 's/_/-/g')\":\"${!v}\",|" /root/IPED/iped/profiles/*/*/conf/GraphConfig.json
