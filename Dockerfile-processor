@@ -146,7 +146,7 @@ RUN git clone --branch "7.0.10-61" https://github.com/ImageMagick/ImageMagick \
 # Creating mplayer config
 RUN mplayer
 
-ENV IPED_VERSION=3.18.4
+ENV IPED_VERSION=3.18.5
 
 WORKDIR /root/IPED/
 RUN wget --progress=bar:force https://github.com/sepinf-inc/IPED/releases/download/$IPED_VERSION/IPED-${IPED_VERSION}_and_extra_tools.zip -O iped.zip \
