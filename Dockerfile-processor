@@ -38,6 +38,7 @@ RUN apt-get update && apt-get install -y wget \
       tesseract-ocr tesseract-ocr-por tesseract-ocr-osd \
       graphviz \  
       bellsoft-java8-full \
+      mplayer \
       && apt-get download ant && ls *.deb | awk '{system("dpkg-deb -x "$1" /")}' \
       && apt-get clean && rm -rf /var/lib/apt/lists/*
 
@@ -50,15 +51,15 @@ RUN git clone https://github.com/lfcnassif/sleuthkit-APFS \
     && make && make install \
     && rm -rf /opt/sleuthkit-APFS/
 
-WORKDIR /opt
-RUN wget --progress=bar:force http://www.mplayerhq.hu/MPlayer/releases/MPlayer-1.4.tar.gz \
-    && tar xvzf MPlayer-1.4.tar.gz \
-    && cd /opt/MPlayer-1.4 \
-    && ./configure --prefix=/usr \
-    && make all install \
-    && cd /usr/lib \
-    && wget --progress=bar:force http://www.mplayerhq.hu/MPlayer/releases/codecs/all-20110131.tar.bz2 \
-    && tar xvjf all-20110131.tar.bz2 && mv all-20110131 codecs && rm all-20110131.tar.bz2
+#WORKDIR /opt
+#RUN wget --progress=bar:force http://www.mplayerhq.hu/MPlayer/releases/MPlayer-1.4.tar.gz \
+#    && tar xvzf MPlayer-1.4.tar.gz \
+#    && cd /opt/MPlayer-1.4 \
+#    && ./configure --prefix=/usr \
+#    && make all install \
+#    && cd /usr/lib \
+#    && wget --progress=bar:force http://www.mplayerhq.hu/MPlayer/releases/codecs/all-20110131.tar.bz2 \
+#    && tar xvjf all-20110131.tar.bz2 && mv all-20110131 codecs && rm all-20110131.tar.bz2
 
 
 # The lib only have branch master
