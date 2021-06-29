@@ -75,7 +75,7 @@ RUN git clone https://github.com/libyal/libagdb.git \
     && rm -rf /opt/libagdb
 
 WORKDIR /opt
-RUN git clone --branch="20200709" https://github.com/libyal/libevtx \
+RUN git clone --branch="20210525" https://github.com/libyal/libevtx \
     && cd /opt/libevtx \ 
     && ./synclibs.sh \
     && ./autogen.sh \
@@ -84,7 +84,7 @@ RUN git clone --branch="20200709" https://github.com/libyal/libevtx \
     && rm -rf /opt/libevtx
 
 WORKDIR /opt
-RUN git clone --branch="20200926" https://github.com/libyal/libevt \
+RUN git clone --branch="20210424" https://github.com/libyal/libevt \
     && cd /opt/libevt \
     && ./synclibs.sh \
     && ./autogen.sh \
@@ -93,7 +93,7 @@ RUN git clone --branch="20200926" https://github.com/libyal/libevt \
     && rm -rf /opt/libevt
 
 WORKDIR /opt
-RUN git clone --branch="20200717" https://github.com/libyal/libscca \
+RUN git clone --branch="20210419" https://github.com/libyal/libscca \
     && cd /opt/libscca \
     && ./synclibs.sh \
     && ./autogen.sh \
@@ -102,7 +102,7 @@ RUN git clone --branch="20200717" https://github.com/libyal/libscca \
     && rm -rf /opt/libscca
 
 WORKDIR /opt
-RUN git clone --branch="20200418" https://github.com/libyal/libesedb \
+RUN git clone --branch="20210424" https://github.com/libyal/libesedb \
     && cd /opt/libesedb \
     && ./synclibs.sh \
     && ./autogen.sh \
@@ -122,7 +122,7 @@ RUN git clone https://github.com/libyal/libpff \
     && rm -rf /opt/libpff
 
 WORKDIR /opt
-RUN git clone --branch="20200710" https://github.com/libyal/libmsiecf \
+RUN git clone --branch="20210420" https://github.com/libyal/libmsiecf \
     && cd /opt/libmsiecf \
     && ./synclibs.sh \
     && ./autogen.sh \
