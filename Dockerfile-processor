@@ -4,6 +4,8 @@ ENV TZ=Brazil/East
 ENV DEBIAN_FRONTEND=noninteractive
 ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
 
+ENV IPED_VERSION=3.18.7
+
 WORKDIR /root/pkgs
 RUN apt-get update && apt-get install -y wget \
     && wget -q -O - https://download.bell-sw.com/pki/GPG-KEY-bellsoft | apt-key add - \
@@ -147,7 +149,7 @@ RUN git clone --branch "7.0.10-61" https://github.com/ImageMagick/ImageMagick \
 # Creating mplayer config
 RUN mplayer
 
-ENV IPED_VERSION=3.18.5
+
 
 WORKDIR /root/IPED/
 RUN wget --progress=bar:force https://github.com/sepinf-inc/IPED/releases/download/$IPED_VERSION/IPED-${IPED_VERSION}_and_extra_tools.zip -O iped.zip \
