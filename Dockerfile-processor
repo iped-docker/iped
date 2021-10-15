@@ -152,7 +152,7 @@ RUN mplayer
 
 
 WORKDIR /root/IPED/
-RUN wget --progress=bar:force https://github.com/sepinf-inc/IPED/releases/download/$IPED_VERSION/IPED-${IPED_VERSION}_and_extra_tools.zip -O iped.zip \
+RUN wget --progress=bar:force https://github.com/sepinf-inc/IPED/releases/download/$IPED_VERSION/IPED-${IPED_VERSION}_and_plugins.zip -O iped.zip \
     && unzip iped.zip && rm iped.zip && ln -s iped-$IPED_VERSION iped
 # optional_jars will be a volume due its size
 # COPY ./optional_jars/* ./
