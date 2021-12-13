@@ -4,7 +4,7 @@ ENV TZ=Brazil/East
 ENV DEBIAN_FRONTEND=noninteractive
 ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
 
-ENV IPED_VERSION=3.18.10
+ENV IPED_VERSION=3.18.11
 
 WORKDIR /root/pkgs
 RUN apt-get update && apt-get install -y wget \
