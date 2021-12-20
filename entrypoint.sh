@@ -125,7 +125,7 @@ do
         echo ${v}=${!v}
         if [ "${!v}" ]
         then
-                ls /root/IPED/iped/profiles/*/*/IPEDConfig.txt | xargs sed -i -e "s|.*${v#iped_} =.*|${v#iped_} = ${!v}|" 
+                find /root/IPED/iped/profiles/ -name IPEDConfig.txt | xargs sed -i -e "s|.*${v#iped_} =.*|${v#iped_} = ${!v}|" 
         fi
 done
 
@@ -176,13 +176,13 @@ do
         echo ${v}=${!v}
         if [ "${!v}" ]
         then
-                ls /root/IPED/iped/profiles/*/*/conf/AdvancedConfig.txt | xargs sed -i -e "s|.*${v#iped_} =.*|${v#iped_} = ${!v}|" 
+                find /root/IPED/iped/profiles/ -name AdvancedConfig.txt | xargs sed -i -e "s|.*${v#iped_} =.*|${v#iped_} = ${!v}|" 
         fi
 done
 
 echo Setting GraphConfig...
 
-ls /root/IPED/iped/profiles/*/*/conf/GraphConfig.json | xargs sed -i -e "s|.*\"phone-region\":.*|\"phone-region\":\"${COUNTRY}\",|" 
+find /root/IPED/iped/profiles/ -name GraphConfig.json | xargs sed -i -e "s|.*\"phone-region\":.*|\"phone-region\":\"${COUNTRY}\",|" 
 
 for v in \
         iped_phone_region
@@ -190,7 +190,7 @@ do
         echo ${v}=${!v}
         if [ "${!v}" ]
         then
-                ls /root/IPED/iped/profiles/*/*/conf/GraphConfig.json | xargs sed -i -e "s|.*\"$(echo ${v#iped_}| sed 's/_/-/g')\":.*|\"$(echo ${v#iped_}| sed 's/_/-/g')\":\"${!v}\",|" 
+                find /root/IPED/iped/profiles/ -name GraphConfig.json | xargs sed -i -e "s|.*\"$(echo ${v#iped_}| sed 's/_/-/g')\":.*|\"$(echo ${v#iped_}| sed 's/_/-/g')\":\"${!v}\",|" 
         fi
 done
 
