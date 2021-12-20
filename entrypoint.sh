@@ -37,12 +37,12 @@ fi
 # Note: Changes in the root IPEDConfig.txt are avoided in the new IPED Version
 # when the locale variable is defined.
 # 
-# Setting PhotoDNA related flags
+echo Setting PhotoDNA related flags
 # sed -i -e "s/enablePhotoDNA =.*/enablePhotoDNA = $PHOTODNA/" /root/IPED/iped/IPEDConfig.txt
 sed -i -e "s/enablePhotoDNA =.*/enablePhotoDNA = $PHOTODNA/" /root/IPED/iped/profiles/*/default/IPEDConfig.txt
 sed -i -e "s/enablePhotoDNA =.*/enablePhotoDNA = $PHOTODNA/" /root/IPED/iped/profiles/*/pedo*/IPEDConfig.txt
 
-# Setting LED related flags
+echo Setting LED related flags
 # sed -i -e "s/enableLedDie =.*/enableLedDie = $LED/" /root/IPED/iped/IPEDConfig.txt
 sed -i -e "s/enableLedDie =.*/enableLedDie = $LED/" /root/IPED/iped/profiles/*/default/IPEDConfig.txt
 sed -i -e "s/enableLedDie =.*/enableLedDie = $LED/" /root/IPED/iped/profiles/*/pedo*/IPEDConfig.txt
@@ -53,11 +53,11 @@ sed -i -e "s/enableLedWkff =.*/enableLedWkff = $LED/" /root/IPED/iped/profiles/*
 sed -i -e "s/enableKFFCarving =.*/enableKFFCarving = $LED/" /root/IPED/iped/profiles/*/default/IPEDConfig.txt
 sed -i -e "s/enableKFFCarving =.*/enableKFFCarving = $LED/" /root/IPED/iped/profiles/*/pedo*/IPEDConfig.txt
 
-# Setting KFF related flags
+echo Setting KFF related flags
 # sed -i -e "s/enableKff =.*/enableKff = $KFF/" /root/IPED/iped/IPEDConfig.txt
 sed -i -e "s/enableKff =.*/enableKff = $KFF/" /root/IPED/iped/profiles/*/*/IPEDConfig.txt
 
-#ProjectVic Settings
+echo ProjectVic Settings
 sed -i -e "s/enableProjectVicHashLookup =.*/enableProjectVicHashLookup = $PROJECTVIC/" /root/IPED/iped/profiles/*/default/IPEDConfig.txt
 sed -i -e "s/enableProjectVicHashLookup =.*/enableProjectVicHashLookup = $PROJECTVIC/" /root/IPED/iped/profiles/*/pedo*/IPEDConfig.txt
 
@@ -125,7 +125,7 @@ do
         echo ${v}=${!v}
         if [ "${!v}" ]
         then
-                sed -i -e "s|.*${v#iped_} =.*|${v#iped_} = ${!v}|" /root/IPED/iped/profiles/*/*/IPEDConfig.txt
+                ls /root/IPED/iped/profiles/*/*/IPEDConfig.txt | xargs sed -i -e "s|.*${v#iped_} =.*|${v#iped_} = ${!v}|" 
         fi
 done
 
@@ -176,19 +176,21 @@ do
         echo ${v}=${!v}
         if [ "${!v}" ]
         then
-                sed -i -e "s|.*${v#iped_} =.*|${v#iped_} = ${!v}|" /root/IPED/iped/profiles/*/*/conf/AdvancedConfig.txt
+                ls /root/IPED/iped/profiles/*/*/conf/AdvancedConfig.txt | xargs sed -i -e "s|.*${v#iped_} =.*|${v#iped_} = ${!v}|" 
         fi
 done
 
+echo Setting GraphConfig...
 
-sed -i -e "s|.*\"phone-region\":.*|\"phone-region\":\"${COUNTRY}\",|" /root/IPED/iped/profiles/*/*/conf/GraphConfig.json
+ls /root/IPED/iped/profiles/*/*/conf/GraphConfig.json | xargs sed -i -e "s|.*\"phone-region\":.*|\"phone-region\":\"${COUNTRY}\",|" 
+
 for v in \
         iped_phone_region
 do
         echo ${v}=${!v}
         if [ "${!v}" ]
         then
-                sed -i -e "s|.*\"$(echo ${v#iped_}| sed 's/_/-/g')\":.*|\"$(echo ${v#iped_}| sed 's/_/-/g')\":\"${!v}\",|" /root/IPED/iped/profiles/*/*/conf/GraphConfig.json
+                ls /root/IPED/iped/profiles/*/*/conf/GraphConfig.json | xargs sed -i -e "s|.*\"$(echo ${v#iped_}| sed 's/_/-/g')\":.*|\"$(echo ${v#iped_}| sed 's/_/-/g')\":\"${!v}\",|" 
         fi
 done
 
