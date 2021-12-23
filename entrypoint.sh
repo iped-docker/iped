@@ -183,7 +183,7 @@ done
 echo Setting GraphConfig...
 
 for v in \
-        iped_phone_region
+        iped_phone-region
 do
         echo ${v}=${!v}
         if [ "${!v}" ]
