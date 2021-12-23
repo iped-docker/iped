@@ -7,7 +7,7 @@ ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
 ENV IPED_VERSION=3.18.12
 
 WORKDIR /root/pkgs
-RUN apt-get update && apt-get install -y wget \
+RUN apt-get update && apt-get install -y wget gnupg \
     && wget -q -O - https://download.bell-sw.com/pki/GPG-KEY-bellsoft | apt-key add - \
     && echo "deb [arch=amd64] https://apt.bell-sw.com/ stable main" | tee /etc/apt/sources.list.d/bellsoft.list \
     && apt-get update && apt-get install -y \
@@ -33,7 +33,6 @@ RUN apt-get update && apt-get install -y wget \
       libwebp-dev \
       librsvg2-dev \
       libopenexr-dev \
-      gnupg2 \
       vim \
       less\      
       unzip \
