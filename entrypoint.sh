@@ -188,13 +188,7 @@ do
         echo ${v}=${!v}
         if [ "${!v}" ]
         then
-                find /root/IPED/iped/profiles/ -name GraphConfig.json | xargs sed -i -e "s|.*\"$(echo ${v#iped_}| sed 's/_/-/g')\":.*|\"$(echo ${v#iped_}| sed 's/_/-/g')\":\"${!v}\",|"
-        else
-                if [ ${v} == "iped_phone_region" ]
-                then
-                        echo -n "   Variable phone_region not setted. Defaulting to BR..."
-                        find /root/IPED/iped/profiles/ -name GraphConfig.json | xargs sed -i -e "s|.*\"$(echo ${v#iped_}| sed 's/_/-/g')\":.*|\"$(echo ${v#iped_}| sed 's/_/-/g')\":\"BR\",|"
-                fi
+                find /root/IPED/iped/profiles/ -name GraphConfig.json | xargs sed -i -e "s|.*\"${v#iped_}\":.*|\"${v#iped_}:\"${!v}\"|"
         fi
 
 done
