@@ -33,6 +33,7 @@ RUN apt-get update && apt-get install -y wget \
       libwebp-dev \
       librsvg2-dev \
       libopenexr-dev \
+      gnupg2 \
       vim \
       less\      
       unzip \
