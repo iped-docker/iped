@@ -148,7 +148,7 @@ RUN apt-get update && apt-get install -y wget gnupg \
     && echo "#####################################" \
     && echo "Configuring Local config with our default values" \
     && echo "#####################################" \
-    && echo "If you need to change the IPED Config, use the environment variables available on /entrypoint.sh" \
+    && echo "If you need to change the IPED LocalConfig, use the environment variables available on /entrypoint.sh" \
     && echo "#####################################" \    
     && sed -i -e "s/locale =.*/locale = pt-BR/" /root/IPED/iped/LocalConfig.txt \
     && sed -i -e "s/indexTemp =.*/indexTemp = \/mnt\/ipedtmp/" /root/IPED/iped/LocalConfig.txt \
@@ -163,11 +163,15 @@ RUN apt-get update && apt-get install -y wget gnupg \
     && sed -i -e "s/tskJarPath =.*/tskJarPath = \/usr\/share\/java\/sleuthkit-4.6.5.jar/" /root/IPED/iped/LocalConfig.txt \
     && sed -i -e "s/mplayerPath =.*/mplayerPath = \/usr\/bin\/mplayer/" /root/IPED/iped/LocalConfig.txt \
     && echo "#####################################" \
+    && echo "Configuring Local config with our default values" \
+    && echo "#####################################" \
+    && sed -i -e "s/\"phone_region\":.*/\"phone_region\":\"BR\"/" /root/IPED/iped/profiles/*/*/conf/GraphConfig.json \
+    && echo "#####################################" \
     && echo "Creating custom Profiles" \
     && echo "#####################################" \
     && echo "FastRobust: Disable IndexUnknownFiles and enable excludeKffIgnorable, externalParsers and robustImageReading" \
-    && echo "#####################################" \
     && echo "General analysis cases where processing errors are occurring" \
+    && echo "#####################################" \
     && cp -r /root/IPED/iped/profiles/pt-BR/forensic /root/IPED/iped/profiles/pt-BR/fastrobust \
     && cp -r /root/IPED/iped/profiles/en/forensic /root/IPED/iped/profiles/en/fastrobust \
     && sed -i -e "s/indexUnknownFiles =.*/indexUnknownFiles = false/" /root/IPED/iped/profiles/*/fastrobust/IPEDConfig.txt \
@@ -176,8 +180,8 @@ RUN apt-get update && apt-get install -y wget gnupg \
     && sed -i -e "s/enableExternalParsing =.*/enableExternalParsing = true/" /root/IPED/iped/profiles/*/fastrobust/conf/AdvancedConfig.txt \
     && echo "#####################################" \
     && echo "PedoRobust: enable excludeKffIgnorable, externalParsers and robustImageReading" \
-    && echo "#####################################" \
-    && echo "For child abuse cases where processing errors are occurring" \    
+    && echo "For child abuse cases where processing errors are occurring" \
+    && echo "#####################################" \    
     && cp -r /root/IPED/iped/profiles/pt-BR/pedo /root/IPED/iped/profiles/pt-BR/pedorobust \
     && cp -r /root/IPED/iped/profiles/en/pedo /root/IPED/iped/profiles/en/pedorobust \
     && sed -i -e "s/excludeKffIgnorable =.*/excludeKffIgnorable = true/" /root/IPED/iped/profiles/*/pedorobust/IPEDConfig.txt \
