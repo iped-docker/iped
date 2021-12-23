@@ -1,4 +1,4 @@
-FROM nvidia/cudagl:11.2.0-runtime-ubuntu20.04
+FROM ubuntu:20.04
 
 ENV TZ=Brazil/East
 ENV DEBIAN_FRONTEND=noninteractive
@@ -42,17 +42,14 @@ RUN apt-get update && apt-get install -y wget \
       bellsoft-java8-full \
       mplayer \
       && apt-get download ant && ls *.deb | awk '{system("dpkg-deb -x "$1" /")}' \
-      && apt-get clean && rm -rf /var/lib/apt/lists/*
-
-
-WORKDIR /opt
-RUN git clone https://github.com/lfcnassif/sleuthkit-APFS \
+      && apt-get clean && rm -rf /var/lib/apt/lists/* \
+    && cd /opt \
+    && git clone https://github.com/lfcnassif/sleuthkit-APFS \
     && cd /opt/sleuthkit-APFS/ \
     && ./bootstrap \ 
     && ./configure --prefix=/usr/ \
     && make && make install \
-    && rm -rf /opt/sleuthkit-APFS/
-
+    && rm -rf /opt/sleuthkit-APFS/ \
 #WORKDIR /opt
 #RUN wget --progress=bar:force http://www.mplayerhq.hu/MPlayer/releases/MPlayer-1.4.tar.gz \
 #    && tar xvzf MPlayer-1.4.tar.gz \
@@ -62,127 +59,150 @@ RUN git clone https://github.com/lfcnassif/sleuthkit-APFS \
 #    && cd /usr/lib \
 #    && wget --progress=bar:force http://www.mplayerhq.hu/MPlayer/releases/codecs/all-20110131.tar.bz2 \
 #    && tar xvjf all-20110131.tar.bz2 && mv all-20110131 codecs && rm all-20110131.tar.bz2
-
-
-# The lib only have branch master
-WORKDIR /opt
-RUN git clone https://github.com/libyal/libagdb.git \
+#
+#
+# The libagdb only have branch master
+    && cd /opt \
+    && git clone https://github.com/libyal/libagdb.git \
     && cd /opt/libagdb \
     && ./synclibs.sh \
     && ./autogen.sh \    
     && ./configure --prefix=/usr \ 
     && make all install \
-    && rm -rf /opt/libagdb
-
-WORKDIR /opt
-RUN git clone --branch="20210525" https://github.com/libyal/libevtx \
+    && rm -rf /opt/libagdb \
+    #
+    #
+    # install libevtx
+    && cd /opt \
+    && git clone --branch="20210525" https://github.com/libyal/libevtx \
     && cd /opt/libevtx \ 
     && ./synclibs.sh \
     && ./autogen.sh \
     && ./configure --prefix=/usr \
     && make all install \
-    && rm -rf /opt/libevtx
-
-WORKDIR /opt
-RUN git clone --branch="20210424" https://github.com/libyal/libevt \
+    && rm -rf /opt/libevtx \
+    #
+    #
+    # Install libevt
+    && cd /opt \
+    && git clone --branch="20210424" https://github.com/libyal/libevt \
     && cd /opt/libevt \
     && ./synclibs.sh \
     && ./autogen.sh \
     && ./configure --prefix=/usr \
     && make all install \
-    && rm -rf /opt/libevt
-
-WORKDIR /opt
-RUN git clone --branch="20210419" https://github.com/libyal/libscca \
+    && rm -rf /opt/libevt \
+    #
+    #
+    # Install libscca
+    && cd /opt
+    && git clone --branch="20210419" https://github.com/libyal/libscca \
     && cd /opt/libscca \
     && ./synclibs.sh \
     && ./autogen.sh \
     && ./configure --prefix=/usr \
     && make all install \
-    && rm -rf /opt/libscca
-
-WORKDIR /opt
-RUN git clone --branch="20210424" https://github.com/libyal/libesedb \
+    && rm -rf /opt/libscca \
+    #
+    #
+    # Install libesedb
+    && cd /opt \
+    && git clone --branch="20210424" https://github.com/libyal/libesedb \
     && cd /opt/libesedb \
     && ./synclibs.sh \
     && ./autogen.sh \
     && ./configure --prefix=/usr \
     && make all install \
-    && rm -rf /opt/libesedb
-
-
-# libpff without branch also, because latest release got problems
-WORKDIR /opt
-RUN git clone https://github.com/libyal/libpff \
+    && rm -rf /opt/libesedb \
+    #
+    #
+    # Install libpff without branch also, because latest release got problems
+    && cd /opt \
+    && git clone https://github.com/libyal/libpff \
     && cd /opt/libpff \
     && ./synclibs.sh \
     && ./autogen.sh \
     && ./configure --prefix=/usr \ 
     && make all install \
-    && rm -rf /opt/libpff
-
-WORKDIR /opt
-RUN git clone --branch="20210420" https://github.com/libyal/libmsiecf \
+    && rm -rf /opt/libpff \
+    #
+    #
+    # Install libmsiecf
+    && cd /opt \
+    && git clone --branch="20210420" https://github.com/libyal/libmsiecf \
     && cd /opt/libmsiecf \
     && ./synclibs.sh \
     && ./autogen.sh \
     && ./configure --prefix=/usr \
     && make all install \
-    && rm -rf /opt/libmsiecf
-
-WORKDIR /opt
-RUN git clone --branch="0.7.0" https://github.com/abelcheung/rifiuti2 \
+    && rm -rf /opt/libmsiecf \
+    #
+    #
+    # Install rifiuti2
+    && cd /opt \
+    && git clone --branch="0.7.0" https://github.com/abelcheung/rifiuti2 \
     && cd /opt/rifiuti2 \
     && autoreconf -f -i -v \
     && ./configure --prefix=/usr \
     && make all install \
-    && rm -rf /opt/rifiuti2
-
-WORKDIR /opt
-RUN git clone --branch "7.0.10-61" https://github.com/ImageMagick/ImageMagick \
+    && rm -rf /opt/rifiuti2 \
+    #
+    #
+    # Instal ImageMagik
+    && cd /opt \
+    && git clone --branch "7.0.10-61" https://github.com/ImageMagick/ImageMagick \
     && cd /opt/ImageMagick \
     && ./configure --prefix=/usr \
     && make all install \
-    && rm -rf /opt/ImageMagick
-
-
-# Creating mplayer config
-RUN mplayer
-
-
-
-WORKDIR /root/IPED/
-RUN wget --progress=bar:force https://github.com/sepinf-inc/IPED/releases/download/$IPED_VERSION/IPED-${IPED_VERSION}_and_plugins.zip -O iped.zip \
-    && unzip iped.zip && rm iped.zip && ln -s iped-$IPED_VERSION iped
-# optional_jars will be a volume due its size
-# COPY ./optional_jars/* ./
-COPY LocalConfig.txt /root/IPED/iped/
-
-# With entry point change, IPEDConfig.txt copy is not needed
-#COPY IPEDConfig.txt /root/IPED/iped/profiles/pt-BR/default/
-#COPY IPEDConfig.txt /root/IPED/iped/profiles/en/default/
-
-# Creating custom Profiles
-# 
-# FastRobust: Disable IndexUnknownFiles and enable excludeKffIgnorable, externalParsers and robustImageReading
-#    General analysis cases where processing errors are occurring
-#   
-RUN cp -r /root/IPED/iped/profiles/pt-BR/forensic /root/IPED/iped/profiles/pt-BR/fastrobust
-RUN cp -r /root/IPED/iped/profiles/en/forensic /root/IPED/iped/profiles/en/fastrobust
-RUN sed -i -e "s/indexUnknownFiles =.*/indexUnknownFiles = false/" /root/IPED/iped/profiles/*/fastrobust/IPEDConfig.txt
-RUN sed -i -e "s/excludeKffIgnorable =.*/excludeKffIgnorable = true/" /root/IPED/iped/profiles/*/fastrobust/IPEDConfig.txt
-RUN sed -i -e "s/robustImageReading =.*/robustImageReading = true/" /root/IPED/iped/profiles/*/fastrobust/conf/AdvancedConfig.txt
-RUN sed -i -e "s/enableExternalParsing =.*/enableExternalParsing = true/" /root/IPED/iped/profiles/*/fastrobust/conf/AdvancedConfig.txt
-#
-# PedoRobust: enable excludeKffIgnorable, externalParsers and robustImageReading
-#   For child abuse cases where processing errors are occurring
-#
-RUN cp -r /root/IPED/iped/profiles/pt-BR/pedo /root/IPED/iped/profiles/pt-BR/pedorobust
-RUN cp -r /root/IPED/iped/profiles/en/pedo /root/IPED/iped/profiles/en/pedorobust
-RUN sed -i -e "s/excludeKffIgnorable =.*/excludeKffIgnorable = true/" /root/IPED/iped/profiles/*/pedorobust/IPEDConfig.txt
-RUN sed -i -e "s/robustImageReading =.*/robustImageReading = true/" /root/IPED/iped/profiles/*/pedorobust/conf/AdvancedConfig.txt
-RUN sed -i -e "s/enableExternalParsing =.*/enableExternalParsing = true/" /root/IPED/iped/profiles/*/pedorobust/conf/AdvancedConfig.txt
-
+    && rm -rf /opt/ImageMagick \
+    #
+    #
+    # Creating mplayer config
+    && mplayer \
+    #
+    #
+    # Installing IPED
+    && mkdir -p /root/IPED/ && cd /root/IPED/ \
+    && wget --progress=bar:force https://github.com/sepinf-inc/IPED/releases/download/$IPED_VERSION/IPED-${IPED_VERSION}_and_plugins.zip -O iped.zip \
+    && unzip iped.zip && rm iped.zip && ln -s iped-$IPED_VERSION iped \
+    # optional_jars will be a volume due its size
+    # COPY ./optional_jars/* ./
+    # Configuring Local config with our default values
+    # If you need to change the IPED Config, use the environment variables available on /entrypoint.sh
+    && sed -i -e "s/locale =.*/locale = pt-BR/" /root/IPED/iped/LocalConfig.txt \
+    && sed -i -e "s/indexTemp =.*/indexTemp = \/mnt\/ipedtmp/" /root/IPED/iped/LocalConfig.txt \
+    && sed -i -e "s/indexTempOnSSD =.*/indexTempOnSSD = true/" /root/IPED/iped/LocalConfig.txt \
+    && sed -i -e "s/outputOnSSD =.*/outputOnSSD = false/" /root/IPED/iped/LocalConfig.txt \
+    && sed -i -e "s/numThreads =.*/numThreads = 8/" /root/IPED/iped/LocalConfig.txt \
+    && sed -i -e "s/kffDb =.*/kffDb = \/mnt\/kff\/kff.db/" /root/IPED/iped/LocalConfig.txt \
+    && sed -i -e "s/ledWkffPath =.*/ledWkffPath = \/mnt\/led\/wkff/" /root/IPED/iped/LocalConfig.txt \
+    && sed -i -e "s/projectVicHashSetPath =.*/projectVicHashSetPath = \/mnt\/ProjectVic\/latest.json/" /root/IPED/iped/LocalConfig.txt \
+    && sed -i -e "s/photoDNAHashDatabase =.*/photoDNAHashDatabase = \/mnt\/PhotoDNA\/PhotoDNAChildPornHashes.txt/" /root/IPED/iped/LocalConfig.txt \
+    && sed -i -e "s/ledDie =.*/ledDie = \/mnt\/led\/die\/rfdie.dat/" /root/IPED/iped/LocalConfig.txt \
+    && sed -i -e "s/tskJarPath =.*/tskJarPath = \/usr\/share\/java\/sleuthkit-4.6.5.jar/" /root/IPED/iped/LocalConfig.txt \
+    && sed -i -e "s/mplayerPath =.*/mplayerPath = \/usr\/bin\/mplayer/" /root/IPED/iped/LocalConfig.txt \
+    #
+    #
+    #
+    # Creating custom Profiles
+    # 
+    # FastRobust: Disable IndexUnknownFiles and enable excludeKffIgnorable, externalParsers and robustImageReading
+    #      General analysis cases where processing errors are occurring   
+    && cp -r /root/IPED/iped/profiles/pt-BR/forensic /root/IPED/iped/profiles/pt-BR/fastrobust \
+    && cp -r /root/IPED/iped/profiles/en/forensic /root/IPED/iped/profiles/en/fastrobust \
+    && sed -i -e "s/indexUnknownFiles =.*/indexUnknownFiles = false/" /root/IPED/iped/profiles/*/fastrobust/IPEDConfig.txt \
+    && sed -i -e "s/excludeKffIgnorable =.*/excludeKffIgnorable = true/" /root/IPED/iped/profiles/*/fastrobust/IPEDConfig.txt \
+    && sed -i -e "s/robustImageReading =.*/robustImageReading = true/" /root/IPED/iped/profiles/*/fastrobust/conf/AdvancedConfig.txt \
+    && sed -i -e "s/enableExternalParsing =.*/enableExternalParsing = true/" /root/IPED/iped/profiles/*/fastrobust/conf/AdvancedConfig.txt \
+    #
+    # PedoRobust: enable excludeKffIgnorable, externalParsers and robustImageReading
+    #   For child abuse cases where processing errors are occurring
+    #
+    && cp -r /root/IPED/iped/profiles/pt-BR/pedo /root/IPED/iped/profiles/pt-BR/pedorobust \
+    && cp -r /root/IPED/iped/profiles/en/pedo /root/IPED/iped/profiles/en/pedorobust \
+    && sed -i -e "s/excludeKffIgnorable =.*/excludeKffIgnorable = true/" /root/IPED/iped/profiles/*/pedorobust/IPEDConfig.txt \
+    && sed -i -e "s/robustImageReading =.*/robustImageReading = true/" /root/IPED/iped/profiles/*/pedorobust/conf/AdvancedConfig.txt \
+    && sed -i -e "s/enableExternalParsing =.*/enableExternalParsing = true/" /root/IPED/iped/profiles/*/pedorobust/conf/AdvancedConfig.txt 
 
 WORKDIR /root/IPED/iped
 COPY entrypoint.sh /
