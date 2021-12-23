@@ -50,18 +50,8 @@ RUN apt-get update && apt-get install -y wget \
     && ./configure --prefix=/usr/ \
     && make && make install \
     && rm -rf /opt/sleuthkit-APFS/ \
-#WORKDIR /opt
-#RUN wget --progress=bar:force http://www.mplayerhq.hu/MPlayer/releases/MPlayer-1.4.tar.gz \
-#    && tar xvzf MPlayer-1.4.tar.gz \
-#    && cd /opt/MPlayer-1.4 \
-#    && ./configure --prefix=/usr \
-#    && make all install \
-#    && cd /usr/lib \
-#    && wget --progress=bar:force http://www.mplayerhq.hu/MPlayer/releases/codecs/all-20110131.tar.bz2 \
-#    && tar xvjf all-20110131.tar.bz2 && mv all-20110131 codecs && rm all-20110131.tar.bz2
-#
-#
-# The libagdb only have branch master
+    && echo "#####################################" \
+    && echo "The libagdb only have branch master" \
     && cd /opt \
     && git clone https://github.com/libyal/libagdb.git \
     && cd /opt/libagdb \
@@ -70,9 +60,8 @@ RUN apt-get update && apt-get install -y wget \
     && ./configure --prefix=/usr \ 
     && make all install \
     && rm -rf /opt/libagdb \
-    #
-    #
-    # install libevtx
+    && echo "#####################################" \
+    && echo "install libevtx" \
     && cd /opt \
     && git clone --branch="20210525" https://github.com/libyal/libevtx \
     && cd /opt/libevtx \ 
@@ -81,9 +70,8 @@ RUN apt-get update && apt-get install -y wget \
     && ./configure --prefix=/usr \
     && make all install \
     && rm -rf /opt/libevtx \
-    #
-    #
-    # Install libevt
+    && echo "#####################################" \
+    && echo "Install libevt" \
     && cd /opt \
     && git clone --branch="20210424" https://github.com/libyal/libevt \
     && cd /opt/libevt \
@@ -92,9 +80,8 @@ RUN apt-get update && apt-get install -y wget \
     && ./configure --prefix=/usr \
     && make all install \
     && rm -rf /opt/libevt \
-    #
-    #
-    # Install libscca
+    && echo "#####################################" \
+    && echo "Install libscca" \
     && cd /opt
     && git clone --branch="20210419" https://github.com/libyal/libscca \
     && cd /opt/libscca \
@@ -103,9 +90,8 @@ RUN apt-get update && apt-get install -y wget \
     && ./configure --prefix=/usr \
     && make all install \
     && rm -rf /opt/libscca \
-    #
-    #
-    # Install libesedb
+    && echo "#####################################" \
+    && echo "Install libesedb" \
     && cd /opt \
     && git clone --branch="20210424" https://github.com/libyal/libesedb \
     && cd /opt/libesedb \
@@ -114,9 +100,8 @@ RUN apt-get update && apt-get install -y wget \
     && ./configure --prefix=/usr \
     && make all install \
     && rm -rf /opt/libesedb \
-    #
-    #
-    # Install libpff without branch also, because latest release got problems
+    && echo "#####################################" \
+    && echo "Install libpff without branch also, because latest release got problems" \
     && cd /opt \
     && git clone https://github.com/libyal/libpff \
     && cd /opt/libpff \
@@ -125,9 +110,8 @@ RUN apt-get update && apt-get install -y wget \
     && ./configure --prefix=/usr \ 
     && make all install \
     && rm -rf /opt/libpff \
-    #
-    #
-    # Install libmsiecf
+    && echo "#####################################" \
+    && echo "Install libmsiecf" \
     && cd /opt \
     && git clone --branch="20210420" https://github.com/libyal/libmsiecf \
     && cd /opt/libmsiecf \
@@ -136,9 +120,8 @@ RUN apt-get update && apt-get install -y wget \
     && ./configure --prefix=/usr \
     && make all install \
     && rm -rf /opt/libmsiecf \
-    #
-    #
-    # Install rifiuti2
+    && echo "#####################################" \
+    && echo "Install rifiuti2" \
     && cd /opt \
     && git clone --branch="0.7.0" https://github.com/abelcheung/rifiuti2 \
     && cd /opt/rifiuti2 \
@@ -146,29 +129,27 @@ RUN apt-get update && apt-get install -y wget \
     && ./configure --prefix=/usr \
     && make all install \
     && rm -rf /opt/rifiuti2 \
-    #
-    #
-    # Instal ImageMagik
+    && echo "#####################################" \
+    && echo "Instal ImageMagik" \
     && cd /opt \
     && git clone --branch "7.0.10-61" https://github.com/ImageMagick/ImageMagick \
     && cd /opt/ImageMagick \
     && ./configure --prefix=/usr \
     && make all install \
     && rm -rf /opt/ImageMagick \
-    #
-    #
-    # Creating mplayer config
+    && echo "#####################################" \
+    && echo "Creating mplayer config" \
     && mplayer \
-    #
-    #
-    # Installing IPED
+    && echo "#####################################" \
+    && echo "Installing IPED" \
     && mkdir -p /root/IPED/ && cd /root/IPED/ \
     && wget --progress=bar:force https://github.com/sepinf-inc/IPED/releases/download/$IPED_VERSION/IPED-${IPED_VERSION}_and_plugins.zip -O iped.zip \
     && unzip iped.zip && rm iped.zip && ln -s iped-$IPED_VERSION iped \
-    # optional_jars will be a volume due its size
-    # COPY ./optional_jars/* ./
-    # Configuring Local config with our default values
-    # If you need to change the IPED Config, use the environment variables available on /entrypoint.sh
+    && echo "#####################################" \
+    && echo "Configuring Local config with our default values" \
+    && echo "#####################################" \
+    && echo "If you need to change the IPED Config, use the environment variables available on /entrypoint.sh" \
+    && echo "#####################################" \    
     && sed -i -e "s/locale =.*/locale = pt-BR/" /root/IPED/iped/LocalConfig.txt \
     && sed -i -e "s/indexTemp =.*/indexTemp = \/mnt\/ipedtmp/" /root/IPED/iped/LocalConfig.txt \
     && sed -i -e "s/indexTempOnSSD =.*/indexTempOnSSD = true/" /root/IPED/iped/LocalConfig.txt \
@@ -181,23 +162,22 @@ RUN apt-get update && apt-get install -y wget \
     && sed -i -e "s/ledDie =.*/ledDie = \/mnt\/led\/die\/rfdie.dat/" /root/IPED/iped/LocalConfig.txt \
     && sed -i -e "s/tskJarPath =.*/tskJarPath = \/usr\/share\/java\/sleuthkit-4.6.5.jar/" /root/IPED/iped/LocalConfig.txt \
     && sed -i -e "s/mplayerPath =.*/mplayerPath = \/usr\/bin\/mplayer/" /root/IPED/iped/LocalConfig.txt \
-    #
-    #
-    #
-    # Creating custom Profiles
-    # 
-    # FastRobust: Disable IndexUnknownFiles and enable excludeKffIgnorable, externalParsers and robustImageReading
-    #      General analysis cases where processing errors are occurring   
+    && echo "#####################################" \
+    && echo "Creating custom Profiles" \
+    && echo "#####################################" \
+    && echo "FastRobust: Disable IndexUnknownFiles and enable excludeKffIgnorable, externalParsers and robustImageReading" \
+    && echo "#####################################" \
+    && echo "General analysis cases where processing errors are occurring" \
     && cp -r /root/IPED/iped/profiles/pt-BR/forensic /root/IPED/iped/profiles/pt-BR/fastrobust \
     && cp -r /root/IPED/iped/profiles/en/forensic /root/IPED/iped/profiles/en/fastrobust \
     && sed -i -e "s/indexUnknownFiles =.*/indexUnknownFiles = false/" /root/IPED/iped/profiles/*/fastrobust/IPEDConfig.txt \
     && sed -i -e "s/excludeKffIgnorable =.*/excludeKffIgnorable = true/" /root/IPED/iped/profiles/*/fastrobust/IPEDConfig.txt \
     && sed -i -e "s/robustImageReading =.*/robustImageReading = true/" /root/IPED/iped/profiles/*/fastrobust/conf/AdvancedConfig.txt \
     && sed -i -e "s/enableExternalParsing =.*/enableExternalParsing = true/" /root/IPED/iped/profiles/*/fastrobust/conf/AdvancedConfig.txt \
-    #
-    # PedoRobust: enable excludeKffIgnorable, externalParsers and robustImageReading
-    #   For child abuse cases where processing errors are occurring
-    #
+    && echo "#####################################" \
+    && echo "PedoRobust: enable excludeKffIgnorable, externalParsers and robustImageReading" \
+    && echo "#####################################" \
+    && echo "For child abuse cases where processing errors are occurring" \    
     && cp -r /root/IPED/iped/profiles/pt-BR/pedo /root/IPED/iped/profiles/pt-BR/pedorobust \
     && cp -r /root/IPED/iped/profiles/en/pedo /root/IPED/iped/profiles/en/pedorobust \
     && sed -i -e "s/excludeKffIgnorable =.*/excludeKffIgnorable = true/" /root/IPED/iped/profiles/*/pedorobust/IPEDConfig.txt \
