@@ -182,7 +182,10 @@ done
 
 echo Setting GraphConfig...
 
-find /root/IPED/iped/profiles/ -name GraphConfig.json | xargs sed -i -e "s|.*\"phone-region\":.*|\"phone-region\":\"${COUNTRY}\",|" 
+for f in $(find /root/IPED/iped/profiles/ -name GraphConfig.json)
+do 
+        sed -i -e "s|.*\"phone-region\":.*|\"phone-region\":\"${COUNTRY}\",|" ${f}
+done
 
 for v in \
         iped_phone_region
