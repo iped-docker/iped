@@ -163,9 +163,9 @@ RUN apt-get update && apt-get install -y wget gnupg \
     && sed -i -e "s/tskJarPath =.*/tskJarPath = \/usr\/share\/java\/sleuthkit-4.6.5.jar/" /root/IPED/iped/LocalConfig.txt \
     && sed -i -e "s/mplayerPath =.*/mplayerPath = \/usr\/bin\/mplayer/" /root/IPED/iped/LocalConfig.txt \
     && echo "#####################################" \
-    && echo "Configuring Local config with our default values" \
+    && echo "Configuring GraphConfig with our default values:BR" \
     && echo "#####################################" \
-    && sed -i -e "s/\"phone_region\":.*/\"phone_region\":\"BR\"/" /root/IPED/iped/profiles/*/*/conf/GraphConfig.json \
+    && sed -i -e "s/\"phone-region\":.*/\"phone-region\":\"BR\"/" /root/IPED/iped/profiles/*/*/conf/GraphConfig.json \
     && echo "#####################################" \
     && echo "Creating custom Profiles" \
     && echo "#####################################" \
