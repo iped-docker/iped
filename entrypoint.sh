@@ -182,20 +182,23 @@ done
 
 echo Setting GraphConfig...
 
-for f in $(find /root/IPED/iped/profiles/ -name GraphConfig.json)
-do 
-        sed -i -e "s|.*\"phone-region\":.*|\"phone-region\":\"${COUNTRY}\",|" ${f}
-done
-
 for v in \
         iped_phone_region
 do
         echo ${v}=${!v}
         if [ "${!v}" ]
         then
-                find /root/IPED/iped/profiles/ -name GraphConfig.json | xargs sed -i -e "s|.*\"$(echo ${v#iped_}| sed 's/_/-/g')\":.*|\"$(echo ${v#iped_}| sed 's/_/-/g')\":\"${!v}\",|" 
+                find /root/IPED/iped/profiles/ -name GraphConfig.json | xargs sed -i -e "s|.*\"$(echo ${v#iped_}| sed 's/_/-/g')\":.*|\"$(echo ${v#iped_}| sed 's/_/-/g')\":\"${!v}\",|"
+        else
+                if [ ${v} == "iped_phone_region" ]
+                then
+                        echo -n "   Variable phone_region not setted. Defaulting to BR..."
+                        find /root/IPED/iped/profiles/ -name GraphConfig.json | xargs sed -i -e "s|.*\"$(echo ${v#iped_}| sed 's/_/-/g')\":.*|\"$(echo ${v#iped_}| sed 's/_/-/g')\":\"BR\",|"
+                fi
         fi
+
 done
+
 
 
 # no arguments = bash, otherwise exec then
