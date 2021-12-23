@@ -82,7 +82,7 @@ RUN apt-get update && apt-get install -y wget \
     && rm -rf /opt/libevt \
     && echo "#####################################" \
     && echo "Install libscca" \
-    && cd /opt
+    && cd /opt \
     && git clone --branch="20210419" https://github.com/libyal/libscca \
     && cd /opt/libscca \
     && ./synclibs.sh \
