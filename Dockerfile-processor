@@ -155,12 +155,12 @@ RUN apt-get update && apt-get install -y wget gnupg \
     && sed -i -e "s/indexTempOnSSD =.*/indexTempOnSSD = true/" /root/IPED/iped/LocalConfig.txt \
     && sed -i -e "s/outputOnSSD =.*/outputOnSSD = false/" /root/IPED/iped/LocalConfig.txt \
     && sed -i -e "s/numThreads =.*/numThreads = 8/" /root/IPED/iped/LocalConfig.txt \
-    && sed -i -e "s/kffDb =.*/kffDb = \/mnt\/kff\/kff.db/" /root/IPED/iped/LocalConfig.txt \
-    && sed -i -e "s/ledWkffPath =.*/ledWkffPath = \/mnt\/led\/wkff/" /root/IPED/iped/LocalConfig.txt \
-    && sed -i -e "s/projectVicHashSetPath =.*/projectVicHashSetPath = \/mnt\/ProjectVic\/latest.json/" /root/IPED/iped/LocalConfig.txt \
-    && sed -i -e "s/photoDNAHashDatabase =.*/photoDNAHashDatabase = \/mnt\/PhotoDNA\/PhotoDNAChildPornHashes.txt/" /root/IPED/iped/LocalConfig.txt \
+    && sed -i -e "s/#kffDb =.*/kffDb = \/mnt\/kff\/kff.db/" /root/IPED/iped/LocalConfig.txt \
+    && sed -i -e "s/#ledWkffPath =.*/ledWkffPath = \/mnt\/led\/wkff/" /root/IPED/iped/LocalConfig.txt \
+    && sed -i -e "s/#projectVicHashSetPath =.*/projectVicHashSetPath = \/mnt\/ProjectVic\/latest.json/" /root/IPED/iped/LocalConfig.txt \
+    && sed -i -e "s/#photoDNAHashDatabase =.*/photoDNAHashDatabase = \/mnt\/PhotoDNA\/PhotoDNAChildPornHashes.txt/" /root/IPED/iped/LocalConfig.txt \
     && sed -i -e "s/ledDie =.*/ledDie = \/mnt\/led\/die\/rfdie.dat/" /root/IPED/iped/LocalConfig.txt \
-    && sed -i -e "s/tskJarPath =.*/tskJarPath = \/usr\/share\/java\/sleuthkit-4.6.5.jar/" /root/IPED/iped/LocalConfig.txt \
+    && sed -i -e "s/#tskJarPath =.*/tskJarPath = \/usr\/share\/java\/sleuthkit-4.6.5.jar/" /root/IPED/iped/LocalConfig.txt \
     && sed -i -e "s/mplayerPath =.*/mplayerPath = \/usr\/bin\/mplayer/" /root/IPED/iped/LocalConfig.txt \
     && echo "#####################################" \
     && echo "Configuring GraphConfig with our default values:BR" \
