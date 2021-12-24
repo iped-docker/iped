@@ -164,7 +164,7 @@ RUN apt-get update && apt-get install -y wget gnupg \
     && echo "#####################################" \
     && echo "Configuring GraphConfig with our default values:BR" \
     && echo "#####################################" \
-    && sed -i -e "s/\"phone-region\":.*/\"phone-region\":\"BR\"/" /root/IPED/iped/profiles/*/*/conf/GraphConfig.json \
+    && sed -i -e "s/\"phone-region\":.*/\"phone-region\":\"BR\",/" /root/IPED/iped/profiles/*/*/conf/GraphConfig.json \
     && echo "#####################################" \
     && echo "Creating custom Profiles" \
     && echo "#####################################" \
