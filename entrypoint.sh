@@ -1,65 +1,38 @@
 #!/bin/bash
 set -e
 PHOTODNA=false
-LED=false
-KFF=false
-PROJECTVIC=false
+HASHDB=false
 COUNTRY='BR'
 
-if [ -d /mnt/optional_jars ]
+
+
+
+if [ -d /mnt/plugins ]
 then
-        cd /root/IPED/optional_jars/ && find /mnt/optional_jars -type f | xargs ln -s 
+        cd /root/IPED/plugins/ && find /mnt/plugins -type f | xargs ln -s 
 fi
 
-
-if [ -d /mnt/PhotoDNA ] && [ ! -z "$(ls /mnt/PhotoDNA)" ] && [ ! -z "$(ls /root/IPED/optional_jars/ | grep photodna)" ] 
+if [ ! -z "$(find /root/IPED/plugins/ -type f | grep -i photodna)" ] 
 then
         PHOTODNA=true
 fi
 
-if [ -d /mnt/led ] && [ ! -z "$(ls /mnt/led)" ]
+if [ -d /mnt/hashdb ] && [ ! -z "$(ls /mnt/hashdb)" ]
 then
-        LED=true
+        HASHDB=true
 fi
-
-if [ -d /mnt/kff ] && [ ! -z "$(ls /mnt/kff)" ]
-then
-        KFF=true
-fi
-
-if [ -d /mnt/ProjectVic ] && [ ! -z "$(ls /mnt/ProjectVic)" ]
-then
-        PROJECTVIC=true
-fi
-
 
 #
 # Note: Changes in the root IPEDConfig.txt are avoided in the new IPED Version
 # when the locale variable is defined.
 # 
 echo Setting PhotoDNA related flags
-# sed -i -e "s/enablePhotoDNA =.*/enablePhotoDNA = $PHOTODNA/" /root/IPED/iped/IPEDConfig.txt
-sed -i -e "s/enablePhotoDNA =.*/enablePhotoDNA = $PHOTODNA/" /root/IPED/iped/profiles/*/default/IPEDConfig.txt
-sed -i -e "s/enablePhotoDNA =.*/enablePhotoDNA = $PHOTODNA/" /root/IPED/iped/profiles/*/pedo*/IPEDConfig.txt
+sed -i -e "s/enablePhotoDNA =.*/enablePhotoDNA = $PHOTODNA/" /root/IPED/iped/IPEDConfig.txt
 
 echo Setting LED related flags
-# sed -i -e "s/enableLedDie =.*/enableLedDie = $LED/" /root/IPED/iped/IPEDConfig.txt
-sed -i -e "s/enableLedDie =.*/enableLedDie = $LED/" /root/IPED/iped/profiles/*/default/IPEDConfig.txt
-sed -i -e "s/enableLedDie =.*/enableLedDie = $LED/" /root/IPED/iped/profiles/*/pedo*/IPEDConfig.txt
+sed -i -e "s/enableHashDBLookup =.*/enableHashDBLookup = $HASHDB/" /root/IPED/iped/IPEDConfig.txt
 
-# sed -i -e "s/enableLedWkff =.*/enableLedWkff = $LED/" /root/IPED/iped/IPEDConfig.txt
-sed -i -e "s/enableLedWkff =.*/enableLedWkff = $LED/" /root/IPED/iped/profiles/*/default/IPEDConfig.txt
-sed -i -e "s/enableLedWkff =.*/enableLedWkff = $LED/" /root/IPED/iped/profiles/*/pedo*/IPEDConfig.txt
-sed -i -e "s/enableKFFCarving =.*/enableKFFCarving = $LED/" /root/IPED/iped/profiles/*/default/IPEDConfig.txt
-sed -i -e "s/enableKFFCarving =.*/enableKFFCarving = $LED/" /root/IPED/iped/profiles/*/pedo*/IPEDConfig.txt
-
-echo Setting KFF related flags
-# sed -i -e "s/enableKff =.*/enableKff = $KFF/" /root/IPED/iped/IPEDConfig.txt
-sed -i -e "s/enableKff =.*/enableKff = $KFF/" /root/IPED/iped/profiles/*/*/IPEDConfig.txt
-
-echo ProjectVic Settings
-sed -i -e "s/enableProjectVicHashLookup =.*/enableProjectVicHashLookup = $PROJECTVIC/" /root/IPED/iped/profiles/*/default/IPEDConfig.txt
-sed -i -e "s/enableProjectVicHashLookup =.*/enableProjectVicHashLookup = $PROJECTVIC/" /root/IPED/iped/profiles/*/pedo*/IPEDConfig.txt
+sed -i -e "s/enableLedCarving =.*/enableLedCarving = $HASHESDB/" /root/IPED/iped/IPEDConfig.txt
 
 
 # Custom flags to be used on the fly
@@ -73,13 +46,10 @@ for v in \
         iped_indexTempOnSSD \
         iped_outputOnSSD \
         iped_numThreads \
-        iped_kffDb \
-        iped_ledWkffPath \
-        iped_photoDNAHashDatabase \
-        iped_ledDie \
+        iped_hashesDB \
         iped_tskJarPath \
         iped_mplayerPath \
-        iped_optional_jars \
+        iped_pluginFolder \
         iped_regripperFolder
 do
         echo ${v}=${!v}
@@ -91,104 +61,66 @@ done
 
 # IPEDConfig.txt variables (with iped_ prefix)
 for v in \
-        iped_hash \
-        iped_enablePhotoDNA \
-        iped_enableKff \
-        iped_enableLedWkff \
-        iped_enableLedDie \
-        iped_excludeKffIgnorable \
-        iped_ignoreDuplicates \
-        iped_exportFileProps \
-        iped_processFileSignatures \
-        iped_enableFileParsing \
-        iped_expandContainers \
-        iped_enableRegexSearch \
-        iped_enableLanguageDetect \
-        iped_enableNamedEntityRecogniton \
-        iped_enableGraphGeneration \
-        iped_indexFileContents \
-        iped_indexUnknownFiles \
-        iped_indexCorruptedFiles \
-        iped_enableOCR \
-        iped_enableAudioTranscription \
-        iped_addFileSlacks \
-        iped_addUnallocated \
-        iped_indexUnallocated \
-        iped_enableCarving \
-        iped_enableKFFCarving \
-        iped_enableKnownMetCarving \
-        iped_enableImageThumbs \
-        iped_enableImageSimilarity \
-        iped_enableVideoThumbs \
+        iped_enableHash
+        iped_enablePhotoDNA
+        iped_enableHashDBLookup
+        iped_enablePhotoDNALookup
+        iped_enableLedDie
+        iped_enableYahooNSFWDetection
+        iped_enableQRCode
+        iped_ignoreDuplicates
+        iped_exportFileProps
+        iped_processFileSignatures
+        iped_enableFileParsing
+        iped_expandContainers
+        iped_processEmbeddedDisks
+        iped_enableRegexSearch
+        iped_enableAutomaticExportFiles
+        iped_enableLanguageDetect
+        iped_enableNamedEntityRecogniton
+        iped_iped_enableGraphGeneration
+        iped_entropyTest
+        iped_enableSplitLargeBinary
+        iped_indexFileContents
+        iped_enableIndexToElasticSearch
+        iped_enableMinIO
+        iped_enableAudioTranscription
+        iped_enableCarving
+        iped_enableLedCarving
+        iped_enableKnownMetCarving
+        iped_enableImageThumbs
+        iped_enableImageSimilarity
+        iped_enableFaceRecognition
+        iped_enableVideoThumbs
+        iped_enableDocThumbs
         iped_enableHTMLReport
 do
         echo ${v}=${!v}
         if [ "${!v}" ]
         then
-                find /root/IPED/iped/profiles/ -name IPEDConfig.txt | xargs sed -i -e "s|.*${v#iped_} =.*|${v#iped_} = ${!v}|" 
-        fi
+                sed -i -e "s|.*${v#iped_} =.*|${v#iped_} = ${!v}|" /root/IPED/iped/IPEDqConfig.txt
 done
 
-# AdvancedConfig.txt variables (with iped_ prefix)
-for v in \
-        iped_robustImageReading \
-        iped_numImageReaders \
-        iped_enableExternalParsing \
-        iped_numExternalParsers \
-        iped_externalParsingMaxMem \
-        iped_phoneParsersToUse \
-        iped_forceMerge \
-        iped_timeOut \
-        iped_timeOutPerMB \
-        iped_embutirLibreOffice \
-        iped_sortPDFChars \
-        iped_entropyTest \
-        iped_minRawStringSize \
-        iped_extraCharsToIndex \
-        iped_convertCharsToLowerCase \
-        iped_filterNonLatinChars \
-        iped_convertCharsToAscii \
-        iped_ignoreHardLinks \
-        iped_minOrphanSizeToIgnore \
-        iped_unallocatedFragSize \
-        iped_minItemSizeToFragment \
-        iped_textSplitSize \
-        iped_useNIOFSDirectory \
-        iped_commitIntervalSeconds \
-        iped_OCRLanguage \
-        iped_pageSegMode \
-        iped_minFileSize2OCR \
-        iped_maxFileSize2OCR \
-        iped_pdfToImgResolution \
-        iped_maxPDFTextSize2OCR \
-        iped_pdfToImgLib \
-        iped_externalPdfToImgConv \
-        iped_externalConvMaxMem \
-        iped_processImagesInPDFs \
-        iped_searchThreads \
-        iped_maxBackups \
-        iped_backupInterval \
-        iped_autoManageCols \
-        iped_preOpenImagesOnSleuth \
-        iped_openImagesCacheWarmUpEnabled \
-        iped_openImagesCacheWarmUpThreads
+# IPED variables (with iped_ prefix)
+for v in $( for file in $( find . -type f | grep Config.txt | grep -v -i regex); do grep -v "#" $file | cut -d "=" -f 1 | awk '{ if ($0 != "\r" ) {print "iped_"$0;} }'; done )        
 do
         echo ${v}=${!v}
         if [ "${!v}" ]
         then
-                find /root/IPED/iped/profiles/ -name AdvancedConfig.txt | xargs sed -i -e "s|.*${v#iped_} =.*|${v#iped_} = ${!v}|" 
+                find /root/IPED/iped/config/ -type f | grep Config.txt | grep -v -i regex | xargs sed -i -e "s|.*${v#iped_} =.*|${v#iped_} = ${!v}|" 
         fi
 done
 
 echo Setting GraphConfig...
-
 for v in \
         iped_phone_region
 do
         echo ${v}=${!v}
         if [ "${!v}" ]
         then
-                find /root/IPED/iped/profiles/ -name GraphConfig.json | xargs sed -i -e "s|.*\"$(echo ${v#iped_}| sed 's/_/-/g')\":.*|\"$(echo ${v#iped_}| sed 's/_/-/g')\":\"${!v}\",|"
+                sed -i -e "s|.*\"$(echo ${v#iped_}| sed 's/_/-/g')\":.*|\"$(echo ${v#iped_}| sed 's/_/-/g')\":\"${!v}\",|" /root/IPED/iped/conf/GraphConfig.json 
+        else 
+                sed -i -e "s|.*\"$(echo ${v#iped_}| sed 's/_/-/g')\":.*|\"$(echo ${v#iped_}| sed 's/_/-/g')\":\"${COUNTRY}\",|" /root/IPED/iped/conf/GraphConfig.json
         fi
 
 done

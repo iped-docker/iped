@@ -1,14 +1,16 @@
-FROM ubuntu:20.04
+FROM ubuntu:22.04
 
 ENV TZ=Brazil/East
 ENV DEBIAN_FRONTEND=noninteractive
 ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
-
-ENV IPED_VERSION=3.18.12
+ENV SAL_USE_VCLPLUGIN='gtk'
+ENV JAVA_HOME=/usr/lib/jvm/bellsoft-java11-full-amd64/
+ENV IPED_VERSION=4.0.6
 
 WORKDIR /root/pkgs
-RUN apt-get update && apt-get install -y wget gnupg \
-    && wget -q -O - https://download.bell-sw.com/pki/GPG-KEY-bellsoft | apt-key add - \
+RUN apt-get update && apt-get install -y wget gnupg apt-utils software-properties-common \
+    && add-apt-repository ppa:deadsnakes/ppa \
+    && wget -q -O - https://download.bell-sw.com/pki/GPG-KEY-bellsoft | tee /etc/apt/trusted.gpg.d/bellsoft.asc \
     && echo "deb [arch=amd64] https://apt.bell-sw.com/ stable main" | tee /etc/apt/sources.list.d/bellsoft.list \
     && apt-get update && apt-get install -y \
       git \
@@ -21,7 +23,7 @@ RUN apt-get update && apt-get install -y wget gnupg \
       libsdl1.2-dev libvdpau-dev libxinerama-dev libxv-dev libxvmc-dev libxxf86dga-dev \
       libxxf86vm-dev librtmp-dev libsctp-dev libass-dev libfaac-dev libsmbclient-dev libtheora-dev \
       libogg-dev libxvidcore-dev libspeex-dev libvpx-dev libdv4-dev \
-      libopencore-amrnb-dev libopencore-amrwb-dev libmp3lame-dev liblivemedia-dev libtwolame-dev \
+      libopencore-amrnb-dev libopencore-amrwb-dev libmp3lame-dev libtwolame-dev \
       libmad0-dev libgsm1-dev libbs2b-dev liblzo2-dev ladspa-sdk libfaad-dev \
       libmpg123-dev libopus-dev libbluray-dev libaacs-dev \
       libjpeg-dev \
@@ -39,17 +41,21 @@ RUN apt-get update && apt-get install -y wget gnupg \
       libparse-win32registry-perl \
       tesseract-ocr tesseract-ocr-por tesseract-ocr-osd \
       graphviz \  
-      bellsoft-java8-full \
+      bellsoft-java11-full \
       mplayer \
-      && apt-get download ant && ls *.deb | awk '{system("dpkg-deb -x "$1" /")}' \
+      rifiuti2 \
+      python3.9 python3.9-distutils python3-pip python3.9-dev \
+      && apt-get download ant && ls *.deb | awk '{system("dpkg-deb -x "$1" /")}' && apt-get install -y ant-optional \ 
       && apt-get clean && rm -rf /var/lib/apt/lists/* \
+    && echo "#####################################" \
+    && echo " Installing Sleuthkit with IPED patch" \
     && cd /opt \
-    && git clone https://github.com/lfcnassif/sleuthkit-APFS \
-    && cd /opt/sleuthkit-APFS/ \
+    && git clone -b release-4.11.1_iped_patch https://github.com/sepinf-inc/sleuthkit \
+    && cd /opt/sleuthkit/ \
     && ./bootstrap \ 
     && ./configure --prefix=/usr/ \
     && make && make install \
-    && rm -rf /opt/sleuthkit-APFS/ \
+    && rm -rf /opt/sleuthkit/ \
     && echo "#####################################" \
     && echo "The libagdb only have branch master" \
     && cd /opt \
@@ -61,9 +67,9 @@ RUN apt-get update && apt-get install -y wget gnupg \
     && make all install \
     && rm -rf /opt/libagdb \
     && echo "#####################################" \
-    && echo "install libevtx" \
+    && echo "install libevtx - master is th only working branch" \
     && cd /opt \
-    && git clone --branch="20210525" https://github.com/libyal/libevtx \
+    && git clone https://github.com/libyal/libevtx \
     && cd /opt/libevtx \ 
     && ./synclibs.sh \
     && ./autogen.sh \
@@ -71,9 +77,9 @@ RUN apt-get update && apt-get install -y wget gnupg \
     && make all install \
     && rm -rf /opt/libevtx \
     && echo "#####################################" \
-    && echo "Install libevt" \
+    && echo "Install libevt - master is th only working branch" \
     && cd /opt \
-    && git clone --branch="20210424" https://github.com/libyal/libevt \
+    && git clone https://github.com/libyal/libevt \
     && cd /opt/libevt \
     && ./synclibs.sh \
     && ./autogen.sh \
@@ -120,15 +126,15 @@ RUN apt-get update && apt-get install -y wget gnupg \
     && ./configure --prefix=/usr \
     && make all install \
     && rm -rf /opt/libmsiecf \
-    && echo "#####################################" \
-    && echo "Install rifiuti2" \
-    && cd /opt \
-    && git clone --branch="0.7.0" https://github.com/abelcheung/rifiuti2 \
-    && cd /opt/rifiuti2 \
-    && autoreconf -f -i -v \
-    && ./configure --prefix=/usr \
-    && make all install \
-    && rm -rf /opt/rifiuti2 \
+    #RUN echo "#####################################" \
+    #&& echo "Install rifiuti2 - rifiuti2 will be installed from packages due to gettext incompatibility" \
+    #&& cd /opt \
+    #&& git clone --branch="0.7.0" https://github.com/abelcheung/rifiuti2 \
+    #&& cd /opt/rifiuti2 \
+    #&& autoreconf -f -i -v \
+    #&& ./configure --prefix=/usr \
+    #&& make all install \
+    #&& rm -rf /opt/rifiuti2 
     && echo "#####################################" \
     && echo "Instal ImageMagik" \
     && cd /opt \
@@ -155,38 +161,46 @@ RUN apt-get update && apt-get install -y wget gnupg \
     && sed -i -e "s/indexTempOnSSD =.*/indexTempOnSSD = true/" /root/IPED/iped/LocalConfig.txt \
     && sed -i -e "s/outputOnSSD =.*/outputOnSSD = false/" /root/IPED/iped/LocalConfig.txt \
     && sed -i -e "s/numThreads =.*/numThreads = 8/" /root/IPED/iped/LocalConfig.txt \
-    && sed -i -e "s/#kffDb =.*/kffDb = \/mnt\/kff\/kff.db/" /root/IPED/iped/LocalConfig.txt \
-    && sed -i -e "s/#ledWkffPath =.*/ledWkffPath = \/mnt\/led\/wkff/" /root/IPED/iped/LocalConfig.txt \
-    && sed -i -e "s/#projectVicHashSetPath =.*/projectVicHashSetPath = \/mnt\/ProjectVic\/latest.json/" /root/IPED/iped/LocalConfig.txt \
-    && sed -i -e "s/#photoDNAHashDatabase =.*/photoDNAHashDatabase = \/mnt\/PhotoDNA\/PhotoDNAChildPornHashes.txt/" /root/IPED/iped/LocalConfig.txt \
-    && sed -i -e "s/#tskJarPath =.*/tskJarPath = \/usr\/share\/java\/sleuthkit-4.6.5.jar/" /root/IPED/iped/LocalConfig.txt \
+    && sed -i -e "s/#hashesDB =.*/hashesDB = \/mnt\/hashesdb\/iped-hashes.db/" /root/IPED/iped/LocalConfig.txt \
+    && sed -i -e "s/#tskJarPath =.*/tskJarPath = \/usr\/share\/java\/sleuthkit-4.11.1.jar/" /root/IPED/iped/LocalConfig.txt \
     && sed -i -e "s/mplayerPath =.*/mplayerPath = \/usr\/bin\/mplayer/" /root/IPED/iped/LocalConfig.txt \
     && echo "#####################################" \
     && echo "Configuring GraphConfig with our default values:BR" \
     && echo "#####################################" \
-    && sed -i -e "s/\"phone-region\":.*/\"phone-region\":\"BR\",/" /root/IPED/iped/profiles/*/*/conf/GraphConfig.json \
+    && sed -i -e "s/\"phone-region\":.*/\"phone-region\":\"BR\",/" /root/IPED/iped/conf/GraphConfig.json \
     && echo "#####################################" \
     && echo "Creating custom Profiles" \
     && echo "#####################################" \
     && echo "FastRobust: Disable IndexUnknownFiles and enable excludeKffIgnorable, externalParsers and robustImageReading" \
     && echo "General analysis cases where processing errors are occurring" \
     && echo "#####################################" \
-    && cp -r /root/IPED/iped/profiles/pt-BR/forensic /root/IPED/iped/profiles/pt-BR/fastrobust \
-    && cp -r /root/IPED/iped/profiles/en/forensic /root/IPED/iped/profiles/en/fastrobust \
-    && sed -i -e "s/indexUnknownFiles =.*/indexUnknownFiles = false/" /root/IPED/iped/profiles/*/fastrobust/IPEDConfig.txt \
-    && sed -i -e "s/excludeKffIgnorable =.*/excludeKffIgnorable = true/" /root/IPED/iped/profiles/*/fastrobust/IPEDConfig.txt \
-    && sed -i -e "s/robustImageReading =.*/robustImageReading = true/" /root/IPED/iped/profiles/*/fastrobust/conf/AdvancedConfig.txt \
-    && sed -i -e "s/enableExternalParsing =.*/enableExternalParsing = true/" /root/IPED/iped/profiles/*/fastrobust/conf/AdvancedConfig.txt \
+    && cp -r /root/IPED/iped/profiles/forensic /root/IPED/iped/profiles/fastrobust \    
+    && echo "parseUnknown = false" >> /root/IPED/iped/profiles/fastrobust/conf/ParsingTaskConfig.txt \
+    && echo "excludeKnown = true" >> /root/IPED/iped/profiles/fastrobust/conf/HashDBLookupConfig.txt \
+    && echo "robustImageReading = true" >> /root/IPED/iped/profiles/fastrobust/conf/FileSystemConfig.txt \
+    && echo "enableExternalParsing = true" >> /root/IPED/iped/profiles/fastrobust/conf/ParsingTaskConfig.txt \
     && echo "#####################################" \
     && echo "PedoRobust: enable excludeKffIgnorable, externalParsers and robustImageReading" \
     && echo "For child abuse cases where processing errors are occurring" \
     && echo "#####################################" \    
-    && cp -r /root/IPED/iped/profiles/pt-BR/pedo /root/IPED/iped/profiles/pt-BR/pedorobust \
-    && cp -r /root/IPED/iped/profiles/en/pedo /root/IPED/iped/profiles/en/pedorobust \
-    && sed -i -e "s/excludeKffIgnorable =.*/excludeKffIgnorable = true/" /root/IPED/iped/profiles/*/pedorobust/IPEDConfig.txt \
-    && sed -i -e "s/robustImageReading =.*/robustImageReading = true/" /root/IPED/iped/profiles/*/pedorobust/conf/AdvancedConfig.txt \
-    && sed -i -e "s/enableExternalParsing =.*/enableExternalParsing = true/" /root/IPED/iped/profiles/*/pedorobust/conf/AdvancedConfig.txt 
-
+    && cp -r /root/IPED/iped/profiles/pedo /root/IPED/iped/profiles/pedorobust \    
+    && echo "excludeKnown = true" >> /root/IPED/iped/profiles/pedorobust/conf/HashDBLookupConfig.txt \
+    && echo "robustImageReading = true" >> /root/IPED/iped/profiles/pedorobust/conf/FileSystemConfig.txt \
+    && echo "enableExternalParsing = true" >> /root/IPED/iped/profiles/pedorobust/conf/ParsingTaskConfig.txt \
+    && echo "#####################################" \
+    && echo "Installing PYTHON IPED Dependencies" \
+    && echo "#####################################" \
+    && update-alternatives --install /usr/bin/python python /usr/bin/python3.9 1 \
+    && python -m pip install pip --upgrade \
+    && python -m pip install cmake \
+    && python -m pip install numpy \
+    && python -m pip install jep==4.0.3 \
+                          keras \
+                          tensorflow \
+                          pillow \
+                          bs4 \
+                          face_recognition \
+                          huggingsound
 WORKDIR /root/IPED/iped
 COPY entrypoint.sh /
 ENTRYPOINT ["/entrypoint.sh"]
