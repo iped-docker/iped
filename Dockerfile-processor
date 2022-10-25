@@ -36,8 +36,7 @@ RUN apt-get update && apt-get install -y wget gnupg apt-utils software-propertie
       librsvg2-dev \
       libopenexr-dev \
       vim \
-      less\      
-      unzip \
+      less\
       libparse-win32registry-perl \
       tesseract-ocr tesseract-ocr-por tesseract-ocr-osd \
       graphviz \  
@@ -200,7 +199,14 @@ RUN apt-get update && apt-get install -y wget gnupg apt-utils software-propertie
                           pillow \
                           bs4 \
                           face_recognition \
-                          huggingsound
+                          huggingsound \
+    && echo "#####################################" \
+    && echo "Cleaning UP container " \
+    && echo "#####################################" \
+    && apt-get remove ant ant-optional python3-pip python3-dev build-essential \
+                      autoconf automake autopoint libtool pkg-config yasm gettext \
+    && apt-get autoremove -y \
+    && rm -rf /root/.cache/pip && apt-get clean && rm -rf /var/lib/apt/lists/*
 WORKDIR /root/IPED/iped
 COPY entrypoint.sh /
 ENTRYPOINT ["/entrypoint.sh"]

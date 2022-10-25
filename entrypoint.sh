@@ -61,48 +61,49 @@ done
 
 # IPEDConfig.txt variables (with iped_ prefix)
 for v in \
-        iped_enableHash
-        iped_enablePhotoDNA
-        iped_enableHashDBLookup
-        iped_enablePhotoDNALookup
-        iped_enableLedDie
-        iped_enableYahooNSFWDetection
-        iped_enableQRCode
-        iped_ignoreDuplicates
-        iped_exportFileProps
-        iped_processFileSignatures
-        iped_enableFileParsing
-        iped_expandContainers
-        iped_processEmbeddedDisks
-        iped_enableRegexSearch
-        iped_enableAutomaticExportFiles
-        iped_enableLanguageDetect
-        iped_enableNamedEntityRecogniton
-        iped_iped_enableGraphGeneration
-        iped_entropyTest
-        iped_enableSplitLargeBinary
-        iped_indexFileContents
-        iped_enableIndexToElasticSearch
-        iped_enableMinIO
-        iped_enableAudioTranscription
-        iped_enableCarving
-        iped_enableLedCarving
-        iped_enableKnownMetCarving
-        iped_enableImageThumbs
-        iped_enableImageSimilarity
-        iped_enableFaceRecognition
-        iped_enableVideoThumbs
-        iped_enableDocThumbs
-        iped_enableHTMLReport
+        iped_enableHash \
+        iped_enablePhotoDNA \
+        iped_enableHashDBLookup \
+        iped_enablePhotoDNALookup \
+        iped_enableLedDie \
+        iped_enableYahooNSFWDetection \
+        iped_enableQRCode \
+        iped_ignoreDuplicates \
+        iped_exportFileProps \
+        iped_processFileSignatures \
+        iped_enableFileParsing \
+        iped_expandContainers \
+        iped_processEmbeddedDisks \
+        iped_enableRegexSearch \
+        iped_enableAutomaticExportFiles \
+        iped_enableLanguageDetect \
+        iped_enableNamedEntityRecogniton \
+        iped_iped_enableGraphGeneration \
+        iped_entropyTest \
+        iped_enableSplitLargeBinary \
+        iped_indexFileContents \
+        iped_enableIndexToElasticSearch \
+        iped_enableMinIO \
+        iped_enableAudioTranscription \
+        iped_enableCarving \
+        iped_enableLedCarving \
+        iped_enableKnownMetCarving \
+        iped_enableImageThumbs \
+        iped_enableImageSimilarity \
+        iped_enableFaceRecognition \
+        iped_enableVideoThumbs \
+        iped_enableDocThumbs \
+        iped_enableHTMLReport 
 do
         echo ${v}=${!v}
         if [ "${!v}" ]
         then
                 sed -i -e "s|.*${v#iped_} =.*|${v#iped_} = ${!v}|" /root/IPED/iped/IPEDqConfig.txt
+        fi
 done
 
 # IPED variables (with iped_ prefix)
-for v in $( for file in $( find . -type f | grep Config.txt | grep -v -i regex); do grep -v "#" $file | cut -d "=" -f 1 | awk '{ if ($0 != "\r" ) {print "iped_"$0;} }'; done )        
+for v in $( for file in $( find . -type f | grep Config.txt | grep -v -i regex); do grep -v "#" $file | grep -v "\." | cut -d "=" -f 1 | awk '{ if ($0 != "\r" ) {print "iped_"$0;} }'; done )        
 do
         echo ${v}=${!v}
         if [ "${!v}" ]
