@@ -34,10 +34,7 @@ sed -i -e "s/enableHashDBLookup =.*/enableHashDBLookup = $HASHESDB/" /root/IPED/
 sed -i -e "s/enableLedCarving =.*/enableLedCarving = $HASHESDB/" /root/IPED/iped/IPEDConfig.txt
 
 
-# Custom flags to be used on the fly
-# Added by Atila on centos8 branch
-# recently added on master by Aristeu
-
+# Custom flags to be used to modify configuration on runtime
 # LocalConfig.txt variables (with iped_ prefix)
 for v in \
         iped_locale \
