@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 PHOTODNA=false
-HASHDB=false
+HASHESDB=false
 COUNTRY='BR'
 
 
@@ -17,21 +17,20 @@ then
         PHOTODNA=true
 fi
 
-if [ -d /mnt/hashdb ] && [ ! -z "$(ls /mnt/hashdb)" ]
+if [ -d /mnt/hashesdb ] && [ ! -z "$(ls /mnt/hashesdb)" ]
 then
-        HASHDB=true
+        HASHESDB=true
 fi
 
 #
 # Note: Changes in the root IPEDConfig.txt are avoided in the new IPED Version
 # when the locale variable is defined.
 # 
-echo Setting PhotoDNA related flags
+echo Setting PhotoDNA related flags...
 sed -i -e "s/enablePhotoDNA =.*/enablePhotoDNA = $PHOTODNA/" /root/IPED/iped/IPEDConfig.txt
 
-echo Setting LED related flags
-sed -i -e "s/enableHashDBLookup =.*/enableHashDBLookup = $HASHDB/" /root/IPED/iped/IPEDConfig.txt
-
+echo Setting HASHDB related flags...
+sed -i -e "s/enableHashDBLookup =.*/enableHashDBLookup = $HASHESDB/" /root/IPED/iped/IPEDConfig.txt
 sed -i -e "s/enableLedCarving =.*/enableLedCarving = $HASHESDB/" /root/IPED/iped/IPEDConfig.txt
 
 
@@ -78,7 +77,7 @@ for v in \
         iped_enableAutomaticExportFiles \
         iped_enableLanguageDetect \
         iped_enableNamedEntityRecogniton \
-        iped_iped_enableGraphGeneration \
+        iped_enableGraphGeneration \
         iped_entropyTest \
         iped_enableSplitLargeBinary \
         iped_indexFileContents \
@@ -98,17 +97,17 @@ do
         echo ${v}=${!v}
         if [ "${!v}" ]
         then
-                sed -i -e "s|.*${v#iped_} =.*|${v#iped_} = ${!v}|" /root/IPED/iped/IPEDqConfig.txt
+                sed -i -e "s|.*${v#iped_} =.*|${v#iped_} = ${!v}|" /root/IPED/iped/IPEDConfig.txt
         fi
 done
 
-# IPED variables (with iped_ prefix)
-for v in $( for file in $( find . -type f | grep Config.txt | grep -v -i regex); do grep -v "#" $file | grep -v "\." | cut -d "=" -f 1 | awk '{ if ($0 != "\r" ) {print "iped_"$0;} }'; done )        
+# IPED variables setting on the config dir (with iped_ prefix)
+for v in $( for file in $( find /root/IPED/iped/conf/ -type f | grep Config.txt | grep -v -i regex); do grep -v "#" $file | grep -v "\." | grep -v "^host ="  | grep -v "^port = " | cut -d "=" -f 1 | sort -u | awk '{ if ($0 != "\r" ) {print "iped_"$0;} }'; done )        
 do
         echo ${v}=${!v}
         if [ "${!v}" ]
         then
-                find /root/IPED/iped/config/ -type f | grep Config.txt | grep -v -i regex | xargs sed -i -e "s|.*${v#iped_} =.*|${v#iped_} = ${!v}|" 
+                find /root/IPED/iped/conf/ -type f | grep Config.txt | grep -v -i regex | xargs sed -i -e "s|.*${v#iped_} =.*|${v#iped_} = ${!v}|" 
         fi
 done
 
