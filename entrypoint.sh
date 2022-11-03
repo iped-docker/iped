@@ -28,6 +28,7 @@ fi
 # 
 echo Setting PhotoDNA related flags...
 sed -i -e "s/enablePhotoDNA =.*/enablePhotoDNA = $PHOTODNA/" /root/IPED/iped/IPEDConfig.txt
+sed -i -e "s/enablePhotoDNALookup =.*/enablePhotoDNALookup = $PHOTODNA/" /root/IPED/iped/IPEDConfig.txt
 
 echo Setting HASHDB related flags...
 sed -i -e "s/enableHashDBLookup =.*/enableHashDBLookup = $HASHESDB/" /root/IPED/iped/IPEDConfig.txt
