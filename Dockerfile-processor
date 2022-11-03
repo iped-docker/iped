@@ -5,6 +5,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
 ENV SAL_USE_VCLPLUGIN='gtk'
 ENV JAVA_HOME=/usr/lib/jvm/bellsoft-java11-full-amd64/
+ENV LD_LIBRARY_PATH=/usr/local/lib/python3.9/dist-packages/jep/
 ENV IPED_VERSION=4.0.6
 
 WORKDIR /root/pkgs
@@ -208,7 +209,6 @@ RUN apt-get update && apt-get install -y wget gnupg apt-utils software-propertie
     && apt-get autoremove -y \
     && rm -rf /root/.cache/pip && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-ENV LD_LIBRARY_PATH=/usr/local/lib/python3.9/dist-packages/jep/
 WORKDIR /root/IPED/iped
 COPY entrypoint.sh /
 ENTRYPOINT ["/entrypoint.sh"]
