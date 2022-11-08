@@ -121,8 +121,9 @@ done
 # IPED variables setting on the config dir (with iped_ prefix)
 for v in $( for file in $( find /root/IPED/iped/conf/ -type f | grep Config.txt \
             | grep -v -i regex); do grep -v "#" $file | grep -v "\." | grep -v "^host =" \
-            | grep -v "^port = " | cut -d "=" -f 1 | sort -u \ 
-            | awk '{ if ($0 != "\r" ) {print "iped_"$0;} }'; done )        
+            | grep -v "^port = " | cut -d "=" -f 1 | sort -u \
+            | awk '{ if ($0 != "\r" ) {print "iped_"$0;} }';\
+            done )        
 do
         echo ${v}=${!v}
         if [ "${!v}" ]
