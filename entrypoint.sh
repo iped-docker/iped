@@ -12,12 +12,12 @@ then
         cd /root/IPED/plugins/ && find /mnt/plugins -type f | xargs ln -s 
 fi
 
-if [ ! -z "$(ls /root/IPED/plugins/ | grep -i photodna)" ] 
+if [ ! -z "$(ls /root/IPED/plugins/ | grep -i photodna | grep -i '\.jar$')" ] 
 then
         PHOTODNA=true
 fi
 
-if [ -d /mnt/hashesdb ] && [ ! -z "$(ls /mnt/hashesdb)" ]
+if [ -d /mnt/hashesdb ] && [ ! -z "$(ls /mnt/hashesdb | grep -i '\.db$')" ]
 then
         HASHESDB=true
 fi
