@@ -17,26 +17,41 @@ fi
 if [ ! -z "$(ls /root/IPED/plugins/ | grep -i photodna | grep -i '\.jar$' )" ]
 then
         PHOTODNA=true
-fi
 
-if [ -d /mnt/hashesdb ] && [ ! -z "$(ls /mnt/hashesdb | grep -i '\.db$' )" ]
-then
-        HASHESDB=true
-fi
-
-#
-# Note: Changes in the root IPEDConfig.txt are avoided in the new IPED Version
-# when the locale variable is defined.
-# 
-echo -n Setting PhotoDNA related flags to $PHOTODNA...
-sed -i -e "s/enablePhotoDNA =.*/enablePhotoDNA = $PHOTODNA/" /root/IPED/iped/IPEDConfig.txt && \
+        echo -n Setting PhotoDNA related flags to $PHOTODNA... && \
+        sed -i -e "s/enablePhotoDNA =.*/enablePhotoDNA = $PHOTODNA/" /root/IPED/iped/IPEDConfig.txt && \
         sed -i -e "s/enablePhotoDNALookup =.*/enablePhotoDNALookup = $PHOTODNA/" /root/IPED/iped/IPEDConfig.txt && \
         echo Done. || echo Failed.
+fi
 
-echo -n Setting HASHDB related flags to $HASHESDB...
-sed -i -e "s/enableHashDBLookup =.*/enableHashDBLookup = $HASHESDB/" /root/IPED/iped/IPEDConfig.txt && \
-        sed -i -e "s/enableLedCarving =.*/enableLedCarving = $HASHESDB/" /root/IPED/iped/IPEDConfig.txt && \
-        echo Done. || echo Failed.
+
+if [ -d /mnt/hashesdb ] && [ ! -z "$(ls /mnt/hashesdb | grep -i 'iped-hashes.db$' )" ]
+then
+        HASHESDB=true         
+
+        echo -n Setting HASHDB related flags to $HASHESDB... && \
+                sed -i -e "s/enableHashDBLookup =.*/enableHashDBLookup = $HASHESDB/" /root/IPED/iped/IPEDConfig.txt && \
+                sed -i -e "s/enableLedCarving =.*/enableLedCarving = $HASHESDB/" /root/IPED/iped/IPEDConfig.txt && \
+                echo Done. || echo Failed.
+
+        # check if HASHESDBONTMP is setted, if it is, copy it to tmp dir
+        # can be used in cases that hashesdb in on the network and the only way
+        # to accelerate things is to put it on tmpdir, that is mandatory to be local
+        if [ "$HASHESDBONTMP" == "true" ] 
+        then
+                echo -n "Copying iped-hashes.db to /mnt/ipedtmp..." && \
+                        cp --update /mnt/hashesdb/iped-hashes.db /mnt/ipedtmp/ && echo -n OK... && \
+                        echo "Updating config files ..." && \
+                        sed -i -e "s/hashesDB =.*/hashesDB = \/mnt\/ipedtmp\/iped-hashes.db/" /root/IPED/iped/LocalConfig.txt && \
+                        echo OK. || -n echo Failed.
+
+        fi
+
+fi
+
+
+
+
 
 
 # Custom flags to be used to modify configuration on runtime
