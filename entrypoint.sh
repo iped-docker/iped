@@ -12,7 +12,7 @@ then
         cd /root/IPED/plugins/ && find /mnt/plugins -type f | xargs ln -s 
 fi
 
-if [ ! -z "$(find /root/IPED/plugins/ -type f | grep -i photodna)" ] 
+if [ ! -z "$(ls /root/IPED/plugins/ | grep -i photodna)" ] 
 then
         PHOTODNA=true
 fi
@@ -26,11 +26,11 @@ fi
 # Note: Changes in the root IPEDConfig.txt are avoided in the new IPED Version
 # when the locale variable is defined.
 # 
-echo Setting PhotoDNA related flags...
+echo Setting PhotoDNA related flags to $PHOTODNA...
 sed -i -e "s/enablePhotoDNA =.*/enablePhotoDNA = $PHOTODNA/" /root/IPED/iped/IPEDConfig.txt
 sed -i -e "s/enablePhotoDNALookup =.*/enablePhotoDNALookup = $PHOTODNA/" /root/IPED/iped/IPEDConfig.txt
 
-echo Setting HASHDB related flags...
+echo Setting HASHDB related flags to $HASHESDB...
 sed -i -e "s/enableHashDBLookup =.*/enableHashDBLookup = $HASHESDB/" /root/IPED/iped/IPEDConfig.txt
 sed -i -e "s/enableLedCarving =.*/enableLedCarving = $HASHESDB/" /root/IPED/iped/IPEDConfig.txt
 
