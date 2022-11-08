@@ -6,18 +6,20 @@ COUNTRY='BR'
 
 
 
-
+echo -n Populating IPED plugins directory with extra plugins...
 if [ -d /mnt/plugins ]
 then
-        cd /root/IPED/plugins/ && find /mnt/plugins -type f | xargs ln -s 
+        cd /root/IPED/plugins/ && find /mnt/plugins -type f \
+        | xargs -I% sh -c 'ln -s "$@" > /dev/null 2>&1 && echo -n $@[OK]...|| echo -n $@[FAILED]...' _ %
+        echo "Done."
 fi
 
-if [ ! -z "$(ls /root/IPED/plugins/ | grep -i photodna | grep -i '\.jar$')" ] 
+if [ ! -z "$(ls /root/IPED/plugins/ | grep -i photodna | grep -i '\.jar$' )" ]
 then
         PHOTODNA=true
 fi
 
-if [ -d /mnt/hashesdb ] && [ ! -z "$(ls /mnt/hashesdb | grep -i '\.db$')" ]
+if [ -d /mnt/hashesdb ] && [ ! -z "$(ls /mnt/hashesdb | grep -i '\.db$' )" ]
 then
         HASHESDB=true
 fi
@@ -26,13 +28,15 @@ fi
 # Note: Changes in the root IPEDConfig.txt are avoided in the new IPED Version
 # when the locale variable is defined.
 # 
-echo Setting PhotoDNA related flags to $PHOTODNA...
-sed -i -e "s/enablePhotoDNA =.*/enablePhotoDNA = $PHOTODNA/" /root/IPED/iped/IPEDConfig.txt
-sed -i -e "s/enablePhotoDNALookup =.*/enablePhotoDNALookup = $PHOTODNA/" /root/IPED/iped/IPEDConfig.txt
+echo -n Setting PhotoDNA related flags to $PHOTODNA...
+sed -i -e "s/enablePhotoDNA =.*/enablePhotoDNA = $PHOTODNA/" /root/IPED/iped/IPEDConfig.txt && \
+sed -i -e "s/enablePhotoDNALookup =.*/enablePhotoDNALookup = $PHOTODNA/" /root/IPED/iped/IPEDConfig.txt && \
+echo Done. || echo Failed.
 
-echo Setting HASHDB related flags to $HASHESDB...
-sed -i -e "s/enableHashDBLookup =.*/enableHashDBLookup = $HASHESDB/" /root/IPED/iped/IPEDConfig.txt
-sed -i -e "s/enableLedCarving =.*/enableLedCarving = $HASHESDB/" /root/IPED/iped/IPEDConfig.txt
+echo -n Setting HASHDB related flags to $HASHESDB...
+sed -i -e "s/enableHashDBLookup =.*/enableHashDBLookup = $HASHESDB/" /root/IPED/iped/IPEDConfig.txt && \
+sed -i -e "s/enableLedCarving =.*/enableLedCarving = $HASHESDB/" /root/IPED/iped/IPEDConfig.txt && \
+echo Done. || echo Failed.
 
 
 # Custom flags to be used to modify configuration on runtime
