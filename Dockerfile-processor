@@ -204,8 +204,8 @@ RUN apt-get update && apt-get install -y wget gnupg apt-utils software-propertie
     && echo "#####################################" \
     && echo "Cleaning UP container " \
     && echo "#####################################" \
-    && apt-get remove -y ant ant-optional python3-pip python3-dev build-essential \
-                      autoconf automake autopoint libtool pkg-config yasm gettext \
+    # && apt-get remove -y ant ant-optional python3-pip python3-dev build-essential \
+    #                   autoconf automake autopoint libtool pkg-config yasm gettext \
     && apt-get autoremove -y \
     && rm -rf /root/.cache/pip && apt-get clean && rm -rf /var/lib/apt/lists/*
 
