@@ -10,8 +10,8 @@ echo -n Populating IPED plugins directory with extra plugins...
 if [ -d /mnt/plugins ]
 then
         cd /root/IPED/plugins/ && find /mnt/plugins -type f \
-        | xargs -I% sh -c 'ln -s "$@" > /dev/null 2>&1 && echo -n $@[OK]...|| echo -n $@[FAILED]...' _ %
-        echo "Done."
+                | xargs -I% sh -c 'ln -s "$@" > /dev/null 2>&1 && echo -n $@[OK]...|| echo -n $@[FAILED]...' _ %
+                echo "Done."
 fi
 
 if [ ! -z "$(ls /root/IPED/plugins/ | grep -i photodna | grep -i '\.jar$' )" ]
@@ -30,13 +30,13 @@ fi
 # 
 echo -n Setting PhotoDNA related flags to $PHOTODNA...
 sed -i -e "s/enablePhotoDNA =.*/enablePhotoDNA = $PHOTODNA/" /root/IPED/iped/IPEDConfig.txt && \
-sed -i -e "s/enablePhotoDNALookup =.*/enablePhotoDNALookup = $PHOTODNA/" /root/IPED/iped/IPEDConfig.txt && \
-echo Done. || echo Failed.
+        sed -i -e "s/enablePhotoDNALookup =.*/enablePhotoDNALookup = $PHOTODNA/" /root/IPED/iped/IPEDConfig.txt && \
+        echo Done. || echo Failed.
 
 echo -n Setting HASHDB related flags to $HASHESDB...
 sed -i -e "s/enableHashDBLookup =.*/enableHashDBLookup = $HASHESDB/" /root/IPED/iped/IPEDConfig.txt && \
-sed -i -e "s/enableLedCarving =.*/enableLedCarving = $HASHESDB/" /root/IPED/iped/IPEDConfig.txt && \
-echo Done. || echo Failed.
+        sed -i -e "s/enableLedCarving =.*/enableLedCarving = $HASHESDB/" /root/IPED/iped/IPEDConfig.txt && \
+        echo Done. || echo Failed.
 
 
 # Custom flags to be used to modify configuration on runtime
@@ -104,7 +104,10 @@ do
 done
 
 # IPED variables setting on the config dir (with iped_ prefix)
-for v in $( for file in $( find /root/IPED/iped/conf/ -type f | grep Config.txt | grep -v -i regex); do grep -v "#" $file | grep -v "\." | grep -v "^host ="  | grep -v "^port = " | cut -d "=" -f 1 | sort -u | awk '{ if ($0 != "\r" ) {print "iped_"$0;} }'; done )        
+for v in $( for file in $( find /root/IPED/iped/conf/ -type f | grep Config.txt \
+            | grep -v -i regex); do grep -v "#" $file | grep -v "\." | grep -v "^host =" \
+            | grep -v "^port = " | cut -d "=" -f 1 | sort -u \ 
+            | awk '{ if ($0 != "\r" ) {print "iped_"$0;} }'; done )        
 do
         echo ${v}=${!v}
         if [ "${!v}" ]
