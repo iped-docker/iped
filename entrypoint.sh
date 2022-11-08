@@ -30,9 +30,9 @@ then
         HASHESDB=true         
 
         echo -n Setting HASHDB related flags to $HASHESDB... && \
-                sed -i -e "s/enableHashDBLookup =.*/enableHashDBLookup = $HASHESDB/" /root/IPED/iped/IPEDConfig.txt && \
-                sed -i -e "s/enableLedCarving =.*/enableLedCarving = $HASHESDB/" /root/IPED/iped/IPEDConfig.txt && \
-                echo Done. || echo Failed.
+        sed -i -e "s/enableHashDBLookup =.*/enableHashDBLookup = $HASHESDB/" /root/IPED/iped/IPEDConfig.txt && \
+        sed -i -e "s/enableLedCarving =.*/enableLedCarving = $HASHESDB/" /root/IPED/iped/IPEDConfig.txt && \
+        echo Done. || echo Failed.
 
         # check if HASHESDBONTMP is setted, if it is, copy it to tmp dir
         # can be used in cases that hashesdb in on the network and the only way
@@ -40,10 +40,10 @@ then
         if [ "$HASHESDBONTMP" == "true" ] 
         then
                 echo -n "Copying iped-hashes.db to /mnt/ipedtmp..." && \
-                        cp --update /mnt/hashesdb/iped-hashes.db /mnt/ipedtmp/ && echo -n OK... && \
-                        echo "Updating config files ..." && \
-                        sed -i -e "s/hashesDB =.*/hashesDB = \/mnt\/ipedtmp\/iped-hashes.db/" /root/IPED/iped/LocalConfig.txt && \
-                        echo OK. || -n echo Failed.
+                cp --update /mnt/hashesdb/iped-hashes.db /mnt/ipedtmp/ && echo -n OK... && \
+                echo "Updating config files ..." && \
+                sed -i -e "s/hashesDB =.*/hashesDB = \/mnt\/ipedtmp\/iped-hashes.db/" /root/IPED/iped/LocalConfig.txt && \
+                echo OK. || -n echo Failed.
 
         fi
 
