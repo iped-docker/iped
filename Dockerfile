@@ -141,8 +141,8 @@ RUN sed -i 's/geteuid/getppid/' /usr/bin/vlc
 #RUN sed -i 's/^assistive_/#assistive_/' /etc/java-8-openjdk/accessibility.properties
 
 # For libreoffice java plugin use
-ENV SAL_USE_VCLPLUGIN="gtk"
+# ENV SAL_USE_VCLPLUGIN="gtk"
 # For gllibs conflict resolution
-ENV LD_LIBRARY_PATH="/usr/local/cuda/lib64"
+# ENV LD_LIBRARY_PATH="/usr/local/cuda/lib64"
 
 WORKDIR /root/IPED/iped
