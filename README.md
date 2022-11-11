@@ -107,6 +107,8 @@ dkr ipeddocker/iped
 ```
 ## Executing the containers
 
+It's strongly recommended to use the source directories of /mnt/ipedtmp and /mnt/hashesdb volumes on SSD disks!!!
+
 ### IPED docker (Processing)
 
 ```
