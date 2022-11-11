@@ -10,11 +10,10 @@ Install Docker version 19.03.5 and above if you want to use GPU's.
 ##### FAST TIP Num.2: If you just want to process the evidences with latest docker (again, without building or customizing it), in text mode and without analysis interface on linux (graphical analysis of the resulting case can be made afterwards in another computer for example, running Windows or Linux), use the following command:
 
 ```
-sudo docker run --rm -it -v /mnt/evidences:/evidences \ 
+sudo docker run --rm -it -v /mnt/evidences:/evidences \
                  -v /mnt/ipedtmp:/mnt/ipedtmp \
-                 -v /mnt/plugins:/mnt/plugins \                 
-                 -v /mnt/ipedtmp:/mnt/ipedtmp \
-                 -v /mnt/hashdb:/mnt/hashdb \           
+                 -v /mnt/plugins:/mnt/plugins \
+                 -v /mnt/hashdb:/mnt/hashdb \
                    ipeddocker/iped:processor java -jar iped.jar --nogui \
                  -d /evidences/test/test.dd \
                  -o /evidences/test/iped-output 
