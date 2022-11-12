@@ -29,11 +29,36 @@ sudo docker run --rm -it -v /mnt/evidences:/evidences \
 ```
 Of course, in both cases you'll have to change the volumes to reflect your environment.
 
-##### FAST TIP Num.3: Help can be achieved with the command:
+##### FAST TIP Num.3: Changing IPEDDOCKER Locale and other settings
+It's possible to change IPED settings using environment variables with the iped_ prefix (a list of suported variables is at the end of this page). 
+Here we can see an example of changing the IPED locale for German, as enabling NER, Audio Transcription and OCR for the locations.
+
+```
+docker run --rm -it -e TZ="Europe/Berlin" -e iped_locale="de-DE" \
+                 -e iped_enableOCR="true" -e iped_OCRLanguage="deu+frk" -e iped_phone_region="DE" \
+                 -e iped_enableNamedEntityRecogniton="true" \
+                 -e iped_enableAudioTranscription="true" \
+                 -v /mnt/evidences:/evidences \
+                 -v /mnt/ipedtmp:/mnt/ipedtmp \
+                 -v /mnt/plugins:/mnt/plugins \
+                 -v /mnt/Downloaded_Hashesdb:/mnt/hashesdb \
+                 -v /mnt/Downloaded_Vosk_Model:/root/IPED/iped/models/vosk/de-DE
+                 -v /conf/YourNERConfig.txt:/root/IPED/iped/conf/NamedEntityRecognitionConfig.txt
+                   ipeddocker/iped:processor_4.0.6_3 java -jar iped.jar --nogui \
+                 -d /evidences/test/test.dd \
+                 -o /evidences/test/iped-output
+
+```
+Extra plugins (other than the default IPED plugins) must be inserted as a volume on /mnt/plugins, so that entrypoint.sh will add them to the correct folder during the container run.  
+Models and hash bases are NOT inserted on the docker (that only carry applications for the container size sake), and they must be inserted via volumes. So you have to download your desired model and insert it as volume.
+It's suggested to insert NER config through volume also. 
+
+
+##### FAST TIP Num.4: Help can be achieved with the command:
 ```
 sudo docker run --rm -it ipeddocker/iped:processor java -jar iped.jar --help
 ```
-##### FAST TIP Num.4: About the container "flavors"
+##### FAST TIP Num.5: About the container "flavors"
 
        - ipeddocker/iped - Full processing and analysis capable environment (larger container)
 
