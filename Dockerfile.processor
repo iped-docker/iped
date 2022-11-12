@@ -202,7 +202,7 @@ RUN apt-get update && apt-get install -y wget gnupg apt-utils software-propertie
                           face_recognition \
                           huggingsound \
     && echo "#####################################" \
-    && echo "Cleaning UP container " \
+    && echo "Cleaning UP the container " \
     && echo "#####################################" \
     && apt-get remove -y ant ant-optional python3-pip build-essential \
                        autoconf automake autopoint libtool pkg-config yasm gettext \
