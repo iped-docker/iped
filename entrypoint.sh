@@ -40,7 +40,7 @@ then
         if [ "$HASHESDBONTMP" == "true" ] 
         then
                 echo -n "Copying iped-hashes.db to /mnt/ipedtmp..." && \
-                cp --update /mnt/hashesdb/iped-hashes.db /mnt/ipedtmp/ && echo -n OK... && \
+                cp -p --update /mnt/hashesdb/iped-hashes.db /mnt/ipedtmp/ && echo -n OK... && \
                 echo -n "Updating config..." && \
                 sed -i -e "s/hashesDB =.*/hashesDB = \/mnt\/ipedtmp\/iped-hashes.db/" /root/IPED/iped/LocalConfig.txt && \
                 echo OK. || -n echo Failed.
