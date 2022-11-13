@@ -135,6 +135,7 @@ RUN apt-get update && apt-get install -y wget gnupg apt-utils software-propertie
     #&& ./configure --prefix=/usr \
     #&& make all install \
     #&& rm -rf /opt/rifiuti2 
+    && update-alternatives --install /usr/bin/rifiuti rifiuti /usr/bin/rifiuti2 1 \
     && echo "#####################################" \
     && echo "Instal ImageMagik" \
     && cd /opt \

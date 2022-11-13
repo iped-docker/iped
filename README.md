@@ -44,7 +44,7 @@ docker run --rm -it -e TZ="Europe/Berlin" -e iped_locale="de-DE" \
                  -v /mnt/Downloaded_Hashesdb:/mnt/hashesdb \
                  -v /mnt/Downloaded_Vosk_Model:/root/IPED/iped/models/vosk/de-DE
                  -v /conf/YourNERConfig.txt:/root/IPED/iped/conf/NamedEntityRecognitionConfig.txt
-                   ipeddocker/iped:processor_4.0.6_3 java -jar iped.jar --nogui \
+                   ipeddocker/iped:processor java -jar iped.jar --nogui \
                  -d /evidences/test/test.dd \
                  -o /evidences/test/iped-output
 
