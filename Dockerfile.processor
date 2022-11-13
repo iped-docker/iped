@@ -36,6 +36,7 @@ RUN apt-get update && apt-get install -y wget gnupg apt-utils software-propertie
       libwebp-dev \
       librsvg2-dev \
       libopenexr-dev \
+      libatomic1 \
       vim \
       less\
       libparse-win32registry-perl \
