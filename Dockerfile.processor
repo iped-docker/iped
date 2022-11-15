@@ -16,7 +16,7 @@ RUN apt-get update && apt-get install -y wget gnupg apt-utils software-propertie
     && apt-get update && apt-get install -y \
       git \
       build-essential \
-      libafflib-dev zlib1g-dev libewf-dev unzip patch libssl-dev \
+      libafflib-dev zlib1g-dev libewf-dev unzip patch \
       autoconf automake autopoint libtool pkg-config yasm gettext wget \
       libaa1-dev libasound2-dev libcaca-dev libcdparanoia-dev libdca-dev \
       libdirectfb-dev libenca-dev libfontconfig1-dev libfreetype6-dev \
@@ -48,7 +48,15 @@ RUN apt-get update && apt-get install -y wget gnupg apt-utils software-propertie
       python3.9 python3.9-distutils python3-pip python3.9-dev \
     && apt-get download ant && ls *.deb | awk '{system("dpkg-deb -x "$1" /")}' && apt-get install -y ant-optional \ 
     && echo "#####################################" \
+    && echo " Installing LIBSSL v1.1 to be used with sleuthkit IPED patch" \
+    && echo "#####################################" \
+    && echo "deb http://security.ubuntu.com/ubuntu focal-security main" | tee /etc/apt/sources.list.d/focal-security.list \
+    && echo apt-get update \
+    && echo apt-get install -y libssl-dev=1.1.1f-1ubuntu2.16 \
+    && rm /etc/apt/sources.list.d/focal-security.list && apt-get update \
+    && echo "#####################################" \
     && echo " Installing Sleuthkit with IPED patch" \
+    && echo "#####################################" \
     && cd /opt \
     && git clone -b release-4.11.1_iped_patch https://github.com/sepinf-inc/sleuthkit \
     && cd /opt/sleuthkit/ \
@@ -58,6 +66,7 @@ RUN apt-get update && apt-get install -y wget gnupg apt-utils software-propertie
     && rm -rf /opt/sleuthkit/ \
     && echo "#####################################" \
     && echo "The libagdb only have branch master" \
+    && echo "#####################################" \
     && cd /opt \
     && git clone https://github.com/libyal/libagdb.git \
     && cd /opt/libagdb \
@@ -68,6 +77,7 @@ RUN apt-get update && apt-get install -y wget gnupg apt-utils software-propertie
     && rm -rf /opt/libagdb \
     && echo "#####################################" \
     && echo "install libevtx - master is th only working branch" \
+    && echo "#####################################" \
     && cd /opt \
     && git clone https://github.com/libyal/libevtx \
     && cd /opt/libevtx \ 
@@ -78,6 +88,7 @@ RUN apt-get update && apt-get install -y wget gnupg apt-utils software-propertie
     && rm -rf /opt/libevtx \
     && echo "#####################################" \
     && echo "Install libevt - master is th only working branch" \
+    && echo "#####################################" \
     && cd /opt \
     && git clone https://github.com/libyal/libevt \
     && cd /opt/libevt \
@@ -88,6 +99,7 @@ RUN apt-get update && apt-get install -y wget gnupg apt-utils software-propertie
     && rm -rf /opt/libevt \
     && echo "#####################################" \
     && echo "Install libscca" \
+    && echo "#####################################" \
     && cd /opt \
     && git clone --branch="20210419" https://github.com/libyal/libscca \
     && cd /opt/libscca \
@@ -98,6 +110,7 @@ RUN apt-get update && apt-get install -y wget gnupg apt-utils software-propertie
     && rm -rf /opt/libscca \
     && echo "#####################################" \
     && echo "Install libesedb" \
+    && echo "#####################################" \
     && cd /opt \
     && git clone --branch="20210424" https://github.com/libyal/libesedb \
     && cd /opt/libesedb \
@@ -108,6 +121,7 @@ RUN apt-get update && apt-get install -y wget gnupg apt-utils software-propertie
     && rm -rf /opt/libesedb \
     && echo "#####################################" \
     && echo "Install libpff without branch also, because latest release got problems" \
+    && echo "#####################################" \
     && cd /opt \
     && git clone https://github.com/libyal/libpff \
     && cd /opt/libpff \
@@ -118,6 +132,7 @@ RUN apt-get update && apt-get install -y wget gnupg apt-utils software-propertie
     && rm -rf /opt/libpff \
     && echo "#####################################" \
     && echo "Install libmsiecf" \
+    && echo "#####################################" \
     && cd /opt \
     && git clone --branch="20210420" https://github.com/libyal/libmsiecf \
     && cd /opt/libmsiecf \
@@ -126,8 +141,10 @@ RUN apt-get update && apt-get install -y wget gnupg apt-utils software-propertie
     && ./configure --prefix=/usr \
     && make all install \
     && rm -rf /opt/libmsiecf \
-    #RUN echo "#####################################" \
-    #&& echo "Install rifiuti2 - rifiuti2 will be installed from packages due to gettext incompatibility" \
+    && echo "#####################################" \
+    && echo "rifiuti2 - rifiuti2 was be installed from packages due to gettext incompatibility" \
+    && echo "Just creating rifiuti link" \
+    && echo "#####################################" \
     #&& cd /opt \
     #&& git clone --branch="0.7.0" https://github.com/abelcheung/rifiuti2 \
     #&& cd /opt/rifiuti2 \
@@ -138,6 +155,7 @@ RUN apt-get update && apt-get install -y wget gnupg apt-utils software-propertie
     && update-alternatives --install /usr/bin/rifiuti rifiuti /usr/bin/rifiuti2 1 \
     && echo "#####################################" \
     && echo "Instal ImageMagik" \
+    && echo "#####################################" \
     && cd /opt \
     && git clone --branch "7.0.10-61" https://github.com/ImageMagick/ImageMagick \
     && cd /opt/ImageMagick \
@@ -146,9 +164,11 @@ RUN apt-get update && apt-get install -y wget gnupg apt-utils software-propertie
     && rm -rf /opt/ImageMagick \
     && echo "#####################################" \
     && echo "Creating mplayer config" \
+    && echo "#####################################" \
     && mplayer \
     && echo "#####################################" \
     && echo "Installing IPED" \
+    && echo "#####################################" \
     && mkdir -p /root/IPED/ && cd /root/IPED/ \
     && wget --progress=bar:force https://github.com/sepinf-inc/IPED/releases/download/$IPED_VERSION/IPED-${IPED_VERSION}_and_plugins.zip -O iped.zip \
     && unzip iped.zip && rm iped.zip && ln -s iped-$IPED_VERSION iped \
