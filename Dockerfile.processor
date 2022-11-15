@@ -51,8 +51,8 @@ RUN apt-get update && apt-get install -y wget gnupg apt-utils software-propertie
     && echo " Installing LIBSSL v1.1 to be used with sleuthkit IPED patch" \
     && echo "#####################################" \
     && echo "deb http://security.ubuntu.com/ubuntu focal-security main" | tee /etc/apt/sources.list.d/focal-security.list \
-    && echo apt-get update \
-    && echo apt-get install -y libssl-dev=1.1.1f-1ubuntu2.16 \
+    && apt-get update \
+    && apt-get install -y libssl-dev=1.1.1f-1ubuntu2.16 \
     && rm /etc/apt/sources.list.d/focal-security.list && apt-get update \
     && echo "#####################################" \
     && echo " Installing Sleuthkit with IPED patch" \
