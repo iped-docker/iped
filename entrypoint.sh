@@ -50,10 +50,6 @@ then
 fi
 
 
-
-
-
-
 # Custom flags to be used to modify configuration on runtime
 # LocalConfig.txt variables (with iped_ prefix)
 for v in \

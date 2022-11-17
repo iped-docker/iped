@@ -54,9 +54,9 @@ RUN apt-get update && apt-get install -y wget gnupg apt-utils software-propertie
     && apt-get update \
     && apt-get install -y libssl-dev=1.1.1f-1ubuntu2.16 \
     && rm /etc/apt/sources.list.d/focal-security.list && apt-get update \
-    && echo "#####################################" \
-    && echo " Installing Sleuthkit with IPED patch" \
-    && echo "#####################################" \
+    && echo "#####################################################" \
+    && echo " Installing Sleuthkit with IPED patch with libssl" \
+    && echo "#####################################################" \
     && cd /opt \
     && git clone -b release-4.11.1_iped_patch https://github.com/sepinf-inc/sleuthkit \
     && cd /opt/sleuthkit/ \
