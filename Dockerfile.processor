@@ -45,6 +45,7 @@ RUN apt-get update && apt-get install -y wget gnupg apt-utils software-propertie
       bellsoft-java11-full \
       mplayer \
       rifiuti2 \
+      libvmdk-dev libvhdi-dev \
       python3.9 python3.9-distutils python3-pip python3.9-dev \
     && apt-get download ant && ls *.deb | awk '{system("dpkg-deb -x "$1" /")}' && apt-get install -y ant-optional \ 
     && echo "#####################################" \
