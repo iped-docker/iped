@@ -6,7 +6,7 @@ ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
 ENV SAL_USE_VCLPLUGIN='gtk'
 ENV JAVA_HOME=/usr/lib/jvm/bellsoft-java11-full-amd64/
 ENV LD_LIBRARY_PATH=/usr/local/lib/python3.9/dist-packages/jep/
-ENV IPED_VERSION=4.0.6
+ENV IPED_VERSION=4.0.7
 
 WORKDIR /root/pkgs
 RUN apt-get update && apt-get install -y wget gnupg apt-utils software-properties-common \
