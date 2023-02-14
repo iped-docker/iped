@@ -44,7 +44,7 @@ RUN echo "#####################################" \
     && cp -r /root/IPED/iped/profiles/pedo /root/IPED/iped/profiles/pedorobust \    
     && echo "excludeKnown = true" >> /root/IPED/iped/profiles/pedorobust/conf/HashDBLookupConfig.txt \
     && echo "robustImageReading = true" >> /root/IPED/iped/profiles/pedorobust/conf/FileSystemConfig.txt \
-    && echo "enableExternalParsing = true" >> /root/IPED/iped/profiles/pedorobust/conf/ParsingTaskConfig.txt \
+    && echo "enableExternalParsing = true" >> /root/IPED/iped/profiles/pedorobust/conf/ParsingTaskConfig.txt
 
 WORKDIR /root/IPED/iped
 COPY entrypoint.sh /
