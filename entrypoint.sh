@@ -7,7 +7,7 @@ COUNTRY='BR'
 
 
 echo -n Populating IPED plugins directory with extra plugins...
-if [ -d /mnt/plugins ] && [! -z "$(ls /mnt/plugins)"]
+if [ -d /mnt/plugins ] && [ ! -z "$(ls /mnt/plugins)" ]
 then
         cd /root/IPED/plugins/ && find /mnt/plugins -type f \
                 | xargs -I% sh -c 'ln -s "$@" > /dev/null 2>&1 && echo -n $@[OK]...|| echo -n $@[FAILED]...' _ %
