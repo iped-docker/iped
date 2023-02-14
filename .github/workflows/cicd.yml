@@ -15,6 +15,9 @@ jobs:
     - name: pull latest (for cache)
       run: docker pull ipeddocker/iped:latest || echo could not pull
       
+    - name: Docker build dependencies
+      run: docker build --cache-from ipeddocker/iped:latest . -f Dockerfile.dependencies -t ipeddocker/iped:dependencies
+      
     - name: Docker build processor
       run: docker build --cache-from ipeddocker/iped:latest . -f Dockerfile.processor -t ipeddocker/iped:processor
       
@@ -34,5 +37,7 @@ jobs:
       run: |
         docker tag ipeddocker/iped:latest ipeddocker/iped:${GITHUB_REF#refs/tags/}
         docker tag ipeddocker/iped:processor ipeddocker/iped:processor_${GITHUB_REF#refs/tags/} 
+        docker tag ipeddocker/iped:processor ipeddocker/iped:dependencies_${GITHUB_REF#refs/tags/} 
         docker push ipeddocker/iped:${GITHUB_REF#refs/tags/}
         docker push ipeddocker/iped:processor_${GITHUB_REF#refs/tags/}
+        docker push ipeddocker/iped:dependencies_${GITHUB_REF#refs/tags/}
