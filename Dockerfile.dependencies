@@ -58,7 +58,7 @@ RUN apt-get update && apt-get install -y wget gnupg apt-utils software-propertie
     && echo " Installing Sleuthkit with IPED patch with libssl" \
     && echo "#####################################################" \
     && cd /opt \
-    && git clone -b release-4.11.1_iped_patch https://github.com/sepinf-inc/sleuthkit \
+    && git clone -b 4.12.0_iped_patch https://github.com/sepinf-inc/sleuthkit \
     && cd /opt/sleuthkit/ \
     && ./bootstrap \ 
     && ./configure --prefix=/usr/ \
