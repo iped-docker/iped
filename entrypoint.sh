@@ -149,9 +149,10 @@ done
 if [ "${USERID}" ]
 then
         echo -n "Adding user for command execution..."
-        useradd --uid ${USERID} -U tmpuser && echo "TMPUSER added with User ID ${USERID}" || $(echo "Useradd Failed." && exit 1)
-        echo "Executing the command as User ID ${USERID}..." 
-        sudo -u tmpuser -i exec "$@" 
+        useradd --uid ${USERID} -U tmpuser && echo "TMPUSER added with User ID ${USERID}" && \
+        sudo -u tmpuser -i exec "$@" || \
+        echo "Running as UID $USERID Failed."         
+        
 else                 
         # no arguments = bash, otherwise exec then
         echo "Executing command as ROOT..."
