@@ -32,6 +32,10 @@ jobs:
       if: github.ref == 'refs/heads/master'
       run: docker push ipeddocker/iped:processor
       
+    - name: Docker push dependencies (if master)
+      if: github.ref == 'refs/heads/master'
+      run: docker push ipeddocker/iped:dependencies
+    
     - name: Docker push - semver
       if: startsWith(github.ref, 'refs/tags/')
       run: |
