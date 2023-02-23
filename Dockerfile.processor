@@ -6,7 +6,7 @@ WORKDIR /root/pkgs
 RUN echo "#####################################" \
     && echo "Installing IPED" \
     && echo "#####################################" \
-    && mkdir -p /root/IPED/ && cd /root/IPED/ \
+    && mkdir -p /opt/IPED/ && cd /opt/IPED/ \
     && wget --progress=bar:force https://github.com/sepinf-inc/IPED/releases/download/$IPED_VERSION/IPED-${IPED_VERSION}_and_plugins.zip -O iped.zip \
     && unzip iped.zip && rm iped.zip && ln -s iped-$IPED_VERSION iped \
     && echo "#####################################" \
@@ -14,39 +14,39 @@ RUN echo "#####################################" \
     && echo "#####################################" \
     && echo "If you need to change the IPED LocalConfig, use the environment variables available on /entrypoint.sh" \
     && echo "#####################################" \    
-    && sed -i -e "s/locale =.*/locale = pt-BR/" /root/IPED/iped/LocalConfig.txt \
-    && sed -i -e "s/indexTemp =.*/indexTemp = \/mnt\/ipedtmp/" /root/IPED/iped/LocalConfig.txt \
-    && sed -i -e "s/indexTempOnSSD =.*/indexTempOnSSD = true/" /root/IPED/iped/LocalConfig.txt \
-    && sed -i -e "s/outputOnSSD =.*/outputOnSSD = false/" /root/IPED/iped/LocalConfig.txt \
-    && sed -i -e "s/numThreads =.*/numThreads = 8/" /root/IPED/iped/LocalConfig.txt \
-    && sed -i -e "s/#hashesDB =.*/hashesDB = \/mnt\/hashesdb\/iped-hashes.db/" /root/IPED/iped/LocalConfig.txt \
-    && sed -i -e "s/#tskJarPath =.*/tskJarPath = \/usr\/share\/java\/sleuthkit-4.12.0.jar/" /root/IPED/iped/LocalConfig.txt \
-    && sed -i -e "s/mplayerPath =.*/mplayerPath = \/usr\/bin\/mplayer/" /root/IPED/iped/LocalConfig.txt \
+    && sed -i -e "s/locale =.*/locale = pt-BR/" /opt/IPED/iped/LocalConfig.txt \
+    && sed -i -e "s/indexTemp =.*/indexTemp = \/mnt\/ipedtmp/" /opt/IPED/iped/LocalConfig.txt \
+    && sed -i -e "s/indexTempOnSSD =.*/indexTempOnSSD = true/" /opt/IPED/iped/LocalConfig.txt \
+    && sed -i -e "s/outputOnSSD =.*/outputOnSSD = false/" /opt/IPED/iped/LocalConfig.txt \
+    && sed -i -e "s/numThreads =.*/numThreads = 8/" /opt/IPED/iped/LocalConfig.txt \
+    && sed -i -e "s/#hashesDB =.*/hashesDB = \/mnt\/hashesdb\/iped-hashes.db/" /opt/IPED/iped/LocalConfig.txt \
+    && sed -i -e "s/#tskJarPath =.*/tskJarPath = \/usr\/share\/java\/sleuthkit-4.12.0.jar/" /opt/IPED/iped/LocalConfig.txt \
+    && sed -i -e "s/mplayerPath =.*/mplayerPath = \/usr\/bin\/mplayer/" /opt/IPED/iped/LocalConfig.txt \
     && echo "#####################################" \
     && echo "Configuring GraphConfig with our default values:BR" \
     && echo "#####################################" \
-    && sed -i -e "s/\"phone-region\":.*/\"phone-region\":\"BR\",/" /root/IPED/iped/conf/GraphConfig.json \
+    && sed -i -e "s/\"phone-region\":.*/\"phone-region\":\"BR\",/" /opt/IPED/iped/conf/GraphConfig.json \
     && echo "#####################################" \
     && echo "Creating custom Profiles" \
     && echo "#####################################" \
     && echo "FastRobust: Disable IndexUnknownFiles and enable excludeKffIgnorable, externalParsers and robustImageReading" \
     && echo "General analysis cases where processing errors are occurring" \
     && echo "#####################################" \
-    && cp -r /root/IPED/iped/profiles/forensic /root/IPED/iped/profiles/fastrobust \    
-    && echo "parseUnknown = false" >> /root/IPED/iped/profiles/fastrobust/conf/ParsingTaskConfig.txt \
-    && echo "excludeKnown = true" >> /root/IPED/iped/profiles/fastrobust/conf/HashDBLookupConfig.txt \
-    && echo "robustImageReading = true" >> /root/IPED/iped/profiles/fastrobust/conf/FileSystemConfig.txt \
-    && echo "enableExternalParsing = true" >> /root/IPED/iped/profiles/fastrobust/conf/ParsingTaskConfig.txt \
+    && cp -r /opt/IPED/iped/profiles/forensic /opt/IPED/iped/profiles/fastrobust \    
+    && echo "parseUnknown = false" >> /opt/IPED/iped/profiles/fastrobust/conf/ParsingTaskConfig.txt \
+    && echo "excludeKnown = true" >> /opt/IPED/iped/profiles/fastrobust/conf/HashDBLookupConfig.txt \
+    && echo "robustImageReading = true" >> /opt/IPED/iped/profiles/fastrobust/conf/FileSystemConfig.txt \
+    && echo "enableExternalParsing = true" >> /opt/IPED/iped/profiles/fastrobust/conf/ParsingTaskConfig.txt \
     && echo "#####################################" \
     && echo "PedoRobust: enable excludeKffIgnorable, externalParsers and robustImageReading" \
     && echo "For child abuse cases where processing errors are occurring" \
     && echo "#####################################" \    
-    && cp -r /root/IPED/iped/profiles/pedo /root/IPED/iped/profiles/pedorobust \    
-    && echo "excludeKnown = true" >> /root/IPED/iped/profiles/pedorobust/conf/HashDBLookupConfig.txt \
-    && echo "robustImageReading = true" >> /root/IPED/iped/profiles/pedorobust/conf/FileSystemConfig.txt \
-    && echo "enableExternalParsing = true" >> /root/IPED/iped/profiles/pedorobust/conf/ParsingTaskConfig.txt
+    && cp -r /opt/IPED/iped/profiles/pedo /opt/IPED/iped/profiles/pedorobust \    
+    && echo "excludeKnown = true" >> /opt/IPED/iped/profiles/pedorobust/conf/HashDBLookupConfig.txt \
+    && echo "robustImageReading = true" >> /opt/IPED/iped/profiles/pedorobust/conf/FileSystemConfig.txt \
+    && echo "enableExternalParsing = true" >> /opt/IPED/iped/profiles/pedorobust/conf/ParsingTaskConfig.txt
 
-WORKDIR /root/IPED/iped
+WORKDIR /opt/IPED/iped
 COPY entrypoint.sh /
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["/bin/bash"]
