@@ -145,4 +145,3 @@ RUN sed -i 's/geteuid/getppid/' /usr/bin/vlc
 # For gllibs conflict resolution
 # ENV LD_LIBRARY_PATH="/usr/local/cuda/lib64"
 
-WORKDIR /root/IPED/iped
