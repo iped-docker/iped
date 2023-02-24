@@ -149,7 +149,7 @@ done
 if [ "${USERID}" ]
 then
         echo -n "Adding user for command execution..."
-        useradd --uid ${USERID} -U tmpuser && echo "TMPUSER added with User ID ${USERID}" && \
+        useradd --uid ${USERID} -U tmpuser -m && echo "TMPUSER added with User ID ${USERID}" && \
         sudo -u tmpuser -i exec "$@" || \
         echo "Running as UID $USERID Failed."         
         
