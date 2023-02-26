@@ -106,13 +106,13 @@ RUN apt-get update && apt-get install -y wget gnupg apt-utils software-propertie
     && echo "install libewf" \
     && echo "#####################################" \
     && cd /opt \
-    && git clone -b 20230212 https://github.com/libyal/libewf \
-    && cd /opt/libewf \ 
+    && git clone -b 20140808 https://github.com/libyal/libewf-legacy \
+    && cd /opt/libewf_legacy \  
     && ./synclibs.sh \
     && ./autogen.sh \
     && ./configure --prefix=/usr \
     && make all install \
-    && rm -rf /opt/libewf \
+    && rm -rf /opt/libewf_legacy \
     && echo "#####################################" \
     && echo "install afflib" \
     && echo "#####################################" \
