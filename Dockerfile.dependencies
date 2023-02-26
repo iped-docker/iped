@@ -18,7 +18,7 @@ RUN apt-get update && apt-get install -y wget gnupg apt-utils software-propertie
     && apt-get install -y \
             git \
             build-essential \
-            autoconf automake autopoint libtool pkg-config yasm gettext wget \
+            autoconf automake autopoint libtool pkg-config yasm gettext flex byacc wget \
             zlib1g-dev libncurses5-dev libcurl4-openssl-dev libexpat1-dev libreadline-dev \
             unzip patch \
             libaa1-dev libasound2-dev libcaca-dev libcdparanoia-dev libdca-dev \
