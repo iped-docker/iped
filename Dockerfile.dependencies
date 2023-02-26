@@ -7,7 +7,7 @@ ENV SAL_USE_VCLPLUGIN='gtk'
 ENV JAVA_HOME=/usr/lib/jvm/bellsoft-java11-full-amd64/
 ENV LD_LIBRARY_PATH=/usr/local/lib/python3.9/dist-packages/jep/
 
-WORKDIR /root/pkgs
+WORKDIR /opt/pkgs
 RUN apt-get update && apt-get install -y wget gnupg apt-utils software-properties-common \
     && add-apt-repository ppa:deadsnakes/ppa \
     && wget -q -O - https://download.bell-sw.com/pki/GPG-KEY-bellsoft | tee /etc/apt/trusted.gpg.d/bellsoft.asc \
@@ -50,7 +50,10 @@ RUN apt-get update && apt-get install -y wget gnupg apt-utils software-propertie
             rifiuti2 \
             python3.9 python3.9-distutils python3-pip python3.9-dev \
             sudo \
-    && apt-get download ant && ls *.deb | awk '{system("dpkg-deb -x "$1" /")}' && apt-get install -y ant-optional \ 
+    && echo "#####################################" \
+    && "Installing ANT without the java dependencies" \
+    && echo "#####################################" \
+    && chown _apt /opt/pkgs && apt-get download ant && ls *.deb | awk '{system("dpkg-deb -x "$1" /")}' && apt-get install -y ant-optional \ 
     && echo "#####################################" \
     && echo " Installing LIBSSL v1.1 to be used with sleuthkit IPED patch" \
     && echo "#####################################" \
@@ -61,176 +64,176 @@ RUN apt-get update && apt-get install -y wget gnupg apt-utils software-propertie
     && echo "#####################################" \
     && echo "install libbfio" \
     && echo "#####################################" \
-    && cd /opt \
+    && cd /opt/pkgs \
     && git clone -b 20221025 https://github.com/libyal/libbfio \
-    && cd /opt/libbfio \ 
+    && cd /opt/pkgs/libbfio \ 
     && ./synclibs.sh \
     && ./autogen.sh \
     && ./configure --prefix=/usr \
     && make all install \
-    && rm -rf /opt/libbfio \
+    && rm -rf /opt/pkgs/libbfio \
     && echo "#####################################" \
     && echo "install libvslvm" \
     && echo "#####################################" \
     && cd /opt \
     && git clone -b 20221025 https://github.com/libyal/libvslvm \
-    && cd /opt/libvslvm \ 
+    && cd /opt/pkgs/libvslvm \ 
     && ./synclibs.sh \
     && ./autogen.sh \
     && ./configure --prefix=/usr \
     && make all install \
-    && rm -rf /opt/libvslvm \            
+    && rm -rf /opt/pkgs/libvslvm \            
     && echo "#####################################" \
     && echo "install libvmdk" \
     && echo "#####################################" \
-    && cd /opt \
+    && cd /opt/pkgs \
     && git clone -b 20221124 https://github.com/libyal/libvmdk \
-    && cd /opt/libvmdk \ 
+    && cd /opt/pkgs/libvmdk \ 
     && ./synclibs.sh \
     && ./autogen.sh \
     && ./configure --prefix=/usr \
     && make all install \
-    && rm -rf /opt/libvmdk \
+    && rm -rf /opt/pkgs/libvmdk \
     && echo "#####################################" \
     && echo "install libvhdi" \
     && echo "#####################################" \
-    && cd /opt \
+    && cd /opt/pkgs \
     && git clone -b 20221124 https://github.com/libyal/libvhdi \
-    && cd /opt/libvhdi \ 
+    && cd /opt/pkgs/libvhdi \ 
     && ./synclibs.sh \
     && ./autogen.sh \
     && ./configure --prefix=/usr \
     && make all install \
-    && rm -rf /opt/libvhdi \
+    && rm -rf /opt/pkgs/libvhdi \
     && echo "#####################################" \
     && echo "install libewf" \
     && echo "#####################################" \
-    && cd /opt \
+    && cd /opt/pkgs \
     && git clone -b 20140808 https://github.com/libyal/libewf-legacy \
-    && cd /opt/libewf_legacy \  
+    && cd /opt/pkgs/libewf-legacy \  
     && ./synclibs.sh \
     && ./autogen.sh \
     && ./configure --prefix=/usr \
     && make all install \
-    && rm -rf /opt/libewf_legacy \
+    && rm -rf /opt/pkgs/libewf-legacy \
     && echo "#####################################" \
     && echo "install afflib" \
     && echo "#####################################" \
-    && cd /opt \
+    && cd /opt/pkgs \
     && git clone -b v3.7.20 https://github.com/sshock/AFFLIBv3 \
-    && cd /opt/AFFLIBv3 \ 
+    && cd /opt/pkgs/AFFLIBv3 \ 
     && ./bootstrap.sh \
     && ./configure --prefix=/usr \
     && make all install \
-    && rm -rf /opt/AFFLIBv3 \
+    && rm -rf /opt/pkgs/AFFLIBv3 \
     && echo "#####################################################" \
     && echo " Installing Sleuthkit with IPED patch with libssl" \
     && echo "#####################################################" \
-    && cd /opt \
+    && cd /opt/pkgs \
     && git clone -b 4.12.0_iped_patch https://github.com/sepinf-inc/sleuthkit \
-    && cd /opt/sleuthkit/ \
+    && cd /opt/pkgs/sleuthkit/ \
     && ./bootstrap \ 
     && ./configure --prefix=/usr/ \
     && make && make install \
-    && rm -rf /opt/sleuthkit/ \
+    && rm -rf /opt/pkgs/sleuthkit/ \
     && echo "#####################################" \
     && echo "The libagdb only have branch master" \
     && echo "#####################################" \
-    && cd /opt \
+    && cd /opt/pkgs \
     && git clone https://github.com/libyal/libagdb.git \
-    && cd /opt/libagdb \
+    && cd /opt/pkgs/libagdb \
     && ./synclibs.sh \
     && ./autogen.sh \    
     && ./configure --prefix=/usr \ 
     && make all install \
-    && rm -rf /opt/libagdb \
+    && rm -rf /opt/pkgs/libagdb \
     && echo "#####################################" \
     && echo "install libevtx - master is th only working branch" \
     && echo "#####################################" \
-    && cd /opt \
+    && cd /opt/pkgs \
     && git clone https://github.com/libyal/libevtx \
-    && cd /opt/libevtx \ 
+    && cd /opt/pkgs/libevtx \ 
     && ./synclibs.sh \
     && ./autogen.sh \
     && ./configure --prefix=/usr \
     && make all install \
-    && rm -rf /opt/libevtx \
+    && rm -rf /opt/pkgs/libevtx \
     && echo "#####################################" \
     && echo "Install libevt - master is th only working branch" \
     && echo "#####################################" \
-    && cd /opt \
+    && cd /opt/pkgs \
     && git clone https://github.com/libyal/libevt \
-    && cd /opt/libevt \
+    && cd /opt/pkgs/libevt \
     && ./synclibs.sh \
     && ./autogen.sh \
     && ./configure --prefix=/usr \
     && make all install \
-    && rm -rf /opt/libevt \
+    && rm -rf /opt/pkgs/libevt \
     && echo "#####################################" \
     && echo "Install libscca" \
     && echo "#####################################" \
-    && cd /opt \
+    && cd /opt/pkgs \
     && git clone --branch="20210419" https://github.com/libyal/libscca \
-    && cd /opt/libscca \
+    && cd /opt/pkgs/libscca \
     && ./synclibs.sh \
     && ./autogen.sh \
     && ./configure --prefix=/usr \
     && make all install \
-    && rm -rf /opt/libscca \
+    && rm -rf /opt/pkgs/libscca \
     && echo "#####################################" \
     && echo "Install libesedb" \
     && echo "#####################################" \
-    && cd /opt \
+    && cd /opt/pkgs \
     && git clone --branch="20210424" https://github.com/libyal/libesedb \
-    && cd /opt/libesedb \
+    && cd /opt/pkgs/libesedb \
     && ./synclibs.sh \
     && ./autogen.sh \
     && ./configure --prefix=/usr \
     && make all install \
-    && rm -rf /opt/libesedb \
+    && rm -rf /opt/pkgs/libesedb \
     && echo "#####################################" \
     && echo "Install libpff without branch also, because latest release got problems" \
     && echo "#####################################" \
-    && cd /opt \
+    && cd /opt/pkgs \
     && git clone https://github.com/libyal/libpff \
-    && cd /opt/libpff \
+    && cd /opt/pkgs/libpff \
     && ./synclibs.sh \
     && ./autogen.sh \
     && ./configure --prefix=/usr \ 
     && make all install \
-    && rm -rf /opt/libpff \
+    && rm -rf /opt/pkgs/libpff \
     && echo "#####################################" \
     && echo "Install libmsiecf" \
     && echo "#####################################" \
-    && cd /opt \
+    && cd /opt/pkgs \
     && git clone --branch="20210420" https://github.com/libyal/libmsiecf \
-    && cd /opt/libmsiecf \
+    && cd /opt/pkgs/libmsiecf \
     && ./synclibs.sh \
     && ./autogen.sh \
     && ./configure --prefix=/usr \
     && make all install \
-    && rm -rf /opt/libmsiecf \
+    && rm -rf /opt/pkgs/libmsiecf \
     && echo "#####################################" \
-    && echo "rifiuti2 - rifiuti2 was be installed from packages due to gettext incompatibility" \
+    && echo "rifiuti2 - rifiuti2 is being installed from packages due to gettext incompatibility" \
     && echo "Just creating rifiuti link" \
     && echo "#####################################" \
-    #&& cd /opt \
+    #&& cd /opt/pkgs \
     #&& git clone --branch="0.7.0" https://github.com/abelcheung/rifiuti2 \
-    #&& cd /opt/rifiuti2 \
+    #&& cd /opt/pkgs/rifiuti2 \
     #&& autoreconf -f -i -v \
     #&& ./configure --prefix=/usr \
     #&& make all install \
-    #&& rm -rf /opt/rifiuti2 
+    #&& rm -rf /opt/pkgs/rifiuti2 
     && update-alternatives --install /usr/bin/rifiuti rifiuti /usr/bin/rifiuti2 1 \
     && echo "#####################################" \
     && echo "Instal ImageMagik" \
     && echo "#####################################" \
-    && cd /opt \
+    && cd /opt/pkgs \
     && git clone --branch "7.0.10-61" https://github.com/ImageMagick/ImageMagick \
-    && cd /opt/ImageMagick \
+    && cd /opt/pkgs/ImageMagick \
     && ./configure --prefix=/usr \
     && make all install \
-    && rm -rf /opt/ImageMagick \
+    && rm -rf /opt/pkgs/ImageMagick \
     && echo "#####################################" \
     && echo "Creating mplayer config" \
     && echo "#####################################" \
@@ -257,7 +260,7 @@ RUN apt-get update && apt-get install -y wget gnupg apt-utils software-propertie
     && apt-get remove -y ant ant-optional python3-pip build-essential \
                        autoconf automake autopoint libtool pkg-config yasm gettext \
     && apt-get autoremove -y \
-    && rm -rf /root/.cache/pip && apt-get clean && rm -rf /var/lib/apt/lists/*
+    && rm -rfv /root/.cache/pip && rm -rfv /opt/pkgs && apt-get clean && rm -rfv /var/lib/apt/lists/*
 
 WORKDIR /root/
 CMD ["/bin/bash"]
