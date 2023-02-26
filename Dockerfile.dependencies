@@ -19,7 +19,8 @@ RUN apt-get update && apt-get install -y wget gnupg apt-utils software-propertie
             git \
             build-essential \
             autoconf automake autopoint libtool pkg-config yasm gettext wget \
-            libafflib-dev zlib1g-dev libewf-dev unzip patch \
+            zlib1g-dev libncurses5-dev libcurl4-openssl-dev libexpat1-dev libreadline-dev \
+            unzip patch \
             libaa1-dev libasound2-dev libcaca-dev libcdparanoia-dev libdca-dev \
             libdirectfb-dev libenca-dev libfontconfig1-dev libfreetype6-dev \
             libfribidi-dev libgif-dev libgl1-mesa-dev libjack-jackd2-dev libopenal1 libpulse-dev \
@@ -47,7 +48,6 @@ RUN apt-get update && apt-get install -y wget gnupg apt-utils software-propertie
             bellsoft-java11-full \
             mplayer \
             rifiuti2 \
-            libvmdk-dev libvhdi-dev \
             python3.9 python3.9-distutils python3-pip python3.9-dev \
             sudo \
     && apt-get download ant && ls *.deb | awk '{system("dpkg-deb -x "$1" /")}' && apt-get install -y ant-optional \ 
@@ -79,7 +79,50 @@ RUN apt-get update && apt-get install -y wget gnupg apt-utils software-propertie
     && ./autogen.sh \
     && ./configure --prefix=/usr \
     && make all install \
-    && rm -rf /opt/libvslvm \
+    && rm -rf /opt/libvslvm \            
+    && echo "#####################################" \
+    && echo "install libvmdk" \
+    && echo "#####################################" \
+    && cd /opt \
+    && git clone -b 20221124 https://github.com/libyal/libvmdk \
+    && cd /opt/libvmdk \ 
+    && ./synclibs.sh \
+    && ./autogen.sh \
+    && ./configure --prefix=/usr \
+    && make all install \
+    && rm -rf /opt/libvmdk \
+    && echo "#####################################" \
+    && echo "install libvhdi" \
+    && echo "#####################################" \
+    && cd /opt \
+    && git clone -b 20221124 https://github.com/libyal/libvhdi \
+    && cd /opt/libvhdi \ 
+    && ./synclibs.sh \
+    && ./autogen.sh \
+    && ./configure --prefix=/usr \
+    && make all install \
+    && rm -rf /opt/libvhdi \
+    && echo "#####################################" \
+    && echo "install libewf" \
+    && echo "#####################################" \
+    && cd /opt \
+    && git clone -b 20230212 https://github.com/libyal/libewf \
+    && cd /opt/libewf \ 
+    && ./synclibs.sh \
+    && ./autogen.sh \
+    && ./configure --prefix=/usr \
+    && make all install \
+    && rm -rf /opt/libewf \
+    && echo "#####################################" \
+    && echo "install afflib" \
+    && echo "#####################################" \
+    && cd /opt \
+    && git clone -b v3.7.20 https://github.com/sshock/AFFLIBv3 \
+    && cd /opt/AFFLIBv3 \ 
+    && ./bootstrap.sh \
+    && ./configure --prefix=/usr \
+    && make all install \
+    && rm -rf /opt/AFFLIBv3 \
     && echo "#####################################################" \
     && echo " Installing Sleuthkit with IPED patch with libssl" \
     && echo "#####################################################" \
