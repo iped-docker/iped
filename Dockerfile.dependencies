@@ -12,41 +12,44 @@ RUN apt-get update && apt-get install -y wget gnupg apt-utils software-propertie
     && add-apt-repository ppa:deadsnakes/ppa \
     && wget -q -O - https://download.bell-sw.com/pki/GPG-KEY-bellsoft | tee /etc/apt/trusted.gpg.d/bellsoft.asc \
     && echo "deb [arch=amd64] https://apt.bell-sw.com/ stable main" | tee /etc/apt/sources.list.d/bellsoft.list \
-    && apt-get update && apt-get install -y \
-      git \
-      build-essential \
-      libafflib-dev zlib1g-dev libewf-dev unzip patch \
-      autoconf automake autopoint libtool pkg-config yasm gettext wget \
-      libaa1-dev libasound2-dev libcaca-dev libcdparanoia-dev libdca-dev \
-      libdirectfb-dev libenca-dev libfontconfig1-dev libfreetype6-dev \
-      libfribidi-dev libgif-dev libgl1-mesa-dev libjack-jackd2-dev libopenal1 libpulse-dev \
-      libsdl1.2-dev libvdpau-dev libxinerama-dev libxv-dev libxvmc-dev libxxf86dga-dev \
-      libxxf86vm-dev librtmp-dev libsctp-dev libass-dev libfaac-dev libsmbclient-dev libtheora-dev \
-      libogg-dev libxvidcore-dev libspeex-dev libvpx-dev libdv4-dev \
-      libopencore-amrnb-dev libopencore-amrwb-dev libmp3lame-dev libtwolame-dev \
-      libmad0-dev libgsm1-dev libbs2b-dev liblzo2-dev ladspa-sdk libfaad-dev \
-      libmpg123-dev libopus-dev libbluray-dev libaacs-dev \
-      libjpeg-dev \
-      libtiff-dev \
-      libpng-dev \
-      libwmf-dev \
-      libgif-dev \
-      libheif-dev \
-      libwebp-dev \
-      librsvg2-dev \
-      libopenexr-dev \
-      libatomic1 \
-      vim \
-      less\
-      libparse-win32registry-perl \
-      tesseract-ocr tesseract-ocr-osd tesseract-ocr-por tesseract-ocr-eng tesseract-ocr-deu tesseract-ocr-frk tesseract-ocr-ita \
-      graphviz \  
-      bellsoft-java11-full \
-      mplayer \
-      rifiuti2 \
-      libvmdk-dev libvhdi-dev libvslvm-dev \
-      python3.9 python3.9-distutils python3-pip python3.9-dev \
-      sudo \
+    && apt-get update \
+    && apt-get apt-get install -y apt-transport-https apt-utils \
+    && apt-get upgrade -y \
+    && apt-get install -y \
+            git \
+            build-essential \
+            autoconf automake autopoint libtool pkg-config yasm gettext wget \
+            libafflib-dev zlib1g-dev libewf-dev unzip patch \
+            libaa1-dev libasound2-dev libcaca-dev libcdparanoia-dev libdca-dev \
+            libdirectfb-dev libenca-dev libfontconfig1-dev libfreetype6-dev \
+            libfribidi-dev libgif-dev libgl1-mesa-dev libjack-jackd2-dev libopenal1 libpulse-dev \
+            libsdl1.2-dev libvdpau-dev libxinerama-dev libxv-dev libxvmc-dev libxxf86dga-dev \
+            libxxf86vm-dev librtmp-dev libsctp-dev libass-dev libfaac-dev libsmbclient-dev libtheora-dev \
+            libogg-dev libxvidcore-dev libspeex-dev libvpx-dev libdv4-dev \
+            libopencore-amrnb-dev libopencore-amrwb-dev libmp3lame-dev libtwolame-dev \
+            libmad0-dev libgsm1-dev libbs2b-dev liblzo2-dev ladspa-sdk libfaad-dev \
+            libmpg123-dev libopus-dev libbluray-dev libaacs-dev \
+            libjpeg-dev \
+            libtiff-dev \
+            libpng-dev \
+            libwmf-dev \
+            libgif-dev \
+            libheif-dev \
+            libwebp-dev \
+            librsvg2-dev \
+            libopenexr-dev \
+            libatomic1 \
+            vim \
+            less\
+            libparse-win32registry-perl \
+            tesseract-ocr tesseract-ocr-osd tesseract-ocr-por tesseract-ocr-eng tesseract-ocr-deu tesseract-ocr-frk tesseract-ocr-ita \
+            graphviz \  
+            bellsoft-java11-full \
+            mplayer \
+            rifiuti2 \
+            libvmdk-dev libvhdi-dev \
+            python3.9 python3.9-distutils python3-pip python3.9-dev \
+            sudo \
     && apt-get download ant && ls *.deb | awk '{system("dpkg-deb -x "$1" /")}' && apt-get install -y ant-optional \ 
     && echo "#####################################" \
     && echo " Installing LIBSSL v1.1 to be used with sleuthkit IPED patch" \
@@ -55,6 +58,28 @@ RUN apt-get update && apt-get install -y wget gnupg apt-utils software-propertie
     && apt-get update \
     && apt-get install -y libssl-dev=1.1.1f-1ubuntu2.17 \
     && rm /etc/apt/sources.list.d/focal-security.list && apt-get update \
+    && echo "#####################################" \
+    && echo "install libbfio" \
+    && echo "#####################################" \
+    && cd /opt \
+    && git clone -b 20221025 https://github.com/libyal/libbfio \
+    && cd /opt/libbfio \ 
+    && ./synclibs.sh \
+    && ./autogen.sh \
+    && ./configure --prefix=/usr \
+    && make all install \
+    && rm -rf /opt/libbfio \
+    && echo "#####################################" \
+    && echo "install libvslvm" \
+    && echo "#####################################" \
+    && cd /opt \
+    && git clone -b 20221025 https://github.com/libyal/libvslvm \
+    && cd /opt/libvslvm \ 
+    && ./synclibs.sh \
+    && ./autogen.sh \
+    && ./configure --prefix=/usr \
+    && make all install \
+    && rm -rf /opt/libvslvm \
     && echo "#####################################################" \
     && echo " Installing Sleuthkit with IPED patch with libssl" \
     && echo "#####################################################" \
