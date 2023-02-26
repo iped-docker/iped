@@ -6,16 +6,15 @@ ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
 ENV SAL_USE_VCLPLUGIN='gtk'
 ENV JAVA_HOME=/usr/lib/jvm/bellsoft-java11-full-amd64/
 ENV LD_LIBRARY_PATH=/usr/local/lib/python3.9/dist-packages/jep/
-ENV TMPDIR=/tmp/pkgs
+ENV PKGTMPDIR=/tmp/pkgs
 
-WORKDIR ${TMPDIR}
-RUN apt-get update && apt-get install -y wget gnupg apt-utils software-properties-common \
+WORKDIR ${PKGTMPDIR}
+RUN apt-get update && apt-get install -y wget gnupg apt-utils apt-transport-https software-properties-common \
+    && apt-get upgrade -y \
     && add-apt-repository ppa:deadsnakes/ppa \
     && wget -q -O - https://download.bell-sw.com/pki/GPG-KEY-bellsoft | tee /etc/apt/trusted.gpg.d/bellsoft.asc \
     && echo "deb [arch=amd64] https://apt.bell-sw.com/ stable main" | tee /etc/apt/sources.list.d/bellsoft.list \
-    && apt-get update \
-    && apt-get install -y apt-transport-https apt-utils \
-    && apt-get upgrade -y \
+    && apt-get update \    
     && apt-get install -y \
             git \
             build-essential \
@@ -54,7 +53,7 @@ RUN apt-get update && apt-get install -y wget gnupg apt-utils software-propertie
     && echo "#####################################" \
     && echo "Installing ANT without the java dependencies" \
     && echo "#####################################" \
-    && chown _apt ${TMPDIR} && apt-get download ant && ls *.deb | awk '{system("dpkg-deb -x "$1" /")}' && apt-get install -y ant-optional \ 
+    && chown _apt ${PKGTMPDIR} && apt-get download ant && ls *.deb | awk '{system("dpkg-deb -x "$1" /")}' && apt-get install -y ant-optional \ 
     && echo "#####################################" \
     && echo " Installing LIBSSL v1.1 to be used with sleuthkit IPED patch" \
     && echo "#####################################" \
@@ -65,176 +64,176 @@ RUN apt-get update && apt-get install -y wget gnupg apt-utils software-propertie
     && echo "#####################################" \
     && echo "install libbfio" \
     && echo "#####################################" \
-    && cd ${TMPDIR} \
+    && cd ${PKGTMPDIR} \
     && git clone -b 20221025 https://github.com/libyal/libbfio \
-    && cd ${TMPDIR}/libbfio \ 
+    && cd ${PKGTMPDIR}/libbfio \ 
     && ./synclibs.sh \
     && ./autogen.sh \
     && ./configure --prefix=/usr \
     && make all install \
-    && rm -rf ${TMPDIR}/libbfio \
+    && rm -rf ${PKGTMPDIR}/libbfio \
     && echo "#####################################" \
     && echo "install libvslvm" \
     && echo "#####################################" \
-    && cd ${TMPDIR} \
+    && cd ${PKGTMPDIR} \
     && git clone -b 20221025 https://github.com/libyal/libvslvm \
-    && cd ${TMPDIR}/libvslvm \ 
+    && cd ${PKGTMPDIR}/libvslvm \ 
     && ./synclibs.sh \
     && ./autogen.sh \
     && ./configure --prefix=/usr \
     && make all install \
-    && rm -rf ${TMPDIR}/libvslvm \            
+    && rm -rf ${PKGTMPDIR}/libvslvm \            
     && echo "#####################################" \
     && echo "install libvmdk" \
     && echo "#####################################" \
-    && cd ${TMPDIR} \
+    && cd ${PKGTMPDIR} \
     && git clone -b 20221124 https://github.com/libyal/libvmdk \
-    && cd ${TMPDIR}/libvmdk \ 
+    && cd ${PKGTMPDIR}/libvmdk \ 
     && ./synclibs.sh \
     && ./autogen.sh \
     && ./configure --prefix=/usr \
     && make all install \
-    && rm -rf ${TMPDIR}/libvmdk \
+    && rm -rf ${PKGTMPDIR}/libvmdk \
     && echo "#####################################" \
     && echo "install libvhdi" \
     && echo "#####################################" \
-    && cd ${TMPDIR} \
+    && cd ${PKGTMPDIR} \
     && git clone -b 20221124 https://github.com/libyal/libvhdi \
-    && cd ${TMPDIR}/libvhdi \ 
+    && cd ${PKGTMPDIR}/libvhdi \ 
     && ./synclibs.sh \
     && ./autogen.sh \
     && ./configure --prefix=/usr \
     && make all install \
-    && rm -rf ${TMPDIR}/libvhdi \
+    && rm -rf ${PKGTMPDIR}/libvhdi \
     && echo "#####################################" \
     && echo "install libewf" \
     && echo "#####################################" \
-    && cd ${TMPDIR} \
+    && cd ${PKGTMPDIR} \
     && git clone -b 20140808 https://github.com/libyal/libewf-legacy \
-    && cd ${TMPDIR}/libewf-legacy \  
+    && cd ${PKGTMPDIR}/libewf-legacy \  
     && ./synclibs.sh \
     && ./autogen.sh \
     && ./configure --prefix=/usr \
     && make all install \
-    && rm -rf ${TMPDIR}/libewf-legacy \
+    && rm -rf ${PKGTMPDIR}/libewf-legacy \
     && echo "#####################################" \
     && echo "install afflib" \
     && echo "#####################################" \
-    && cd ${TMPDIR} \
+    && cd ${PKGTMPDIR} \
     && git clone -b v3.7.20 https://github.com/sshock/AFFLIBv3 \
-    && cd ${TMPDIR}/AFFLIBv3 \ 
+    && cd ${PKGTMPDIR}/AFFLIBv3 \ 
     && ./bootstrap.sh \
     && ./configure --prefix=/usr \
     && make all install \
-    && rm -rf ${TMPDIR}/AFFLIBv3 \
+    && rm -rf ${PKGTMPDIR}/AFFLIBv3 \
     && echo "#####################################################" \
     && echo " Installing Sleuthkit with IPED patch with libssl" \
     && echo "#####################################################" \
-    && cd ${TMPDIR} \
+    && cd ${PKGTMPDIR} \
     && git clone -b 4.12.0_iped_patch https://github.com/sepinf-inc/sleuthkit \
-    && cd ${TMPDIR}/sleuthkit/ \
+    && cd ${PKGTMPDIR}/sleuthkit/ \
     && ./bootstrap \ 
     && ./configure --prefix=/usr/ \
     && make && make install \
-    && rm -rf ${TMPDIR}/sleuthkit/ \
+    && rm -rf ${PKGTMPDIR}/sleuthkit/ \
     && echo "#####################################" \
     && echo "The libagdb only have branch master" \
     && echo "#####################################" \
-    && cd ${TMPDIR} \
+    && cd ${PKGTMPDIR} \
     && git clone https://github.com/libyal/libagdb.git \
-    && cd ${TMPDIR}/libagdb \
+    && cd ${PKGTMPDIR}/libagdb \
     && ./synclibs.sh \
     && ./autogen.sh \    
     && ./configure --prefix=/usr \ 
     && make all install \
-    && rm -rf ${TMPDIR}/libagdb \
+    && rm -rf ${PKGTMPDIR}/libagdb \
     && echo "#####################################" \
     && echo "install libevtx - master is th only working branch" \
     && echo "#####################################" \
-    && cd ${TMPDIR} \
+    && cd ${PKGTMPDIR} \
     && git clone https://github.com/libyal/libevtx \
-    && cd ${TMPDIR}/libevtx \ 
+    && cd ${PKGTMPDIR}/libevtx \ 
     && ./synclibs.sh \
     && ./autogen.sh \
     && ./configure --prefix=/usr \
     && make all install \
-    && rm -rf ${TMPDIR}/libevtx \
+    && rm -rf ${PKGTMPDIR}/libevtx \
     && echo "#####################################" \
     && echo "Install libevt - master is th only working branch" \
     && echo "#####################################" \
-    && cd ${TMPDIR} \
+    && cd ${PKGTMPDIR} \
     && git clone https://github.com/libyal/libevt \
-    && cd ${TMPDIR}/libevt \
+    && cd ${PKGTMPDIR}/libevt \
     && ./synclibs.sh \
     && ./autogen.sh \
     && ./configure --prefix=/usr \
     && make all install \
-    && rm -rf ${TMPDIR}/libevt \
+    && rm -rf ${PKGTMPDIR}/libevt \
     && echo "#####################################" \
     && echo "Install libscca" \
     && echo "#####################################" \
-    && cd ${TMPDIR} \
+    && cd ${PKGTMPDIR} \
     && git clone --branch="20210419" https://github.com/libyal/libscca \
-    && cd ${TMPDIR}/libscca \
+    && cd ${PKGTMPDIR}/libscca \
     && ./synclibs.sh \
     && ./autogen.sh \
     && ./configure --prefix=/usr \
     && make all install \
-    && rm -rf ${TMPDIR}/libscca \
+    && rm -rf ${PKGTMPDIR}/libscca \
     && echo "#####################################" \
     && echo "Install libesedb" \
     && echo "#####################################" \
-    && cd ${TMPDIR} \
+    && cd ${PKGTMPDIR} \
     && git clone --branch="20210424" https://github.com/libyal/libesedb \
-    && cd ${TMPDIR}/libesedb \
+    && cd ${PKGTMPDIR}/libesedb \
     && ./synclibs.sh \
     && ./autogen.sh \
     && ./configure --prefix=/usr \
     && make all install \
-    && rm -rf ${TMPDIR}/libesedb \
+    && rm -rf ${PKGTMPDIR}/libesedb \
     && echo "#####################################" \
     && echo "Install libpff without branch also, because latest release got problems" \
     && echo "#####################################" \
-    && cd ${TMPDIR} \
+    && cd ${PKGTMPDIR} \
     && git clone https://github.com/libyal/libpff \
-    && cd ${TMPDIR}/libpff \
+    && cd ${PKGTMPDIR}/libpff \
     && ./synclibs.sh \
     && ./autogen.sh \
     && ./configure --prefix=/usr \ 
     && make all install \
-    && rm -rf ${TMPDIR}/libpff \
+    && rm -rf ${PKGTMPDIR}/libpff \
     && echo "#####################################" \
     && echo "Install libmsiecf" \
     && echo "#####################################" \
-    && cd ${TMPDIR} \
+    && cd ${PKGTMPDIR} \
     && git clone --branch="20210420" https://github.com/libyal/libmsiecf \
-    && cd ${TMPDIR}/libmsiecf \
+    && cd ${PKGTMPDIR}/libmsiecf \
     && ./synclibs.sh \
     && ./autogen.sh \
     && ./configure --prefix=/usr \
     && make all install \
-    && rm -rf ${TMPDIR}/libmsiecf \
+    && rm -rf ${PKGTMPDIR}/libmsiecf \
     && echo "#####################################" \
     && echo "rifiuti2 - rifiuti2 is being installed from packages due to gettext incompatibility" \
     && echo "Just creating rifiuti link" \
     && echo "#####################################" \
-    #&& cd ${TMPDIR} \
+    #&& cd ${PKGTMPDIR} \
     #&& git clone --branch="0.7.0" https://github.com/abelcheung/rifiuti2 \
-    #&& cd ${TMPDIR}/rifiuti2 \
+    #&& cd ${PKGTMPDIR}/rifiuti2 \
     #&& autoreconf -f -i -v \
     #&& ./configure --prefix=/usr \
     #&& make all install \
-    #&& rm -rf ${TMPDIR}/rifiuti2 
+    #&& rm -rf ${PKGTMPDIR}/rifiuti2 
     && update-alternatives --install /usr/bin/rifiuti rifiuti /usr/bin/rifiuti2 1 \
     && echo "#####################################" \
     && echo "Instal ImageMagik" \
     && echo "#####################################" \
-    && cd ${TMPDIR} \
+    && cd ${PKGTMPDIR} \
     && git clone --branch "7.0.10-61" https://github.com/ImageMagick/ImageMagick \
-    && cd ${TMPDIR}/ImageMagick \
+    && cd ${PKGTMPDIR}/ImageMagick \
     && ./configure --prefix=/usr \
     && make all install \
-    && rm -rf ${TMPDIR}/ImageMagick \
+    && rm -rf ${PKGTMPDIR}/ImageMagick \
     && echo "#####################################" \
     && echo "Creating mplayer config" \
     && echo "#####################################" \
@@ -261,7 +260,7 @@ RUN apt-get update && apt-get install -y wget gnupg apt-utils software-propertie
     && apt-get remove -y ant ant-optional python3-pip build-essential \
                        autoconf automake autopoint libtool pkg-config yasm gettext \
     && apt-get autoremove -y \
-    && rm -rfv /root/.cache/pip && rm -rfv ${TMPDIR} && apt-get clean && rm -rfv /var/lib/apt/lists/*
+    && rm -rfv /root/.cache/pip && rm -rfv ${PKGTMPDIR} && apt-get clean && rm -rfv /var/lib/apt/lists/*
 
 WORKDIR /root/
 CMD ["/bin/bash"]
