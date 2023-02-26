@@ -148,9 +148,10 @@ done
 # 
 if [ "${USERID}" ]
 then
-        echo -n "Adding user for command execution..."
-        useradd --uid ${USERID} -U tmpuser -m && echo "TMPUSER added with User ID ${USERID}" && \
-        sudo -u tmpuser --preserve-env=SAL_USE_VCLPLUGIN,JAVA_HOME,LD_LIBRARY_PATH,IPED_VERSION -i exec "$@" || \
+        echo -n "Adding user for command execution..." && \
+        useradd --uid ${USERID} -U tmpuser -m && echo "TMPUSER added with User ID ${USERID}." && \
+        echo "Creating mplayer config on user environment..." && sudo -u tmpuser -i mplayer >/dev/null 2>&1 && \
+        echo "Executing command as TMPUSER..." && sudo -u tmpuser --preserve-env=SAL_USE_VCLPLUGIN,JAVA_HOME,LD_LIBRARY_PATH,IPED_VERSION -i exec "$@" || \
         echo "Running as UID $USERID Failed."         
         
 else                 
