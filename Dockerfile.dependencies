@@ -13,7 +13,7 @@ RUN apt-get update && apt-get install -y wget gnupg apt-utils software-propertie
     && wget -q -O - https://download.bell-sw.com/pki/GPG-KEY-bellsoft | tee /etc/apt/trusted.gpg.d/bellsoft.asc \
     && echo "deb [arch=amd64] https://apt.bell-sw.com/ stable main" | tee /etc/apt/sources.list.d/bellsoft.list \
     && apt-get update \
-    && apt-get apt-get install -y apt-transport-https apt-utils \
+    && apt-get install -y apt-transport-https apt-utils \
     && apt-get upgrade -y \
     && apt-get install -y \
             git \
