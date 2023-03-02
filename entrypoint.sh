@@ -9,9 +9,11 @@ COUNTRY='BR'
 echo -n Populating IPED plugins directory with extra plugins...
 if [ -d /mnt/plugins ] && [ ! -z "$(ls /mnt/plugins)" ]
 then
+        ORIGDIR=${PWD} 
         cd /opt/IPED/plugins/ && find /mnt/plugins -type f \
                 | xargs -I% sh -c 'ln -s "$@" > /dev/null 2>&1 && echo -n $@[OK]...|| echo -n $@[FAILED]...' _ %
-                echo "Done."
+        cd ${ORIGDIR}
+        echo "Done."
 fi
 
 if [ ! -z "$(ls /opt/IPED/plugins/ | grep -i photodna | grep -i '\.jar$' )" ]
