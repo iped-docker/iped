@@ -44,7 +44,11 @@ RUN echo "#####################################" \
     && cp -r /opt/IPED/iped/profiles/pedo /opt/IPED/iped/profiles/pedorobust \    
     && echo "excludeKnown = true" >> /opt/IPED/iped/profiles/pedorobust/conf/HashDBLookupConfig.txt \
     && echo "robustImageReading = true" >> /opt/IPED/iped/profiles/pedorobust/conf/FileSystemConfig.txt \
-    && echo "enableExternalParsing = true" >> /opt/IPED/iped/profiles/pedorobust/conf/ParsingTaskConfig.txt
+    && echo "enableExternalParsing = true" >> /opt/IPED/iped/profiles/pedorobust/conf/ParsingTaskConfig.txt \
+    && echo "#####################################" \
+    && echo "Removing spring-jcl library due to issue on robusImageReading on PODMAN" \
+    && echo "#####################################" \    
+    && rm /opt/IPED/iped/lib/spring-jcl-5.3.23.jar
 
 WORKDIR /opt/IPED/iped
 COPY entrypoint.sh /
