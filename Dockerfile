@@ -11,6 +11,7 @@ RUN apt-get update && apt-get install -y \
           vlc \
           packagekit-gtk3-module \
           libcanberra-gtk-module \
+          pulseaudio \
     && apt-get clean && rm -rf /var/lib/apt/lists/* \
     && mkdir -p /root/.local/share/applications/ \
     && mkdir -p /root/.config \
