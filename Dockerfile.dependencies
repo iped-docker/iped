@@ -165,10 +165,10 @@ RUN apt-get update && apt-get install -y wget gnupg apt-utils apt-transport-http
     && make all install \
     && rm -rf ${PKGTMPDIR}/libevt \
     && echo "#####################################" \
-    && echo "Install libscca" \
+    && echo "Install libscca - master is th only working branch" \
     && echo "#####################################" \
     && cd ${PKGTMPDIR} \
-    && git clone --branch="20210419" https://github.com/libyal/libscca \
+    && git clone https://github.com/libyal/libscca \
     && cd ${PKGTMPDIR}/libscca \
     && ./synclibs.sh \
     && ./autogen.sh \
@@ -176,10 +176,10 @@ RUN apt-get update && apt-get install -y wget gnupg apt-utils apt-transport-http
     && make all install \
     && rm -rf ${PKGTMPDIR}/libscca \
     && echo "#####################################" \
-    && echo "Install libesedb" \
+    && echo "Install libesedb - master is th only working branch" \
     && echo "#####################################" \
     && cd ${PKGTMPDIR} \
-    && git clone --branch="20210424" https://github.com/libyal/libesedb \
+    && git clone https://github.com/libyal/libesedb \
     && cd ${PKGTMPDIR}/libesedb \
     && ./synclibs.sh \
     && ./autogen.sh \
@@ -198,10 +198,10 @@ RUN apt-get update && apt-get install -y wget gnupg apt-utils apt-transport-http
     && make all install \
     && rm -rf ${PKGTMPDIR}/libpff \
     && echo "#####################################" \
-    && echo "Install libmsiecf" \
+    && echo "Install libmsiecf - master is th only working branch" \
     && echo "#####################################" \
     && cd ${PKGTMPDIR} \
-    && git clone --branch="20210420" https://github.com/libyal/libmsiecf \
+    && git clone https://github.com/libyal/libmsiecf \
     && cd ${PKGTMPDIR}/libmsiecf \
     && ./synclibs.sh \
     && ./autogen.sh \
