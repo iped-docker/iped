@@ -79,10 +79,10 @@ RUN apt-get update && apt-get install -y wget gnupg apt-utils apt-transport-http
     && make all install \
     && rm -rf ${PKGTMPDIR}/libvslvm \            
     && echo "#####################################" \
-    && echo "install libvmdk" \
+    && echo "install libvmdk - removed branch - is currently only building on master" \
     && echo "#####################################" \
     && cd ${PKGTMPDIR} \
-    && git clone -b 20221124 https://github.com/libyal/libvmdk \
+    && git clone https://github.com/libyal/libvmdk \
     && cd ${PKGTMPDIR}/libvmdk \ 
     && ./synclibs.sh \
     && ./autogen.sh \
@@ -90,10 +90,10 @@ RUN apt-get update && apt-get install -y wget gnupg apt-utils apt-transport-http
     && make all install \
     && rm -rf ${PKGTMPDIR}/libvmdk \
     && echo "#####################################" \
-    && echo "install libvhdi" \
+    && echo "install libvhdi - removed branch - is currently only building on master" \
     && echo "#####################################" \
     && cd ${PKGTMPDIR} \
-    && git clone -b 20221124 https://github.com/libyal/libvhdi \
+    && git clone https://github.com/libyal/libvhdi \
     && cd ${PKGTMPDIR}/libvhdi \ 
     && ./synclibs.sh \
     && ./autogen.sh \
