@@ -1,6 +1,6 @@
 FROM ipeddocker/iped:dependencies
 
-ENV IPED_VERSION=4.1.0
+ENV IPED_VERSION=4.1.1
 
 WORKDIR /root/pkgs
 RUN echo "#####################################" \
