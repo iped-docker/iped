@@ -15,6 +15,7 @@ jobs:
     - name: pull latest (for cache)
       run: docker pull ipeddocker/iped:dependencies && docker pull ipeddocker/iped:processor && docker pull ipeddocker/iped:latest || echo could not pull
       
+      
 
     - name: Docker build dependencies
       run: docker build --cache-from ipeddocker/iped:dependencies . -f Dockerfile.dependencies -t ipeddocker/iped:dependencies
@@ -23,14 +24,12 @@ jobs:
       if: github.ref == 'refs/heads/master'
       run: docker push ipeddocker/iped:dependencies
 
-
     - name: Docker build processor
       run: docker build --cache-from ipeddocker/iped:processor . -f Dockerfile.processor -t ipeddocker/iped:processor
 
     - name: Docker push processor (if master)
       if: github.ref == 'refs/heads/master'
-      run: docker push ipeddocker/iped:processor
-      
+      run: docker push ipeddocker/iped:processor      
 
     - name: Docker build latest
       run: docker build --cache-from ipeddocker/iped:latest . -t ipeddocker/iped:latest
@@ -38,6 +37,25 @@ jobs:
     - name: Docker push latest (if master)
       if: github.ref == 'refs/heads/master'
       run: docker push ipeddocker/iped:latest
+
+
+
+    - name: Docker build dependencies-CUDA
+      #run: docker build --cache-from ipeddocker/iped:dependencies-cuda . -f Dockerfile.dependencies-cuda -t ipeddocker/iped:dependencies-cuda
+      run: docker build . -f Dockerfile.dependencies-cuda -t ipeddocker/iped:dependencies-cuda
+
+    - name: Docker push dependencies-CUDA (if master)
+      if: github.ref == 'refs/heads/master'
+      run: docker push ipeddocker/iped:dependencies-cuda
+
+    - name: Docker build processor-CUDA
+      #run: docker build --cache-from ipeddocker/iped:processor-cuda . -f Dockerfile.processor-cuda -t ipeddocker/iped:processor-cuda
+      run: docker build . -f Dockerfile.processor-cuda -t ipeddocker/iped:processor-cuda
+
+    - name: Docker push processor-CUDA (if master)
+      if: github.ref == 'refs/heads/master'
+      run: docker push ipeddocker/iped:processor-cuda
+
 
 
     - name: Docker push - semver
