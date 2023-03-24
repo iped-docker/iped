@@ -68,10 +68,10 @@ RUN apt-get update && apt-get install -y wget gnupg apt-utils apt-transport-http
     && make all install \
     && rm -rf ${PKGTMPDIR}/libbfio \
     && echo "#####################################" \
-    && echo "install libvslvm" \
+    && echo "install libvslvm - removed branch - is currently only building on master" \
     && echo "#####################################" \
     && cd ${PKGTMPDIR} \
-    && git clone -b 20221025 https://github.com/libyal/libvslvm \
+    && git clone https://github.com/libyal/libvslvm \
     && cd ${PKGTMPDIR}/libvslvm \ 
     && ./synclibs.sh \
     && ./autogen.sh \
