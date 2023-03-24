@@ -46,11 +46,6 @@ RUN echo "#####################################" \
     && echo "robustImageReading = true" >> /opt/IPED/iped/profiles/pedorobust/conf/FileSystemConfig.txt \
     && echo "enableExternalParsing = true" >> /opt/IPED/iped/profiles/pedorobust/conf/ParsingTaskConfig.txt \
     && echo "#####################################" \
-    && echo "TEMPORARY: Removing spring-jcl and commons-logging libraries due to issue on robusImageReading on PODMAN" \
-    && echo "#####################################" \    
-    && rm -v /opt/IPED/iped/lib/spring-jcl-5.3.23.jar \
-    && rm -v /opt/IPED/iped/lib/commons-logging-1.2.jar \
-    && echo "#####################################" \
     && echo "Removing comentary from numFramesEquation" \
     && echo "#####################################" \    
     && sed -i -e "s/#numFramesEquation =/numFramesEquation =/" /opt/IPED/iped/conf/VideoThumbsConfig.txt
