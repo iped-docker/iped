@@ -1,0 +1,12 @@
+FROM ipeddocker/iped:processor-cuda
+
+
+WORKDIR /root/pkgs
+RUN echo "#####################################" \
+    && echo "Work In Progress" \
+    && echo "#####################################" 
+
+WORKDIR /opt/IPED/iped
+COPY entrypoint.sh /
+ENTRYPOINT ["/entrypoint.sh"]
+CMD ["/bin/bash"]
