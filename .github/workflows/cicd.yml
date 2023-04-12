@@ -13,7 +13,7 @@ jobs:
       run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_TOKEN }}
       
     - name: pull latest (for cache)
-      run: docker pull ipeddocker/iped:dependencies && docker pull ipeddocker/iped:processor && docker pull ipeddocker/iped:latest || echo could not pull
+      run: docker pull ipeddocker/iped:dependencies && docker pull ipeddocker/iped:processor && docker pull ipeddocker/iped:latest && docker pull ipeddocker/iped:dependencies-cuda && docker pull ipeddocker/iped:processor-cuda || echo could not pull
       
       
 
