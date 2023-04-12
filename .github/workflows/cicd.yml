@@ -41,16 +41,14 @@ jobs:
 
 
     - name: Docker build dependencies-CUDA
-      #run: docker build --cache-from ipeddocker/iped:dependencies-cuda . -f Dockerfile.dependencies-cuda -t ipeddocker/iped:dependencies-cuda
-      run: docker build . -f Dockerfile.dependencies-cuda -t ipeddocker/iped:dependencies-cuda
+      run: docker build --cache-from ipeddocker/iped:dependencies-cuda . -f Dockerfile.dependencies-cuda -t ipeddocker/iped:dependencies-cuda
 
     - name: Docker push dependencies-CUDA (if master)
       if: github.ref == 'refs/heads/master'
       run: docker push ipeddocker/iped:dependencies-cuda
 
-    - name: Docker build processor-CUDA
-      #run: docker build --cache-from ipeddocker/iped:processor-cuda . -f Dockerfile.processor-cuda -t ipeddocker/iped:processor-cuda
-      run: docker build . -f Dockerfile.processor-cuda -t ipeddocker/iped:processor-cuda
+    - name: Docker build processor-CUDA      
+      run: docker build --cache-from ipeddocker/iped:processor-cuda . -f Dockerfile.processor-cuda -t ipeddocker/iped:processor-cuda
 
     - name: Docker push processor-CUDA (if master)
       if: github.ref == 'refs/heads/master'
@@ -66,4 +64,8 @@ jobs:
         docker tag ipeddocker/iped:dependencies ipeddocker/iped:dependencies_${GITHUB_REF#refs/tags/} 
         docker push ipeddocker/iped:${GITHUB_REF#refs/tags/}
         docker push ipeddocker/iped:processor_${GITHUB_REF#refs/tags/}
-        docker push ipeddocker/iped:dependencies_${GITHUB_REF#refs/tags/}
+        docker push ipeddocker/iped:dependencies_${GITHUB_REF#refs/tags/}        
+        docker tag ipeddocker/iped:processor-cuda ipeddocker/iped:processor-cuda_${GITHUB_REF#refs/tags/} 
+        docker tag ipeddocker/iped:dependencies-cuda ipeddocker/iped:dependencies-cuda_${GITHUB_REF#refs/tags/}        
+        docker push ipeddocker/iped:processor-cuda_${GITHUB_REF#refs/tags/}
+        docker push ipeddocker/iped:dependencies-cuda_${GITHUB_REF#refs/tags/}

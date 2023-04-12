@@ -48,7 +48,11 @@ RUN echo "#####################################" \
     && echo "#####################################" \
     && echo "Removing comentary from numFramesEquation" \
     && echo "#####################################" \
-    && sed -i -e "s/#numFramesEquation =/numFramesEquation =/" /opt/IPED/iped/conf/VideoThumbsConfig.txt
+    && sed -i -e "s/#numFramesEquation =/numFramesEquation =/" /opt/IPED/iped/conf/VideoThumbsConfig.txt \    
+    && echo "#####################################" \
+    && echo "Adding a blank huggingfaceModel to enable entrypoint value filling" \
+    && echo "#####################################" \
+    && echo "huggingFaceModel = " >> /opt/IPED/iped/conf/AudioTranscriptConfig.txt
 
 WORKDIR /opt/IPED/iped
 COPY entrypoint.sh /
