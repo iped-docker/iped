@@ -1,4 +1,4 @@
-FROM nvidia/cuda:11.7.1-base-ubuntu22.04
+FROM nvidia/cuda:11.7.1-cudnn8-runtime-ubuntu22.04
 
 ENV TZ=Brazil/East
 ENV DEBIAN_FRONTEND=noninteractive
@@ -244,7 +244,8 @@ RUN apt-get update && apt-get install -y wget gnupg apt-utils apt-transport-http
     && python -m pip install numpy \
     && python -m pip install jep==4.0.3 \
                           keras \
-                          tensorflow \
+                          tensorflow==2.9.1 tensorrt==8.5.3.1 \
+                          torch==2.0.0 torchvision==0.15.1 torchaudio==2.0.1 \
                           pillow \
                           bs4 \
                           face_recognition \
