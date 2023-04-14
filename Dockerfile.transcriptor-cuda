@@ -8,7 +8,7 @@ ENV JAVA_HOME=/usr/lib/jvm/bellsoft-java11-runtime-amd64/
 ENV LD_LIBRARY_PATH=/usr/local/lib/python3.9/dist-packages/jep/
 ENV PKGTMPDIR=/tmp/pkgs
 ENV IPED_VERSION=4.1.1
-ENV TRANSCRIPTION_MODEL="jonatasgrosman/wav2vec2-xls-r-1b-portuguese"
+
 
 WORKDIR /root/pkgs
 RUN apt-get update && apt-get install -y wget \
@@ -53,16 +53,6 @@ RUN apt-get update && apt-get install -y wget \
     && apt-get remove -y python3-pip \
     && apt-get autoremove -y \
     && rm -rfv /root/.cache/pip && rm -rfv ${PKGTMPDIR} && apt-get clean && rm -rfv /var/lib/apt/lists/* \
-    && echo "#####################################" \
-    && echo "Downloading the desired model" \
-    && echo "#####################################" \
-    && python -c "from transformers import utils; \
-              fStr = utils.get_file_from_repo('${TRANSCRIPTION_MODEL}', 'config.json'); \
-              fStr = utils.get_file_from_repo('${TRANSCRIPTION_MODEL}', 'pytorch_model.bin'); \
-              fStr = utils.get_file_from_repo('${TRANSCRIPTION_MODEL}', 'preprocessor_config.json'); \
-              fStr = utils.get_file_from_repo('${TRANSCRIPTION_MODEL}', 'vocab.json'); \
-              fStr = utils.get_file_from_repo('${TRANSCRIPTION_MODEL}', 'special_tokens_map.json');"
-
 
 WORKDIR /opt/IPED/iped
 COPY entrypoint.sh /
