@@ -1,4 +1,4 @@
-FROM ipeddocker/iped:dependencies-cuda
+FROM ipeddocker/iped:dependencies
 
 ENV IPED_VERSION=4.1.1
 
