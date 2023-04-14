@@ -1,10 +1,68 @@
-FROM ipeddocker/iped:processor-cuda
+FROM nvidia/cuda:11.6.2-cudnn8-runtime-ubuntu20.04
 
+ENV TZ=Brazil/East
+ENV DEBIAN_FRONTEND=noninteractive
+ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
+ENV SAL_USE_VCLPLUGIN='gtk'
+ENV JAVA_HOME=/usr/lib/jvm/bellsoft-java11-runtime-amd64/
+ENV LD_LIBRARY_PATH=/usr/local/lib/python3.9/dist-packages/jep/
+ENV PKGTMPDIR=/tmp/pkgs
+ENV IPED_VERSION=4.1.1
+ENV TRANSCRIPTION_MODEL="jonatasgrosman/wav2vec2-xls-r-1b-portuguese"
 
 WORKDIR /root/pkgs
-RUN echo "#####################################" \
-    && echo "Work In Progress" \
-    && echo "#####################################" 
+RUN apt-get update && apt-get install -y wget \
+    && apt-get dist-upgrade -y \
+    && wget -q -O - https://download.bell-sw.com/pki/GPG-KEY-bellsoft | tee /etc/apt/trusted.gpg.d/bellsoft.asc \
+    && echo "deb [arch=amd64] https://apt.bell-sw.com/ stable main" | tee /etc/apt/sources.list.d/bellsoft.list \
+    && apt-get update \
+    && apt-get install -y \
+        bellsoft-java11-runtime \
+        libsndfile1 mplayer \
+        iproute2 iputils-ping \
+        python3.9 python3.9-distutils python3-pip python3.9-dev \
+        unzip sudo \
+    && update-alternatives --install /usr/bin/python python /usr/bin/python3.9 1 \
+    && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.9 1 \
+    && python -m pip install pip --upgrade \
+    && python -m pip install setuptools \
+    && python -m pip install torch==1.12.1+cu116 torchvision==0.13.1+cu116 torchaudio==0.12.1 --extra-index-url https://download.pytorch.org/whl/cu116 \
+    && python -m pip install huggingsound \
+    && echo "#####################################" \
+    && echo "Installing IPED" \
+    && echo "#####################################" \
+    && mkdir -p /opt/IPED/ && cd /opt/IPED/ \
+    && wget --progress=bar:force https://github.com/sepinf-inc/IPED/releases/download/$IPED_VERSION/IPED-${IPED_VERSION}_and_plugins.zip -O iped.zip \
+    && unzip iped.zip && rm iped.zip && ln -s iped-$IPED_VERSION iped \
+    && echo "#####################################" \
+    && echo "Configuring Local config with our default values" \
+    && echo "#####################################" \
+    && echo "If you need to change the IPED LocalConfig, use the environment variables available on /entrypoint.sh" \
+    && echo "#####################################" \
+    && sed -i -e "s/locale =.*/locale = pt-BR/" /opt/IPED/iped/LocalConfig.txt \
+    && sed -i -e "s/indexTemp =.*/indexTemp = \/mnt\/ipedtmp/" /opt/IPED/iped/LocalConfig.txt \
+    && sed -i -e "s/indexTempOnSSD =.*/indexTempOnSSD = true/" /opt/IPED/iped/LocalConfig.txt \
+    && sed -i -e "s/outputOnSSD =.*/outputOnSSD = false/" /opt/IPED/iped/LocalConfig.txt \
+    && sed -i -e "s/numThreads =.*/numThreads = 8/" /opt/IPED/iped/LocalConfig.txt \
+    && sed -i -e "s/#hashesDB =.*/hashesDB = \/mnt\/hashesdb\/iped-hashes.db/" /opt/IPED/iped/LocalConfig.txt \
+    && sed -i -e "s/#tskJarPath =.*/tskJarPath = \/usr\/share\/java\/sleuthkit-4.12.0.jar/" /opt/IPED/iped/LocalConfig.txt \
+    && sed -i -e "s/mplayerPath =.*/mplayerPath = \/usr\/bin\/mplayer/" /opt/IPED/iped/LocalConfig.txt \
+    && echo "#####################################" \
+    && echo "Cleaning UP the container " \
+    && echo "#####################################" \
+    && apt-get remove -y python3-pip \
+    && apt-get autoremove -y \
+    && rm -rfv /root/.cache/pip && rm -rfv ${PKGTMPDIR} && apt-get clean && rm -rfv /var/lib/apt/lists/* \
+    && echo "#####################################" \
+    && echo "Downloading the desired model" \
+    && echo "#####################################" \
+    && python -c "from transformers import utils; \
+              fStr = utils.get_file_from_repo('${TRANSCRIPTION_MODEL}', 'config.json'); \
+              fStr = utils.get_file_from_repo('${TRANSCRIPTION_MODEL}', 'pytorch_model.bin'); \
+              fStr = utils.get_file_from_repo('${TRANSCRIPTION_MODEL}', 'preprocessor_config.json'); \
+              fStr = utils.get_file_from_repo('${TRANSCRIPTION_MODEL}', 'vocab.json'); \
+              fStr = utils.get_file_from_repo('${TRANSCRIPTION_MODEL}', 'special_tokens_map.json');"
+
 
 WORKDIR /opt/IPED/iped
 COPY entrypoint.sh /
