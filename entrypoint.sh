@@ -167,8 +167,9 @@ then
         useradd --uid ${USERID} -U tmpuser -m && echo "user added with UID ${USERID}." && \
         echo -n "Creating mplayer config on user environment..." && \
         sudo -u tmpuser mplayer >/dev/null 2>&1 && echo "OK" && \
-        echo -n "moving /root/.cache to tmpuser ..." && \
-        mv -v /root/.cache /home/tmpuser && chown -R tmpuser:tmpuser /home/tmpuser/.cache && \
+        echo -n "Configuring cache of tmpuser ..." && \
+        mkdir -p /home/tmpuser/.cache && ln -fs /root/.cache/huggingface /home/tmpuser/.cache/huggingface && \
+        chown -RL tmpuser:tmpuser /home/tmpuser/.cache && chmod -R +x /root \
         echo "Executing command as UID $USERID..." && \
         sudo -u tmpuser --chdir=${PWD} --preserve-env=SAL_USE_VCLPLUGIN,JAVA_HOME,LD_LIBRARY_PATH,IPED_VERSION $@ || \
         echo "Running as UID $USERID Failed."         
