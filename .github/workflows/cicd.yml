@@ -60,11 +60,11 @@ jobs:
 
     - name: Docker build transcriptor-CUDA      
       #run: docker build --cache-from ipeddocker/iped:transcriptor . -f Dockerfile.transcriptor-cuda -t ipeddocker/iped:transcriptor-cuda
-      run: docker build . -f Dockerfile.transcriptor-cuda -t ipeddocker/iped:transcriptor-cuda
+      run: docker build . -f Dockerfile.transcriptor-cuda -t ipeddocker/iped:transcriptor
 
     - name: Docker push transcriptor-CUDA (if master)
       if: github.ref == 'refs/heads/master'
-      run: docker push ipeddocker/iped:transcriptor-cuda      
+      run: docker push ipeddocker/iped:transcriptor      
 
     - name: Docker push transcriptor-CUDA - semver
       if: startsWith(github.ref, 'refs/tags/')
@@ -77,7 +77,7 @@ jobs:
 
     - name: Docker build dependencies-CUDA
       #run: docker build --cache-from ipeddocker/iped:dependencies . -f Dockerfile.dependencies-cuda -t ipeddocker/iped:dependencies
-      run: docker build . -f Dockerfile.dependencies-cuda -t ipeddocker/iped:dependencies-cuda
+      run: docker build . -f Dockerfile.dependencies-cuda -t ipeddocker/iped:dependencies
 
     - name: Docker push dependencies-CUDA (if master)
       if: github.ref == 'refs/heads/master'

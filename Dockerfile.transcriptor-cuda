@@ -45,8 +45,12 @@ RUN apt-get update && apt-get install -y wget \
     && sed -i -e "s/outputOnSSD =.*/outputOnSSD = false/" /opt/IPED/iped/LocalConfig.txt \
     && sed -i -e "s/numThreads =.*/numThreads = 8/" /opt/IPED/iped/LocalConfig.txt \
     && sed -i -e "s/#hashesDB =.*/hashesDB = \/mnt\/hashesdb\/iped-hashes.db/" /opt/IPED/iped/LocalConfig.txt \
-    && sed -i -e "s/#tskJarPath =.*/tskJarPath = \/usr\/share\/java\/sleuthkit-4.12.0.jar/" /opt/IPED/iped/LocalConfig.txt \
+    && sed -i -e "s/#tskJarPath =.*/tskJarPath = \/opt\/IPED\/iped\/lib\/sleuthkit-4.12.0.p1.jar/" /opt/IPED/iped/LocalConfig.txt \
     && sed -i -e "s/mplayerPath =.*/mplayerPath = \/usr\/bin\/mplayer/" /opt/IPED/iped/LocalConfig.txt \
+    && echo "#####################################" \
+    && echo "Uncommenting a default huggingfaceModel to enable entrypoint value filling" \
+    && echo "#####################################" \
+    && sed -i -e "s/# huggingFaceModel = lgris/huggingFaceModel = lgris/" /opt/IPED/iped/conf/AudioTranscriptConfig.txt \
     && echo "#####################################" \
     && echo "Cleaning UP the container " \
     && echo "#####################################" \
