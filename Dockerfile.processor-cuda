@@ -50,9 +50,10 @@ RUN echo "#####################################" \
     && echo "#####################################" \
     && sed -i -e "s/#numFramesEquation =/numFramesEquation =/" /opt/IPED/iped/conf/VideoThumbsConfig.txt \    
     && echo "#####################################" \
-    && echo "Uncommenting a default huggingfaceModel to enable entrypoint value filling" \
+    && echo "Uncommenting a audiotranscription flags to enable entrypoint value filling" \
     && echo "#####################################" \
-    && sed -i -e "s/# huggingFaceModel = lgris/huggingFaceModel = lgris/" /opt/IPED/iped/conf/AudioTranscriptConfig.txt
+    && sed -i -e "s/# huggingFaceModel = lgris/huggingFaceModel = lgris/" /opt/IPED/iped/conf/AudioTranscriptConfig.txt \
+    && sed -i -e "s/# wav2vec2Service = 127.0.0.1:11111/wav2vec2Service = 127.0.0.1:11111/" /opt/IPED/iped/conf/AudioTranscriptConfig.txt
 
 WORKDIR /opt/IPED/iped
 COPY entrypoint.sh /
