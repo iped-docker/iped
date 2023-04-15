@@ -23,7 +23,8 @@ jobs:
         snapshotJSON="${snapshotJSON//$'\n'/}"
         snapshotJSON="${snapshotJSON//$'\r'/}"        
         snapshotJSON="${snapshotJSON// /}"
-        echo '::set-output name=snapshot::${snapshotJSON}'
+        echo "snapshot: $snapshotJSON"
+        echo '::set-output name=snapshot::$snapshotJSON'
 
     - name: download snapshot
       env: 
