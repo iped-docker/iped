@@ -145,19 +145,6 @@ do
 done
 
  
-if [ "${TRANSCRIPTION_MODEL}" ]
-then
-    echo "#####################################" && \
-    echo "Downloading the desired huggingface model" && \
-    echo "#####################################" && \
-    python -c "from transformers import utils; \
-              fStr = utils.get_file_from_repo('${TRANSCRIPTION_MODEL}', 'config.json'); \
-              fStr = utils.get_file_from_repo('${TRANSCRIPTION_MODEL}', 'pytorch_model.bin'); \
-              fStr = utils.get_file_from_repo('${TRANSCRIPTION_MODEL}', 'preprocessor_config.json'); \
-              fStr = utils.get_file_from_repo('${TRANSCRIPTION_MODEL}', 'vocab.json'); \
-              fStr = utils.get_file_from_repo('${TRANSCRIPTION_MODEL}', 'special_tokens_map.json');"
-fi
-
 #
 # Test for UID presence and, if exist, change the execution for this user id
 # 
@@ -168,8 +155,8 @@ then
         echo -n "Creating mplayer config on user environment..." && \
         sudo -u tmpuser mplayer >/dev/null 2>&1 && echo "OK" && \
         echo -n "Configuring cache of tmpuser ..." && \
-        mkdir -p /home/tmpuser/.cache && ln -fs /root/.cache/huggingface /home/tmpuser/.cache/huggingface && \
-        chown -RL tmpuser:tmpuser /home/tmpuser/.cache && chmod -R +x /root \
+        ln -fs /root/.cache /home/tmpuser/.cache && \
+        chown -RL tmpuser:tmpuser /root/.cache && chmod +x /root && \
         echo "Executing command as UID $USERID..." && \
         sudo -u tmpuser --chdir=${PWD} --preserve-env=SAL_USE_VCLPLUGIN,JAVA_HOME,LD_LIBRARY_PATH,IPED_VERSION $@ || \
         echo "Running as UID $USERID Failed."         

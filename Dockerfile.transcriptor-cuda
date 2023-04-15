@@ -20,12 +20,11 @@ RUN apt-get update && apt-get install -y wget \
         bellsoft-java11-runtime \
         libsndfile1 mplayer \
         iproute2 iputils-ping \
-        python3.9 python3.9-distutils python3-pip python3.9-dev \
+        python3.9 python3.9-distutils python3-pip python3.9-dev python3-setuptools \
         unzip sudo \
     && update-alternatives --install /usr/bin/python python /usr/bin/python3.9 1 \
     && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.9 1 \
     && python -m pip install pip --upgrade \
-    && python -m pip install setuptools \
     && python -m pip install torch==1.12.1+cu116 torchvision==0.13.1+cu116 torchaudio==0.12.1 --extra-index-url https://download.pytorch.org/whl/cu116 \
     && python -m pip install huggingsound \
     && echo "#####################################" \
@@ -50,7 +49,7 @@ RUN apt-get update && apt-get install -y wget \
     && echo "#####################################" \
     && echo "Uncommenting a default huggingfaceModel to enable entrypoint value filling" \
     && echo "#####################################" \
-    && sed -i -e "s/# huggingFaceModel = lgris/huggingFaceModel = lgris/" /opt/IPED/iped/conf/AudioTranscriptConfig.txt \
+    && sed -i -e "s/# huggingFaceModel = jonatasgrosman\/wav2vec2-xls-r-1b-portuguese/huggingFaceModel = jonatasgrosman\/wav2vec2-xls-r-1b-portuguese/" /opt/IPED/iped/conf/AudioTranscriptConfig.txt \
     && echo "#####################################" \
     && echo "Cleaning UP the container " \
     && echo "#####################################" \
