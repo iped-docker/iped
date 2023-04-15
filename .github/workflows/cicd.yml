@@ -28,7 +28,7 @@ jobs:
 
     - name: download snapshot
       env: 
-        URL: "${{ fromJSON( steps.get_snapshot.outputs.shapshot ).total_count }}"
+        URL: "${{ steps.get_snapshot.outputs.shapshot && fromJSON( steps.get_snapshot.outputs.shapshot ).total_count }}"
       run: |
         echo "URL: $URL"
         curl -s -L -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${{ secrets.ACTION_GH_TOKEN }}" -H "X-GitHub-Api-Version: 2022-11-28" --output iped.zip ${url}
