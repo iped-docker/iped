@@ -20,11 +20,11 @@ jobs:
         snapshot="${snapshot//'%'/'%25'}"
         snapshot="${snapshot//$'\n'/'%0A'}"
         snapshot="${snapshot//$'\r'/'%0D'}"          
-        echo "::set-output name=packageJson::$snapshot"
+        echo "json_result=packageJson::$snapshot" >> $GITHUB_ENV
 
     - name: download IPED SNAPSHOT
       run: |
-        curl -s -L -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${{ secrets.ACTION_GH_TOKEN }}" -H "X-GitHub-Api-Version: 2022-11-28" --output iped.zip ${{fromJson(steps.snapshotJSON.outputs.packageJson).artifacts.archive_download_url}}
+        curl -s -L -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${{ secrets.ACTION_GH_TOKEN }}" -H "X-GitHub-Api-Version: 2022-11-28" --output iped.zip ${{fromJson( ${{ json_result}} ).artifacts[0].archive_download_url}}
 
 
     - name: Docker build transcriptor-CUDA      
