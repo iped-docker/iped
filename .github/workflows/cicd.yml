@@ -20,12 +20,8 @@ jobs:
         snapshotJSON="${snapshotJSON//'%'/'\\%'}"
         snapshotJSON="${snapshotJSON//$'\n'/' '}"
         snapshotJSON="${snapshotJSON//$'\r'/''}"
-        snapshotJSON="${snapshotJSON//\"/\\\'}"
-        echo "SNAPSHOT_JSON=\"$snapshotJSON\"" >> $GITHUB_OUTPUT
-
-    - name: download snapshot
-      run: |        
-        echo ${{ fromJson( steps.get_snapshot.outputs.SNAPSHOT_JSON ).total_count }}
+        snapshotJSON="${snapshotJSON//\"/\\\'}"            
+        echo ${{ fromJson( env.snapshotJSON ).total_count }}
         curl -s -L -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${{ secrets.ACTION_GH_TOKEN }}" -H "X-GitHub-Api-Version: 2022-11-28" --output iped.zip ${url}
 
 
