@@ -20,7 +20,7 @@ jobs:
         snapshotJSON="${snapshotJSON//'%'/'\\%'}"
         snapshotJSON="${snapshotJSON//$'\n'/' '}"
         snapshotJSON="${snapshotJSON//$'\r'/''}"
-        snapshotJSON="${snapshotJSON//\"/\\\"}"
+        snapshotJSON="${snapshotJSON//\"/\\\'}"
         echo "SNAPSHOT_JSON=\"$snapshotJSON\"" >> $GITHUB_OUTPUT
 
     - name: download snapshot
