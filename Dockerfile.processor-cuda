@@ -2,7 +2,7 @@ FROM ipeddocker/iped:dependencies
 
 ENV IPED_VERSION=4.1.1
 
-WORKDIR /root/pkgs
+WORKDIR ${PKGTMPDIR}
 RUN echo "#####################################" \
     && echo "Installing IPED" \
     && echo "#####################################" \
