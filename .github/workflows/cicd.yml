@@ -21,7 +21,7 @@ jobs:
         snapshotJSON="${snapshotJSON//$'\n'/' '}"
         snapshotJSON="${snapshotJSON//$'\r'/''}"
         snapshotJSON="${snapshotJSON//\"/\\\'}" 
-        echo "snapshot=\"${snapshotJSON}\"" >> $GITHUB_ENV
+        echo "snapshot=${snapshotJSON}" >> $GITHUB_ENV
         echo "total_count: ${{ fromJson( env.snapshot ).total_count }}"
         curl -s -L -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${{ secrets.ACTION_GH_TOKEN }}" -H "X-GitHub-Api-Version: 2022-11-28" --output iped.zip ${url}
 
