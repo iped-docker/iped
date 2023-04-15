@@ -28,7 +28,7 @@ jobs:
 
     - name: download snapshot
       run: |
-        curl -s -L -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${{ secrets.ACTION_GH_TOKEN }}" -H "X-GitHub-Api-Version: 2022-11-28" --output iped.zip ${{ fromJson( steps.get_snapshot.outputs.SNAPSHOT_JSON ).artifacts[0].archive_download_url}}
+        curl -s -L -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${{ secrets.ACTION_GH_TOKEN }}" -H "X-GitHub-Api-Version: 2022-11-28" --output iped.zip ${{ fromJson( steps.get_snapshot.outputs.SNAPSHOT_JSON ).artifacts_0_archive_download_url}}
 
 
     - name: Docker build transcriptor-CUDA      
