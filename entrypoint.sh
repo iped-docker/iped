@@ -117,10 +117,13 @@ do
 done
 
 # IPED variables setting on the config dir (with iped_ prefix)
+# supportedMimes, host and port are repeatedly used on configs
+# so they were removed
 for v in $( for file in $( find /opt/IPED/iped/conf/ -type f | grep Config.txt \
-            | grep -v -i regex); do grep -v "#" $file | grep -v "\." | grep -v "^host =" \
-            | grep -v "^port = " | cut -d "=" -f 1 | sort -u \
-            | awk '{ if ($0 != "\r" ) {print "iped_"$0;} }';\
+                | grep -v -i regex); do grep "=" $file | grep -v "^host =" \
+                | grep -v "^port = " | cut -d "=" -f 1 \
+                | grep -v "\." | grep -v "^#" | grep -v supportedMimes \
+                | awk '{ if ($0 != "\r" ) {print "iped_"$0;} }';\
             done )        
 do
         echo ${v}=${!v}
