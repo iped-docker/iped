@@ -27,7 +27,8 @@ jobs:
           type=registry,ref=ipeddocker/iped:transcriptor_snapshot
           type=registry,ref=ipeddocker/iped:transcriptor
         push: true 
-        build-args: SNAPSHOT="true"
+        build-args: |
+          SNAPSHOT=true
         secrets: |
           "ACTION_GH_TOKEN=${{ secrets.ACTION_GH_TOKEN }}"
     
