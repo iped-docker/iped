@@ -33,10 +33,10 @@ RUN apt-get update && apt-get install -y curl \
     && apt-get autoremove -y \
     && rm -rf /root/.cache/pip && rm -rf ${PKGTMPDIR} && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-ENV IPED_VERSION=4.1.1
+ENV IPED_RELEASE_VERSION=4.1.1 SNAPSHOT="true"
 RUN --mount=type=secret,id=ACTION_GH_TOKEN export ACTION_GH_TOKEN=$(cat /run/secrets/ACTION_GH_TOKEN) \
     && mkdir -p /opt/IPED/ && cd /opt/IPED/ \
-    && if [ "${SNAPSHOT}" ]; \
+    && if [ "${SNAPSHOT}" == "true" ]; \
         then \
             echo "#####################################" && \
             echo "Installing IPED from SNAPSHOT   " && \
@@ -49,7 +49,7 @@ RUN --mount=type=secret,id=ACTION_GH_TOKEN export ACTION_GH_TOKEN=$(cat /run/sec
             echo "#####################################" && \
             echo "Installing IPED from RELEASE " && \
             echo "#####################################" && \
-            curl -L https://github.com/sepinf-inc/IPED/releases/download/$IPED_VERSION/IPED-${IPED_VERSION}_and_plugins.zip --output ${PKGTMPDIR}/iped.zip && \
+            curl -L https://github.com/sepinf-inc/IPED/releases/download/$IPED_RELEASE_VERSION/IPED-${IPED_RELEASE_VERSION}_and_plugins.zip --output ${PKGTMPDIR}/iped.zip && \
             unzip ${PKGTMPDIR}/iped.zip ;\
         fi \
     && ls | grep "iped-" | xargs -i sh -c 'ln -s "{}" iped' \
