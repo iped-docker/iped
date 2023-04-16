@@ -39,7 +39,7 @@ jobs:
         file: Dockerfile.transcriptor-cuda
         tags: | 
           ipeddocker/iped:transcriptor
-          ipeddocker/iped:transcriptor_${GITHUB_REF#refs/tags/}
+          ipeddocker/iped:transcriptor_${{ github.ref_name }}
         cache-from: type=registry,ref=ipeddocker/iped:transcriptor
         push: true 
         secrets: |
@@ -60,7 +60,7 @@ jobs:
         file: Dockerfile.dependencies-cuda
         tags: | 
           ipeddocker/iped:dependencies
-          ipeddocker/iped:dependencies_${GITHUB_REF#refs/tags/}
+          ipeddocker/iped:dependencies_${{ github.ref_name }}
         cache-from: type=registry,ref=ipeddocker/iped:dependencies
         push: true 
       
@@ -72,7 +72,7 @@ jobs:
         file: Dockerfile.processor-cuda
         tags: | 
           ipeddocker/iped:processor
-          ipeddocker/iped:processor_${GITHUB_REF#refs/tags/}
+          ipeddocker/iped:processor_${{ github.ref_name }}
         cache-from: type=registry,ref=ipeddocker/iped:processor
         push: true 
 
@@ -83,6 +83,6 @@ jobs:
         context: .        
         tags: | 
           ipeddocker/iped:latest
-          ipeddocker/iped:${GITHUB_REF#refs/tags/}
+          ipeddocker/iped:${{ github.ref_name }}
         cache-from: type=registry,ref=ipeddocker/iped:latest
         push: true 
