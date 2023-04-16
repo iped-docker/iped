@@ -7,7 +7,9 @@ jobs:
     
     runs-on: ubuntu-latest
 
-    if: startsWith(github.ref, 'refs/tags/') || github.ref == 'refs/heads/master'
+#    if: startsWith(github.ref, 'refs/tags/') || github.ref == 'refs/heads/master'
+    if: startsWith(github.ref, 'refs/tags/') 
+    
     steps:
     - uses: actions/checkout@v3
     
@@ -17,7 +19,8 @@ jobs:
     - name: Docker login      
       run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_TOKEN }}
    
-    - name: Docker build transcriptor-SNAPSHOT 
+    - name: Docker build transcriptor-SNAPSHOT
+      if: startsWith(github.ref, 'refs/tags/') 
       uses: docker/build-push-action@v4      
       with:
         context: .
