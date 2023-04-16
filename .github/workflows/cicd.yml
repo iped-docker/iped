@@ -23,8 +23,7 @@ jobs:
         context: .
         file: Dockerfile.transcriptor-cuda
         tags: ipeddocker/iped:transcriptor 
-        cache-from: |
-          ipeddocker/iped:transcriptor   
+        cache-from: ipeddocker/iped:transcriptor   
         push: true  
         secrets: |
           "ACTION_GH_TOKEN=${{ secrets.ACTION_GH_TOKEN }}"
