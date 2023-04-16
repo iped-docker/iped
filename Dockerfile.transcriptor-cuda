@@ -1,9 +1,11 @@
 FROM nvidia/cuda:11.6.2-cudnn8-runtime-ubuntu20.04
 
+ARG IPED_RELEASE_VERSION=4.1.1 SNAPSHOT=false SNAPSHOT_WORKFLOW_ID=4704824688 PKGTMPDIR=/tmp/pkgs 
+
 ENV TZ=Brazil/East DEBIAN_FRONTEND=noninteractive LANG=C.UTF-8 LC_ALL=C.UTF-8 \
     SAL_USE_VCLPLUGIN='gtk' JAVA_HOME=/usr/lib/jvm/bellsoft-java11-runtime-amd64/ \
-    LD_LIBRARY_PATH=/usr/local/lib/python3.9/dist-packages/jep/ PKGTMPDIR=/tmp/pkgs \
-    IPED_RELEASE_VERSION=4.1.1 SNAPSHOT_WORKFLOW_ID=4704824688
+    LD_LIBRARY_PATH=/usr/local/lib/python3.9/dist-packages/jep/ 
+    
 
 RUN mkdir -p ${PKGTMPDIR} && cd ${PKGTMPDIR} \
     && apt-get update && apt-get install -y curl \

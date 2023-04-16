@@ -28,7 +28,7 @@ jobs:
           type=registry,ref=ipeddocker/iped:transcriptor
         push: true 
         build-args: |
-          SNAPSHOT=true
+          "SNAPSHOT=true"
         secrets: |
           "ACTION_GH_TOKEN=${{ secrets.ACTION_GH_TOKEN }}"
     
@@ -50,7 +50,7 @@ jobs:
     # we dont need its image on the server
     # this step is to avoid disk space problems on next steps
     - name: Cleaning TRANSCRIPTION docker environment 
-      run: docker images | grep -v REPO | awk '{ system("docker rmi -f "$3)}'
+      run: docker image prune -a -f
 
 
     - name: Docker build dependecies-RELEASE 
@@ -77,7 +77,7 @@ jobs:
         cache-from: type=registry,ref=ipeddocker/iped:processor
         push: true 
 
-    - name: Docker build processor-RELEASE 
+    - name: Docker build iped-RELEASE 
       if: startsWith(github.ref, 'refs/tags/')
       uses: docker/build-push-action@v4      
       with:
