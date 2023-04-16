@@ -39,10 +39,12 @@ RUN --mount=type=secret,id=ACTION_GH_TOKEN export ACTION_GH_TOKEN=$(cat /run/sec
             echo "Installing IPED from SNAPSHOT   " && \
             echo "#####################################" && \
             echo -n "Getting snapshot with run ID ${SNAPSHOT_WORKFLOW_ID}..." && \
-            snapshotURL=$(curl -s -L -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${ACTION_GH_TOKEN}" \
-                           -H "X-GitHub-Api-Version: 2022-11-28" https://api.github.com/repos/sepinf-inc/IPED/actions/artifacts?per_page=15 | \
-                           jq -c '.artifacts[] | select(.workflow_run.id | contains(${SNAPSHOT_WORKFLOW_ID})) | .archive_download_url' | \
-                           tr -d '\"') && \
+            snapshotURL=$(curl -s -L -H "Accept: application/vnd.github+json" \
+                            -H "Authorization: Bearer ${ACTION_GH_TOKEN}" \
+                            -H "X-GitHub-Api-Version: 2022-11-28" \
+                            https://api.github.com/repos/sepinf-inc/IPED/actions/artifacts?per_page=15  | \
+                        jq --arg workflow_id $SNAPSHOT_WORKFLOW_ID -c '.artifacts[] | select(.workflow_run.id|tostring == $workflow_id) | .archive_download_url' | \
+                        tr -d '\"') && \
             echo "Downloading ${snapshotURL}..." && \
             curl -L -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${ACTION_GH_TOKEN}" -H "X-GitHub-Api-Version: 2022-11-28" --output ${PKGTMPDIR}/iped.zip ${snapshotURL} && \
             unzip -p ${PKGTMPDIR}/iped.zip | tar -xvz --strip-components=1; \

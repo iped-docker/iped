@@ -24,8 +24,7 @@ jobs:
         file: Dockerfile.transcriptor-cuda
         tags: ipeddocker/iped:transcriptor_snapshot
         cache-from: |
-          type=registry,ref=ipeddocker/iped:transcriptor_snapshot
-          type=registry,ref=ipeddocker/iped:transcriptor
+          type=registry,ref=ipeddocker/iped:transcriptor_snapshot          
         push: true 
         build-args: |
           "SNAPSHOT=true"
