@@ -33,10 +33,11 @@ RUN apt-get update && apt-get install -y curl \
     && apt-get autoremove -y \
     && rm -rf /root/.cache/pip && rm -rf ${PKGTMPDIR} && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-ENV IPED_RELEASE_VERSION=4.1.1 SNAPSHOT="true"
+ENV IPED_RELEASE_VERSION=4.1.1 
+ENV SNAPSHOT="true"
 RUN --mount=type=secret,id=ACTION_GH_TOKEN export ACTION_GH_TOKEN=$(cat /run/secrets/ACTION_GH_TOKEN) \
     && mkdir -p /opt/IPED/ && cd /opt/IPED/ \
-    && if [ "${SNAPSHOT}" == "true" ]; \
+    && if [[ "${SNAPSHOT}" == "true" ]]; \
         then \
             echo "#####################################" && \
             echo "Installing IPED from SNAPSHOT   " && \
