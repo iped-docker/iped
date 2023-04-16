@@ -7,7 +7,6 @@ ENV SAL_USE_VCLPLUGIN='gtk'
 ENV JAVA_HOME=/usr/lib/jvm/bellsoft-java11-runtime-amd64/
 ENV LD_LIBRARY_PATH=/usr/local/lib/python3.9/dist-packages/jep/
 ENV PKGTMPDIR=/tmp/pkgs
-ENV IPED_VERSION=4.1.1
 
 
 WORKDIR ${PKGTMPDIR}
@@ -26,10 +25,18 @@ RUN apt-get update && apt-get install -y curl \
     && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.9 1 \
     && python -m pip install pip --upgrade \
     && python -m pip install torch==1.12.1+cu116 torchvision==0.13.1+cu116 torchaudio==0.12.1 --extra-index-url https://download.pytorch.org/whl/cu116 \
-    && python -m pip install huggingsound
+    && python -m pip install huggingsound \
+    && echo "#####################################" \
+    && echo "Cleaning UP the container " \
+    && echo "#####################################" \ 
+    && apt-get remove -y python3-pip \
+    && apt-get autoremove -y \
+    && rm -rf /root/.cache/pip && rm -rf ${PKGTMPDIR} && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN mkdir -p /opt/IPED/ && cd /opt/IPED/ \
-    && if [ "${ACTION_GH_TOKEN}" ]; \
+ENV IPED_VERSION=4.1.1
+RUN --mount=type=secret,id=ACTION_GH_TOKEN export ACTION_GH_TOKEN=$(cat /run/secrets/ACTION_GH_TOKEN) \
+    && mkdir -p /opt/IPED/ && cd /opt/IPED/ \
+    && if [ "${SNAPSHOT}" ]; \
         then \
             echo "#####################################" && \
             echo "Installing IPED from SNAPSHOT   " && \
@@ -65,10 +72,8 @@ RUN mkdir -p /opt/IPED/ && cd /opt/IPED/ \
     && sed -i -e "s/# huggingFaceModel = jonatasgrosman\/wav2vec2-xls-r-1b-portuguese/huggingFaceModel = jonatasgrosman\/wav2vec2-xls-r-1b-portuguese/" /opt/IPED/iped/conf/AudioTranscriptConfig.txt \
     && echo "#####################################" \
     && echo "Cleaning UP the container " \
-    && echo "#####################################" \
-    && apt-get remove -y python3-pip \
-    && apt-get autoremove -y \
-    && rm -rf /root/.cache/pip && rm -rf ${PKGTMPDIR} && apt-get clean && rm -rf /var/lib/apt/lists/*
+    && echo "#####################################" \    
+    && rm -rf ${PKGTMPDIR} 
 
 WORKDIR /opt/IPED/iped
 COPY entrypoint.sh /

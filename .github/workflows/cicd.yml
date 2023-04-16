@@ -5,8 +5,7 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      TOKEN: ${{ secrets.ACTION_GH_TOKEN }}
+
     if: startsWith(github.ref, 'refs/tags/') || github.ref == 'refs/heads/master'
     steps:
     - uses: actions/checkout@v3
@@ -14,12 +13,13 @@ jobs:
     - name: Docker login
       run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_TOKEN }}
        
-
-
     - name: Docker build transcriptor-CUDA      
       run: |
         docker pull ipeddocker/iped:transcriptor
-        docker build --cache-from ipeddocker/iped:transcriptor . -f Dockerfile.transcriptor-cuda -t ipeddocker/iped:transcriptor --build-arg ACTION_GH_TOKEN="$TOKEN"
+        docker build --cache-from ipeddocker/iped:transcriptor . -f Dockerfile.transcriptor-cuda -t ipeddocker/iped:transcriptor --build-arg SNAPSHOT="true"
+      with:
+        secrets: |
+          "ACTION_GH_TOKEN=${{ secrets.ACTION_GH_TOKEN }}"
 
     - name: Docker push transcriptor-CUDA (if master)
       if: github.ref == 'refs/heads/master'
