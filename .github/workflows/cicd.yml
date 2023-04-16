@@ -10,56 +10,79 @@ jobs:
     if: startsWith(github.ref, 'refs/tags/') || github.ref == 'refs/heads/master'
     steps:
     - uses: actions/checkout@v3
-      
+    
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+
     - name: Docker login      
       run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_TOKEN }}
-
-    - name: pull transcriptor for cache
-      run:  docker pull ipeddocker/iped:transcriptor
    
-    - name: Docker build transcriptor-CUDA 
+    - name: Docker build transcriptor-SNAPSHOT 
       uses: docker/build-push-action@v4      
       with:
         context: .
         file: Dockerfile.transcriptor-cuda
-        tags: ipeddocker/iped:transcriptor 
-        cache-from: ipeddocker/iped:transcriptor   
-        push: true  
+        tags: ipeddocker/iped:transcriptor_snapshot
+        cache-from: |
+          type=registry,ref=ipeddocker/iped:transcriptor_snapshot
+          type=registry,ref=ipeddocker/iped:transcriptor
+        push: true 
+        build-args: SNAPSHOT="true"
+        secrets: |
+          "ACTION_GH_TOKEN=${{ secrets.ACTION_GH_TOKEN }}"
+    
+    - name: Docker build transcriptor-RELEASE 
+      if: startsWith(github.ref, 'refs/tags/')
+      uses: docker/build-push-action@v4      
+      with:
+        context: .
+        file: Dockerfile.transcriptor-cuda
+        tags: | 
+          ipeddocker/iped:transcriptor
+          ipeddocker/iped:transcriptor_${GITHUB_REF#refs/tags/}
+        cache-from: type=registry,ref=ipeddocker/iped:transcriptor
+        push: true 
         secrets: |
           "ACTION_GH_TOKEN=${{ secrets.ACTION_GH_TOKEN }}"
 
+    # transcriptor base image is different from other steps, so
+    # we dont need its image on the server
+    # this step is to avoid disk space problems on next steps
+    - name: Cleaning TRANSCRIPTION docker environment 
+      run: docker images | grep -v REPO | awk '{ system("docker rmi -f "$3)}'
 
-    - name: Docker push transcriptor-CUDA - (if release)      
+
+    - name: Docker build dependecies-RELEASE 
       if: startsWith(github.ref, 'refs/tags/')
-      run: |
-        docker tag ipeddocker/iped:transcriptor ipeddocker/iped:transcriptor_${GITHUB_REF#refs/tags/} 
-        docker push ipeddocker/iped:transcriptor_${GITHUB_REF#refs/tags/}  
-        docker rmi ipeddocker/iped:transcriptor ipeddocker/iped:transcriptor_${GITHUB_REF#refs/tags/}
-
-
-
-    - name: Docker build dependencies-CUDA      
-      run: |
-        docker pull ipeddocker/iped:dependencies
-        docker build --cache-from ipeddocker/iped:dependencies . -f Dockerfile.dependencies-cuda -t ipeddocker/iped:dependencies
+      uses: docker/build-push-action@v4      
+      with:
+        context: .
+        file: Dockerfile.dependencies-cuda
+        tags: | 
+          ipeddocker/iped:dependencies
+          ipeddocker/iped:dependencies_${GITHUB_REF#refs/tags/}
+        cache-from: type=registry,ref=ipeddocker/iped:dependencies
+        push: true 
       
-    - name: Docker push dependencies-CUDA (if master)      
-      if: github.ref == 'refs/heads/master'
-      run: docker push ipeddocker/iped:dependencies
-
-    - name: Docker build processor-CUDA            
-      run: |
-        docker pull ipeddocker/iped:processor
-        docker build --cache-from ipeddocker/iped:processor . -f Dockerfile.processor-cuda -t ipeddocker/iped:processor
-      
-    - name: Docker push processor-CUDA (if master)
-      if: github.ref == 'refs/heads/master'
-      run: docker push ipeddocker/iped:processor
-
-    - name: Docker push CUDA versions - (if release)      
+    - name: Docker build processor-RELEASE 
       if: startsWith(github.ref, 'refs/tags/')
-      run: |   
-        docker tag ipeddocker/iped:processor ipeddocker/iped:processor_${GITHUB_REF#refs/tags/} 
-        docker tag ipeddocker/iped:dependencies ipeddocker/iped:dependencies_${GITHUB_REF#refs/tags/}   
-        docker push ipeddocker/iped:processor_${GITHUB_REF#refs/tags/}
-        docker push ipeddocker/iped:dependencies_${GITHUB_REF#refs/tags/}
+      uses: docker/build-push-action@v4      
+      with:
+        context: .
+        file: Dockerfile.processor-cuda
+        tags: | 
+          ipeddocker/iped:processor
+          ipeddocker/iped:processor_${GITHUB_REF#refs/tags/}
+        cache-from: type=registry,ref=ipeddocker/iped:processor
+        push: true 
+
+    - name: Docker build processor-RELEASE 
+      if: startsWith(github.ref, 'refs/tags/')
+      uses: docker/build-push-action@v4      
+      with:
+        context: .        
+        tags: | 
+          ipeddocker/iped:latest
+          ipeddocker/iped:${GITHUB_REF#refs/tags/}
+        cache-from: type=registry,ref=ipeddocker/iped:latest
+        push: true 
