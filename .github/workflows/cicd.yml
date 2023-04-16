@@ -4,27 +4,27 @@ on: [push]
 
 jobs:
   build:
+    
     runs-on: ubuntu-latest
 
     if: startsWith(github.ref, 'refs/tags/') || github.ref == 'refs/heads/master'
     steps:
-    
+    - uses: actions/checkout@v3
       
-    - name: Docker login
-      uses: actions/checkout@v3
+    - name: Docker login      
       run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_TOKEN }}
        
     - name: Docker build transcriptor-CUDA 
-      uses: docker/build-push-action@v4
-      context: .
-      file: Dockerfile.transcriptor-cuda
-      tags: ipeddocker/iped:transcriptor 
-      cache-from: |
-        ipeddocker/iped:transcriptor   
-      push: true  
-      build-args: |
-        "SNAPSHOT=true"
+      uses: docker/build-push-action@v4      
       with:
+        context: .
+        file: Dockerfile.transcriptor-cuda
+        tags: ipeddocker/iped:transcriptor 
+        cache-from: |
+          ipeddocker/iped:transcriptor   
+        push: true  
+        build-args: |
+          "SNAPSHOT=true"
         secrets: |
           "ACTION_GH_TOKEN=${{ secrets.ACTION_GH_TOKEN }}"
 
@@ -38,8 +38,7 @@ jobs:
 #        docker push ipeddocker/iped:transcriptor
 #        docker rmi ipeddocker/iped:transcriptor
 
-    - name: Docker push transcriptor-CUDA - (if release)
-      uses: actions/checkout@v3
+    - name: Docker push transcriptor-CUDA - (if release)      
       if: startsWith(github.ref, 'refs/tags/')
       run: |
         docker tag ipeddocker/iped:transcriptor ipeddocker/iped:transcriptor_${GITHUB_REF#refs/tags/} 
@@ -48,30 +47,25 @@ jobs:
 
 
 
-    - name: Docker build dependencies-CUDA
-      uses: actions/checkout@v3
+    - name: Docker build dependencies-CUDA      
       run: |
         docker pull ipeddocker/iped:dependencies
         docker build --cache-from ipeddocker/iped:dependencies . -f Dockerfile.dependencies-cuda -t ipeddocker/iped:dependencies
       
-    - name: Docker push dependencies-CUDA (if master)
-      uses: actions/checkout@v3
+    - name: Docker push dependencies-CUDA (if master)      
       if: github.ref == 'refs/heads/master'
       run: docker push ipeddocker/iped:dependencies
 
-    - name: Docker build processor-CUDA      
-      uses: actions/checkout@v3
+    - name: Docker build processor-CUDA            
       run: |
         docker pull ipeddocker/iped:processor
         docker build --cache-from ipeddocker/iped:processor . -f Dockerfile.processor-cuda -t ipeddocker/iped:processor
       
     - name: Docker push processor-CUDA (if master)
-      uses: actions/checkout@v3
       if: github.ref == 'refs/heads/master'
       run: docker push ipeddocker/iped:processor
 
-    - name: Docker push CUDA versions - (if release)
-      uses: actions/checkout@v3
+    - name: Docker push CUDA versions - (if release)      
       if: startsWith(github.ref, 'refs/tags/')
       run: |   
         docker tag ipeddocker/iped:processor ipeddocker/iped:processor_${GITHUB_REF#refs/tags/} 
