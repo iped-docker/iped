@@ -31,6 +31,7 @@ jobs:
           ipeddocker/iped:transcriptor_${{ github.ref_name }}
         cache-from: type=registry,ref=docker.io/ipeddocker/iped:transcriptor_cache
         cache-to: type=registry,ref=docker.io/ipeddocker/iped:transcriptor_cache,mode=max
+        provenance: false
         push: true 
         build-args: |
           "SNAPSHOT=true"
