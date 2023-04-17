@@ -1,14 +1,16 @@
 FROM ipeddocker/iped:dependencies
 
-ARG IPED_VERSION=4.1.1 PKGTMPDIR=/tmp/pkgs
+ARG IPED_RELEASE_VERSION=4.1.1 PKGTMPDIR=/tmp/pkgs
 
-WORKDIR ${PKGTMPDIR}
+
 RUN echo "#####################################" \
     && echo "Installing IPED" \
     && echo "#####################################" \
     && mkdir -p /opt/IPED/ && cd /opt/IPED/ \
-    && wget --progress=bar:force https://github.com/sepinf-inc/IPED/releases/download/$IPED_VERSION/IPED-${IPED_VERSION}_and_plugins.zip -O iped.zip \
-    && unzip iped.zip && rm iped.zip && ln -s iped-$IPED_VERSION iped \
+    && wget --progress=bar:force https://github.com/sepinf-inc/IPED/releases/download/${IPED_RELEASE_VERSION}/IPED-${IPED_RELEASE_VERSION}_and_plugins.zip -O ${PKGTMPDIR}/iped.zip \
+    && unzip ${PKGTMPDIR}/iped.zip \
+    && echo "Creating IPED simbolic link..." \
+    && ls | grep "iped-" | xargs -i sh -c 'ln -s "{}" iped' \
     && echo "#####################################" \
     && echo "Configuring Local config with our default values" \
     && echo "#####################################" \
@@ -20,7 +22,7 @@ RUN echo "#####################################" \
     && sed -i -e "s/outputOnSSD =.*/outputOnSSD = false/" /opt/IPED/iped/LocalConfig.txt \
     && sed -i -e "s/numThreads =.*/numThreads = 8/" /opt/IPED/iped/LocalConfig.txt \
     && sed -i -e "s/#hashesDB =.*/hashesDB = \/mnt\/hashesdb\/iped-hashes.db/" /opt/IPED/iped/LocalConfig.txt \
-    && sed -i -e "s/#tskJarPath =.*/tskJarPath = \/usr\/share\/java\/sleuthkit-4.12.0.jar/" /opt/IPED/iped/LocalConfig.txt \
+    && sed -i -e "s/#tskJarPath =.*/tskJarPath = \/usr\/share\/java\/sleuthkit-4.12.0.jar/" /opt/IPED/iped/LocalConfig.txt \    
     && sed -i -e "s/mplayerPath =.*/mplayerPath = \/usr\/bin\/mplayer/" /opt/IPED/iped/LocalConfig.txt \
     && echo "#####################################" \
     && echo "Configuring GraphConfig with our default values:BR" \
@@ -53,7 +55,15 @@ RUN echo "#####################################" \
     && echo "Uncommenting a audiotranscription flags to enable entrypoint value filling" \
     && echo "#####################################" \
     && sed -i -e "s/# huggingFaceModel = lgris/huggingFaceModel = lgris/" /opt/IPED/iped/conf/AudioTranscriptConfig.txt \
-    && sed -i -e "s/# wav2vec2Service = 127.0.0.1:11111/wav2vec2Service = 127.0.0.1:11111/" /opt/IPED/iped/conf/AudioTranscriptConfig.txt
+    && sed -i -e "s/# wav2vec2Service = 127.0.0.1:11111/wav2vec2Service = 127.0.0.1:11111/" /opt/IPED/iped/conf/AudioTranscriptConfig.txt \
+    && echo "#####################################" \
+    && echo "Removing IPED's TSK-JAVA-JNI lib to avoid conflict of libs" \
+    && echo "#####################################" \
+    && rm -v /opt/IPED/iped/lib/sleuthkit-4.12.0.p1.jar \
+    && echo "#####################################" \
+    && echo "Cleaning UP the container " \
+    && echo "#####################################" \    
+    && rm -rfv ${PKGTMPDIR}
 
 WORKDIR /opt/IPED/iped
 COPY entrypoint.sh /
