@@ -6,7 +6,7 @@
 4a6,12
 > try:
 >     if os.environ["IPED_CUDA_MULTIPLIER"]:
->         cudaMultiplier = os.environ["IPED_CUDA_MULTIPLIER"]
+>         cudaMultiplier = int(os.environ["IPED_CUDA_MULTIPLIER"])
 > 
 > except KeyError:
 >     cudaMultiplier = 1
