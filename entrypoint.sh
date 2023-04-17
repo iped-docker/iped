@@ -116,9 +116,10 @@ do
         fi
 done
 
-# IPED variables setting on the config dir (with iped_ prefix)
+# IPED variables setting on the config dir (with iped_ prefix).
 # supportedMimes, host and port are repeatedly used on configs
-# so they were removed
+# so they were removed. IPED Variables with dots cannot be used 
+# as environment variables, removed also
 for v in $( for file in $( find /opt/IPED/iped/conf/ -type f | grep Config.txt \
                 | grep -v -i regex); do grep "=" $file | grep -v "^host =" \
                 | grep -v "^port = " | cut -d "=" -f 1 \
@@ -129,7 +130,7 @@ do
         echo ${v}=${!v}
         if [ "${!v}" ]
         then
-                find /opt/IPED/iped/conf/ -type f | grep Config.txt | grep -v -i regex | xargs sed -i -e "s|.*${v#iped_} =.*|${v#iped_} = ${!v}|" 
+                find /opt/IPED/iped/conf/ -type f | grep Config.txt | grep -v -i regex | xargs sed -i -e "s|${v#iped_} =.*|${v#iped_} = ${!v}|" 
         fi
 done
 
