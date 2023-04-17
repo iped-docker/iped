@@ -3,24 +3,23 @@
 ---
 > import sys
 > import os
-4a6,12
+4a6,11
 > try:
 >     if os.environ["IPED_CUDA_MULTIPLIER"]:
 >         cudaMultiplier = int(os.environ["IPED_CUDA_MULTIPLIER"])
-> 
-> except KeyError:
+> except:
 >     cudaMultiplier = 1
 > 
-21c29
+21c28
 <     cudaCount = torch.cuda.device_count()
 ---
 >     cudaCount = torch.cuda.device_count() * cudaMultiplier
-26c34,35
+26c33,34
 <         deviceId = 'cuda:' + deviceNum
 ---
 >         import math
 >         deviceId = 'cuda:' + str(math.floor(int(deviceNum)/cudaMultiplier))
-28,39c37,40
+28,39c36,39
 <         deviceId = 'cpu'
 <     
 <     try:
