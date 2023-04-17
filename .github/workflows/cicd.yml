@@ -15,6 +15,7 @@ jobs:
     
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v1
+      driver: docker-container
 
     - name: Docker login      
       run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_TOKEN }}
@@ -27,7 +28,7 @@ jobs:
         file: Dockerfile.transcriptor-cuda
         tags: ipeddocker/iped:transcriptor_snapshot
         cache-from: |
-          type=registry,ref=ipeddocker/iped:transcriptor_snapshot          
+          type=registry,ref=docker.io/ipeddocker/iped:transcriptor_snapshot          
         push: true 
         build-args: |
           "SNAPSHOT=true"
@@ -43,7 +44,7 @@ jobs:
         tags: | 
           ipeddocker/iped:transcriptor
           ipeddocker/iped:transcriptor_${{ github.ref_name }}
-        cache-from: type=registry,ref=ipeddocker/iped:transcriptor
+        cache-from: type=registry,ref=docker.io/ipeddocker/iped:transcriptor
         push: true 
         secrets: |
           "ACTION_GH_TOKEN=${{ secrets.ACTION_GH_TOKEN }}"
@@ -52,7 +53,7 @@ jobs:
     # we dont need its image on the server
     # this step is to avoid disk space problems on next steps
     - name: Cleaning TRANSCRIPTION docker environment 
-      run: docker image prune -a -f
+      run: docker buildx prune -a -f
 
 
     - name: Docker build dependecies-RELEASE 
@@ -64,7 +65,7 @@ jobs:
         tags: | 
           ipeddocker/iped:dependencies
           ipeddocker/iped:dependencies_${{ github.ref_name }}
-        cache-from: type=registry,ref=ipeddocker/iped:dependencies
+        cache-from: type=registry,ref=docker.io/ipeddocker/iped:dependencies
         push: true 
       
     - name: Docker build processor-RELEASE 
@@ -76,7 +77,7 @@ jobs:
         tags: | 
           ipeddocker/iped:processor
           ipeddocker/iped:processor_${{ github.ref_name }}
-        cache-from: type=registry,ref=ipeddocker/iped:processor
+        cache-from: type=registry,ref=docker.io/ipeddocker/iped:processor
         push: true 
 
     - name: Docker build iped-RELEASE 
@@ -87,5 +88,5 @@ jobs:
         tags: | 
           ipeddocker/iped:latest
           ipeddocker/iped:${{ github.ref_name }}
-        cache-from: type=registry,ref=ipeddocker/iped:latest
+        cache-from: type=registry,ref=docker.io/ipeddocker/iped:latest
         push: true 
