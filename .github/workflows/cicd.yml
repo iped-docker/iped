@@ -14,26 +14,23 @@ jobs:
     - uses: actions/checkout@v3
     
     - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v1
-      with:
-        driver: docker
+      uses: docker/setup-buildx-action@v1      
       
     - name: Docker login      
-      run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_TOKEN }}
-   
-    - name: docker pull transcriptor for cache
-      run: docker pull ipeddocker/iped:transcriptor
+      run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_TOKEN }}  
+    
 
     - name: Docker build transcriptor
       if: startsWith(github.ref, 'refs/tags/') 
       uses: docker/build-push-action@v4      
       with:
         context: .
-        file: Dockerfile.transcriptor-cuda
+        file: Dockerfile.transcriptor
         tags: |
           ipeddocker/iped:transcriptor
           ipeddocker/iped:transcriptor_${{ github.ref_name }}
-        cache-from: ipeddocker/iped:transcriptor                  
+        cache-from: type=registry,ref=docker.io/ipeddocker/iped:transcriptor_cache
+        cache-to: type=registry,ref=docker.io/ipeddocker/iped:transcriptor_cache,mode=max
         push: true 
         build-args: |
           "SNAPSHOT=true"
@@ -51,11 +48,12 @@ jobs:
       uses: docker/build-push-action@v4      
       with:
         context: .
-        file: Dockerfile.dependencies-cuda
+        file: Dockerfile.dependencies
         tags: | 
           ipeddocker/iped:dependencies
           ipeddocker/iped:dependencies_${{ github.ref_name }}
-        cache-from: ipeddocker/iped:dependencies
+        cache-from: type=registry,ref=docker.io/ipeddocker/iped:dependencies_cache
+        cache-to: type=registry,ref=docker.io/ipeddocker/iped:dependencies_cache,mode=max
         push: true 
       
     - name: Docker build processor-RELEASE 
@@ -63,11 +61,12 @@ jobs:
       uses: docker/build-push-action@v4      
       with:
         context: .
-        file: Dockerfile.processor-cuda
+        file: Dockerfile.processor
         tags: | 
           ipeddocker/iped:processor
           ipeddocker/iped:processor_${{ github.ref_name }}
-        cache-from: ipeddocker/iped:processor
+        cache-from: type=registry,ref=docker.io/ipeddocker/iped:processor_cache
+        cache-to: type=registry,ref=docker.io/ipeddocker/iped:processor_cache,mode=max
         push: true 
 
     - name: Docker build iped-RELEASE 
@@ -78,5 +77,6 @@ jobs:
         tags: | 
           ipeddocker/iped:latest
           ipeddocker/iped:${{ github.ref_name }}
-        cache-from: ipeddocker/iped:latest
+        cache-from: type=registry,ref=docker.io/ipeddocker/iped:latest_cache
+        cache-to: type=registry,ref=docker.io/ipeddocker/iped:latest_cache,mode=max
         push: true 

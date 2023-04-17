@@ -1,8 +1,8 @@
 FROM ipeddocker/iped:dependencies
 
-ENV IPED_VERSION=4.1.1
+ARG IPED_VERSION=4.1.1 PKGTMPDIR=/tmp/pkgs
 
-WORKDIR /root/pkgs
+WORKDIR ${PKGTMPDIR}
 RUN echo "#####################################" \
     && echo "Installing IPED" \
     && echo "#####################################" \
@@ -48,7 +48,12 @@ RUN echo "#####################################" \
     && echo "#####################################" \
     && echo "Removing comentary from numFramesEquation" \
     && echo "#####################################" \
-    && sed -i -e "s/#numFramesEquation =/numFramesEquation =/" /opt/IPED/iped/conf/VideoThumbsConfig.txt
+    && sed -i -e "s/#numFramesEquation =/numFramesEquation =/" /opt/IPED/iped/conf/VideoThumbsConfig.txt \    
+    && echo "#####################################" \
+    && echo "Uncommenting a audiotranscription flags to enable entrypoint value filling" \
+    && echo "#####################################" \
+    && sed -i -e "s/# huggingFaceModel = lgris/huggingFaceModel = lgris/" /opt/IPED/iped/conf/AudioTranscriptConfig.txt \
+    && sed -i -e "s/# wav2vec2Service = 127.0.0.1:11111/wav2vec2Service = 127.0.0.1:11111/" /opt/IPED/iped/conf/AudioTranscriptConfig.txt
 
 WORKDIR /opt/IPED/iped
 COPY entrypoint.sh /

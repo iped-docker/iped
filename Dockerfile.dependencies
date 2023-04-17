@@ -1,4 +1,4 @@
-FROM ubuntu:22.04
+FROM nvidia/cuda:11.7.1-cudnn8-runtime-ubuntu22.04
 
 ENV TZ=Brazil/East
 ENV DEBIAN_FRONTEND=noninteractive
@@ -235,6 +235,8 @@ RUN apt-get update && apt-get install -y wget gnupg apt-utils apt-transport-http
     && mplayer \
     && echo "#####################################" \
     && echo "Installing PYTHON IPED Dependencies" \
+    && echo " ->> Huggingsound REMOVED from default cuda image due incompatibility of pytorch+cuda version" \
+    && echo " ->> On the default container Huggingsound transcription is to be used trough transcription server" \
     && echo "#####################################" \
     && cd /root/ \
     && update-alternatives --install /usr/bin/python python /usr/bin/python3.9 1 \
@@ -243,12 +245,13 @@ RUN apt-get update && apt-get install -y wget gnupg apt-utils apt-transport-http
     && python -m pip install cmake \
     && python -m pip install numpy \
     && python -m pip install jep==4.0.3 \
-                          keras \
-                          tensorflow \
+    && python -m pip install torch==1.13.1+cu117 torchvision==0.14.1+cu117 torchaudio==0.13.1 --extra-index-url https://download.pytorch.org/whl/cu117 \
+    && echo "Due container size high usage Tensorflow was removed - it's only used on yahoo image detection - if you want to use it, uncomment the folloing line:" \
+    && echo "python -m pip install tensorflow==2.9.1 tensorrt==8.5.3.1" \
+    && python -m pip install keras \
                           pillow \
                           bs4 \
-                          face_recognition \
-                          huggingsound \
+                          face_recognition \       
     && echo "#####################################" \
     && echo "Cleaning UP the container " \
     && echo "#####################################" \
