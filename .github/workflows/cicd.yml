@@ -15,36 +15,28 @@ jobs:
     
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v1
+      with:
+        driver: docker
       
     - name: Docker login      
       run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_TOKEN }}
    
-    - name: Docker build transcriptor-SNAPSHOT
+    - name: docker pull transcriptor for cache
+      run: docker pull ipeddocker/iped:transcriptor
+
+    - name: Docker build transcriptor
       if: startsWith(github.ref, 'refs/tags/') 
       uses: docker/build-push-action@v4      
       with:
         context: .
         file: Dockerfile.transcriptor-cuda
-        tags: ipeddocker/iped:transcriptor_snapshot
-        cache-from: |
-          type=registry,ref=docker.io/ipeddocker/iped:transcriptor_snapshot          
+        tags: |
+          ipeddocker/iped:transcriptor
+          ipeddocker/iped:transcriptor_${{ github.ref_name }}
+        cache-from: ipeddocker/iped:transcriptor                  
         push: true 
         build-args: |
           "SNAPSHOT=true"
-        secrets: |
-          "ACTION_GH_TOKEN=${{ secrets.ACTION_GH_TOKEN }}"
-    
-    - name: Docker build transcriptor-RELEASE 
-      if: startsWith(github.ref, 'refs/tags/')
-      uses: docker/build-push-action@v4      
-      with:
-        context: .
-        file: Dockerfile.transcriptor-cuda
-        tags: | 
-          ipeddocker/iped:transcriptor
-          ipeddocker/iped:transcriptor_${{ github.ref_name }}
-        cache-from: type=registry,ref=docker.io/ipeddocker/iped:transcriptor
-        push: true 
         secrets: |
           "ACTION_GH_TOKEN=${{ secrets.ACTION_GH_TOKEN }}"
 
@@ -53,7 +45,6 @@ jobs:
     # this step is to avoid disk space problems on next steps
     - name: Cleaning TRANSCRIPTION docker environment 
       run: docker buildx prune -a -f
-
 
     - name: Docker build dependecies-RELEASE 
       if: startsWith(github.ref, 'refs/tags/')
@@ -64,7 +55,7 @@ jobs:
         tags: | 
           ipeddocker/iped:dependencies
           ipeddocker/iped:dependencies_${{ github.ref_name }}
-        cache-from: type=registry,ref=docker.io/ipeddocker/iped:dependencies
+        cache-from: ipeddocker/iped:dependencies
         push: true 
       
     - name: Docker build processor-RELEASE 
@@ -76,7 +67,7 @@ jobs:
         tags: | 
           ipeddocker/iped:processor
           ipeddocker/iped:processor_${{ github.ref_name }}
-        cache-from: type=registry,ref=docker.io/ipeddocker/iped:processor
+        cache-from: ipeddocker/iped:processor
         push: true 
 
     - name: Docker build iped-RELEASE 
@@ -87,5 +78,5 @@ jobs:
         tags: | 
           ipeddocker/iped:latest
           ipeddocker/iped:${{ github.ref_name }}
-        cache-from: type=registry,ref=docker.io/ipeddocker/iped:latest
+        cache-from: ipeddocker/iped:latest
         push: true 
