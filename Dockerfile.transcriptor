@@ -76,13 +76,13 @@ RUN --mount=type=secret,id=ACTION_GH_TOKEN export ACTION_GH_TOKEN=$(cat /run/sec
     && sed -i -e "s/# huggingFaceModel = jonatasgrosman\/wav2vec2-xls-r-1b-portuguese/huggingFaceModel = jonatasgrosman\/wav2vec2-xls-r-1b-portuguese/" /opt/IPED/iped/conf/AudioTranscriptConfig.txt \
     && echo "#####################################" \
     && echo "Patching Wav2Vec2Process.py to use Enviroment Variable IPED_CUDA_MULTIPLIER" \
-    && curl github \
+    && echo "#####################################" \
+    && curl https://raw.githubusercontent.com/iped-docker/iped/master/resources/Wav2Vec2Process.py.patch --output ${PKGTMPDIR}/Wav2Vec2Process.py.patch \
     && patch /opt/IPED/iped/scripts/tasks/Wav2Vec2Process.py < ${PKGTMPDIR}/Wav2Vec2Process.py.patch \
-    && echo "#####################################" \ 
     && echo "#####################################" \
     && echo "Cleaning UP the container " \
     && echo "#####################################" \    
-    && rm -rf ${PKGTMPDIR} 
+    && rm -rf ${PKGTMPDIR}
 
 WORKDIR /opt/IPED/iped
 COPY entrypoint.sh /
