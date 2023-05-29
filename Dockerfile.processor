@@ -1,14 +1,33 @@
 FROM ipeddocker/iped:dependencies
 
-ARG IPED_RELEASE_VERSION=4.1.1 PKGTMPDIR=/tmp/pkgs
+ARG IPED_RELEASE_VERSION=4.1.2 PKGTMPDIR=/tmp/pkgs SNAPSHOT=false SNAPSHOT_WORKFLOW_ID=5073165507
 
 
-RUN echo "#####################################" \
-    && echo "Installing IPED" \
-    && echo "#####################################" \
+RUN --mount=type=secret,id=ACTION_GH_TOKEN export ACTION_GH_TOKEN=$(cat /run/secrets/ACTION_GH_TOKEN) \
     && mkdir -p /opt/IPED/ && cd /opt/IPED/ \
-    && wget --progress=bar:force https://github.com/sepinf-inc/IPED/releases/download/${IPED_RELEASE_VERSION}/IPED-${IPED_RELEASE_VERSION}_and_plugins.zip -O ${PKGTMPDIR}/iped.zip \
-    && unzip ${PKGTMPDIR}/iped.zip \
+    && apt-get update && apt-get install -y jq \
+    && if [ "${SNAPSHOT}" = "true" ]; \
+        then \
+            echo "#####################################" && \
+            echo "Installing IPED from SNAPSHOT   " && \
+            echo "#####################################" && \
+            echo -n "Getting snapshot with run ID ${SNAPSHOT_WORKFLOW_ID}..." && \
+            snapshotURL=$(curl -s -L -H "Accept: application/vnd.github+json" \
+                            -H "Authorization: Bearer ${ACTION_GH_TOKEN}" \
+                            -H "X-GitHub-Api-Version: 2022-11-28" \
+                            https://api.github.com/repos/sepinf-inc/IPED/actions/artifacts  | \
+                        jq --arg workflow_id $SNAPSHOT_WORKFLOW_ID -c '.artifacts[] | select(.workflow_run.id|tostring == $workflow_id) | .archive_download_url' | \
+                        tr -d '\"') && \
+            echo "Downloading ${snapshotURL}..." && \
+            curl -L -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${ACTION_GH_TOKEN}" -H "X-GitHub-Api-Version: 2022-11-28" --output ${PKGTMPDIR}/iped.zip ${snapshotURL} && \
+            unzip -p ${PKGTMPDIR}/iped.zip | tar -xvz --strip-components=1; \
+        else \
+            echo "#####################################" && \
+            echo "Installing IPED from RELEASE " && \
+            echo "#####################################" && \
+            curl -L https://github.com/sepinf-inc/IPED/releases/download/$IPED_RELEASE_VERSION/IPED-${IPED_RELEASE_VERSION}_and_plugins.zip --output ${PKGTMPDIR}/iped.zip && \
+            unzip ${PKGTMPDIR}/iped.zip ;\
+        fi \
     && echo "Creating IPED simbolic link..." \
     && ls | grep "iped-" | xargs -i sh -c 'ln -s "{}" iped' \
     && echo "#####################################" \
