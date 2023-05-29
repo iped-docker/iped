@@ -254,7 +254,7 @@ RUN cd ${PKGTMPDIR} \
     && echo "#####################################" \
     && apt-get remove -y python3-pip build-essential build-essential autoconf automake autopoint libtool pkg-config yasm gettext flex byacc ant ant-optional \                       
     && apt-get autoremove -y \
-    && rm -rfv /root/.cache/pip && rm -rfv ${PKGTMPDIR} && apt-get clean && rm -rfv /var/lib/apt/lists/*
+    && rm -rfv /root/.cache/pip && rm -rfv ${PKGTMPDIR}/* && apt-get clean && rm -rfv /var/lib/apt/lists/*
 
 WORKDIR /
 CMD ["/bin/bash"]
