@@ -53,7 +53,7 @@ jobs:
 
     - name: Docker build dependecies-RELEASE 
       if: startsWith(github.ref, 'refs/tags/')
-      run: docker build --cache-from ipeddocker/iped:dependencies . -f Dockerfile-processor -t ipeddocker/iped:processor
+      run: docker build --cache-from ipeddocker/iped:dependencies . -f Dockerfile-dependencies -t ipeddocker/iped:dependencies
 
     - name: Docker push dependecies-RELEASE 
       if: startsWith(github.ref, 'refs/tags/')
