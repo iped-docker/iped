@@ -5,7 +5,7 @@ ARG IPED_RELEASE_VERSION=4.1.2 PKGTMPDIR=/tmp/pkgs SNAPSHOT=false SNAPSHOT_WORKF
 
 RUN --mount=type=secret,id=ACTION_GH_TOKEN export ACTION_GH_TOKEN=$(cat /run/secrets/ACTION_GH_TOKEN) \
     && mkdir -p /opt/IPED/ && cd /opt/IPED/ \
-    && apt-get update && apt-get install -y jq \
+    && apt-get update && apt-get install -y jq curl \
     && if [ "${SNAPSHOT}" = "true" ]; \
         then \
             echo "#####################################" && \
@@ -82,7 +82,7 @@ RUN --mount=type=secret,id=ACTION_GH_TOKEN export ACTION_GH_TOKEN=$(cat /run/sec
     && echo "#####################################" \
     && echo "Cleaning UP the container " \
     && echo "#####################################" \    
-    && rm -rfv ${PKGTMPDIR}
+    && rm -rfv ${PKGTMPDIR}/* && apt-get clean && rm -rfv /var/lib/apt/lists/*
 
 WORKDIR /opt/IPED/iped
 COPY entrypoint.sh /
