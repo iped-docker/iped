@@ -2,6 +2,11 @@ name: CI/CD
 
 on: [push]
 
+env:
+  REPO: ipeddocker/iped
+  TAG: ${GITHUB_REF#refs/tags/}
+  VERSION: ${GITHUB_REF#refs/tags/iped_}
+
 jobs:
   build:
     
@@ -30,9 +35,9 @@ jobs:
 
     - name: Docker push dependecies-RELEASE 
       run: |
-        docker tag ipeddocker/iped:dependencies ipeddocker/iped:dependencies_${{ github.ref_name }}
+        docker tag ipeddocker/iped:dependencies ipeddocker/iped:dependencies_${{ env.VERSION }}
         docker push ipeddocker/iped:dependencies 
-        docker push ipeddocker/iped:dependencies_${{ github.ref_name }}
+        docker push ipeddocker/iped:dependencies_${{ env.VERSION }}
 
 
     - name: Docker build processor-RELEASE 
@@ -42,7 +47,7 @@ jobs:
         file: Dockerfile.processor
         tags: | 
           ipeddocker/iped:processor
-          ipeddocker/iped:processor_${{ github.ref_name }}
+          ipeddocker/iped:processor_${{ env.VERSION }}
         push: true 
         build-args: |
           "SNAPSHOT=false"
@@ -56,5 +61,5 @@ jobs:
         context: .        
         tags: | 
           ipeddocker/iped:latest
-          ipeddocker/iped:${{ github.ref_name }}
+          ipeddocker/iped:${{ env.VERSION }}
         push: true 
