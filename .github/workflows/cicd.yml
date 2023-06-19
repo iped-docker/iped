@@ -20,29 +20,29 @@ jobs:
       run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_TOKEN }}  
     
 
-    - name: Docker build transcriptor
-      if: startsWith(github.ref, 'refs/tags/') 
-      uses: docker/build-push-action@v4      
-      with:
-        context: .
-        file: Dockerfile.transcriptor
-        tags: |
-          ipeddocker/iped:transcriptor
-          ipeddocker/iped:transcriptor_${{ github.ref_name }}
-        provenance: false
-        push: true 
-        build-args: |
-          "SNAPSHOT=false"
-        secrets: |
-          "ACTION_GH_TOKEN=${{ secrets.ACTION_GH_TOKEN }}"
+#    - name: Docker build transcriptor
+#      if: startsWith(github.ref, 'refs/tags/') 
+#      uses: docker/build-push-action@v4      
+#      with:
+#        context: .
+#        file: Dockerfile.transcriptor
+#        tags: |
+#          ipeddocker/iped:transcriptor
+#          ipeddocker/iped:transcriptor_${{ github.ref_name }}
+#        provenance: false
+#        push: true 
+#        build-args: |
+#          "SNAPSHOT=false"
+#        secrets: |
+#          "ACTION_GH_TOKEN=${{ secrets.ACTION_GH_TOKEN }}"
 
     # transcriptor base image is different from other steps, so
     # we dont need its image on the server
     # this step is to avoid disk space problems on next steps
-    - name: Cleaning TRANSCRIPTION docker environment
-      run: |
-        docker rmi -f ipeddocker/iped:transcriptor ipeddocker/iped:transcriptor_${{ github.ref_name }}
-        docker buildx prune -a -f
+#    - name: Cleaning TRANSCRIPTION docker environment
+#      run: |
+#        docker rmi -f ipeddocker/iped:transcriptor ipeddocker/iped:transcriptor_${{ github.ref_name }}
+#        docker buildx prune -a -f
 
 #
 # using classic build on dependencies, because is the only way to cache now.
