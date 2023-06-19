@@ -32,7 +32,7 @@ jobs:
         provenance: false
         push: true 
         build-args: |
-          "SNAPSHOT=true"
+          "SNAPSHOT=false"
         secrets: |
           "ACTION_GH_TOKEN=${{ secrets.ACTION_GH_TOKEN }}"
 
