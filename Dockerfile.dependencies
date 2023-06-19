@@ -51,7 +51,7 @@ RUN mkdir -p ${PKGTMPDIR} && cd ${PKGTMPDIR} \
     && echo "#####################################" \
     && echo "deb http://security.ubuntu.com/ubuntu focal-security main" | tee /etc/apt/sources.list.d/focal-security.list \
     && apt-get update \
-    && apt-get install -y libssl-dev=1.1.1f-1ubuntu2.18 \
+    && apt-get install -y libssl-dev=1.1.1f-1ubuntu2.19 \
     && rm /etc/apt/sources.list.d/focal-security.list && apt-get update \
     && echo "#####################################" \
     && echo "install libbfio" \

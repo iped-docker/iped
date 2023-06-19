@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
 
 #    if: startsWith(github.ref, 'refs/tags/') || github.ref == 'refs/heads/master'
-    if: startsWith(github.ref, 'refs/tags/') 
+    if: startsWith(github.ref, 'refs/tags/iped_') 
     
     steps:
     - uses: actions/checkout@v3
@@ -18,45 +18,17 @@ jobs:
       
     - name: Docker login      
       run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_TOKEN }}  
-    
-
-#    - name: Docker build transcriptor
-#      if: startsWith(github.ref, 'refs/tags/') 
-#      uses: docker/build-push-action@v4      
-#      with:
-#        context: .
-#        file: Dockerfile.transcriptor
-#        tags: |
-#          ipeddocker/iped:transcriptor
-#          ipeddocker/iped:transcriptor_${{ github.ref_name }}
-#        provenance: false
-#        push: true 
-#        build-args: |
-#          "SNAPSHOT=false"
-#        secrets: |
-#          "ACTION_GH_TOKEN=${{ secrets.ACTION_GH_TOKEN }}"
-
-    # transcriptor base image is different from other steps, so
-    # we dont need its image on the server
-    # this step is to avoid disk space problems on next steps
-#    - name: Cleaning TRANSCRIPTION docker environment
-#      run: |
-#        docker rmi -f ipeddocker/iped:transcriptor ipeddocker/iped:transcriptor_${{ github.ref_name }}
-#        docker buildx prune -a -f
 
 #
 # using classic build on dependencies, because is the only way to cache now.
 #
     - name: Docker pull dependecies-RELEASE 
-      if: startsWith(github.ref, 'refs/tags/')
       run: docker pull ipeddocker/iped:dependencies || echo could not pull
 
     - name: Docker build dependecies-RELEASE 
-      if: startsWith(github.ref, 'refs/tags/')
       run: docker build --cache-from ipeddocker/iped:dependencies . -f Dockerfile.dependencies -t ipeddocker/iped:dependencies
 
     - name: Docker push dependecies-RELEASE 
-      if: startsWith(github.ref, 'refs/tags/')
       run: |
         docker tag ipeddocker/iped:dependencies ipeddocker/iped:dependencies_${{ github.ref_name }}
         docker push ipeddocker/iped:dependencies 
@@ -64,7 +36,6 @@ jobs:
 
 
     - name: Docker build processor-RELEASE 
-      if: startsWith(github.ref, 'refs/tags/')
       uses: docker/build-push-action@v4      
       with:
         context: .
@@ -80,7 +51,6 @@ jobs:
 
 
     - name: Docker build iped-RELEASE 
-      if: startsWith(github.ref, 'refs/tags/')
       uses: docker/build-push-action@v4      
       with:
         context: .        

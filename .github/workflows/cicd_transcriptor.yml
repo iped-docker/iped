@@ -1,0 +1,38 @@
+name: CI/CD
+
+on: [push]
+
+jobs:
+  build:
+    
+    runs-on: ubuntu-latest
+
+#    if: startsWith(github.ref, 'refs/tags/') || github.ref == 'refs/heads/master'
+    if: startsWith(github.ref, 'refs/tags/transcriptor_') 
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1      
+      
+    - name: Docker login      
+      run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_TOKEN }}  
+    
+
+    - name: Docker build transcriptor
+      uses: docker/build-push-action@v4      
+      with:
+        context: .
+        file: Dockerfile.transcriptor
+        tags: |
+          ipeddocker/iped:transcriptor
+          ipeddocker/iped:transcriptor_${{ github.ref_name }}
+        provenance: false
+        push: true 
+        build-args: |
+          "SNAPSHOT=false"
+        secrets: |
+          "ACTION_GH_TOKEN=${{ secrets.ACTION_GH_TOKEN }}"
+
+
