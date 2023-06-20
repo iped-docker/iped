@@ -34,9 +34,9 @@ jobs:
 
     - name: Docker push dependecies-RELEASE 
       run: |
-        docker tag ipeddocker/iped:dependencies ipeddocker/iped:dependencies_${VERSION}
+        docker tag ipeddocker/iped:dependencies ipeddocker/iped:dependencies_${{ env.VERSION }}
         docker push ipeddocker/iped:dependencies 
-        docker push ipeddocker/iped:dependencies_${VERSION}
+        docker push ipeddocker/iped:dependencies_${{ env.VERSION }}
 
 
     - name: Docker build processor-RELEASE 
@@ -60,5 +60,5 @@ jobs:
         context: .        
         tags: | 
           ipeddocker/iped:latest
-          ipeddocker/iped:${VERSION}
+          ipeddocker/iped:${{ env.VERSION }}
         push: true 
