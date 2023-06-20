@@ -46,7 +46,7 @@ jobs:
         file: Dockerfile.processor
         tags: | 
           ipeddocker/iped:processor
-          ipeddocker/iped:processor_${VERSION}
+          ipeddocker/iped:processor_${{ env.VERSION }}
         push: true 
         build-args: |
           "SNAPSHOT=false"
