@@ -1,39 +1,23 @@
-1c1,2
-< ﻿import sys
----
-> import sys
-> import os
-4a6,11
+1a2
+> import os 
+10a12,18
 > try:
 >     if os.environ["IPED_CUDA_MULTIPLIER"]:
 >         cudaMultiplier = int(os.environ["IPED_CUDA_MULTIPLIER"])
 > except:
 >     cudaMultiplier = 1
 > 
-21c28
+> 
+21c29
 <     cudaCount = torch.cuda.device_count()
 ---
 >     cudaCount = torch.cuda.device_count() * cudaMultiplier
-26c33,34
+24c32,33
+< 
+---
+>     
+>     import math 
+26c35
 <         deviceId = 'cuda:' + deviceNum
 ---
->         import math
 >         deviceId = 'cuda:' + str(math.floor(int(deviceNum)/cudaMultiplier))
-28,39c36,39
-<         deviceId = 'cpu'
-<     
-<     try:
-<         model = SpeechRecognitionModel(modelName, device=deviceId)
-<     except Exception as e:
-<         if deviceId != 'cpu':
-<             # loading on GPU failed (OOM?), try on CPU
-<             deviceId = 'cpu'
-<             model = SpeechRecognitionModel(modelName, device=deviceId)
-<         else:
-<             raise e
-<     
----
->         return
-> 
->     model = SpeechRecognitionModel(modelName, device=deviceId)
-> 
