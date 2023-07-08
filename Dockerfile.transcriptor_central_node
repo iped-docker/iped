@@ -10,6 +10,7 @@ RUN mkdir -p ${PKGTMPDIR} && cd ${PKGTMPDIR} \
     && apt-get dist-upgrade -y \
     && apt-get install -y \
         openjdk-11-jre-headless \
+        unzip sudo jq patch \
     && echo "#####################################" \
     && echo "Cleaning UP the container " \
     && echo "#####################################" \
