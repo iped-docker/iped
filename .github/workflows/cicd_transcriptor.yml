@@ -4,35 +4,53 @@ on: [push]
 
 jobs:
   build:
-    
+
     runs-on: ubuntu-latest
 
 #    if: startsWith(github.ref, 'refs/tags/') || github.ref == 'refs/heads/master'
-    if: startsWith(github.ref, 'refs/tags/transcriptor_') 
-    
+    if: startsWith(github.ref, 'refs/tags/transcriptor_')
+
     steps:
     - uses: actions/checkout@v3
-    
+
     - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v1      
-      
-    - name: Docker login      
-      run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_TOKEN }}  
-    
+      uses: docker/setup-buildx-action@v1
+
+    - name: Docker login
+      run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_TOKEN }}
+
+    - name: Set Environment
+      run: echo VERSION=${GITHUB_REF#refs/tags/transcriptor_} >> $GITHUB_ENV
+
 
     - name: Docker build transcriptor
-      uses: docker/build-push-action@v4      
+      uses: docker/build-push-action@v4
       with:
         context: .
         file: Dockerfile.transcriptor
         tags: |
           ipeddocker/iped:transcriptor
-          ipeddocker/iped:transcriptor_${{ github.ref_name }}
+          ipeddocker/iped:transcriptor_${{ env.VERSION }}
         provenance: false
-        push: true 
+        push: true
         build-args: |
           "SNAPSHOT=false"
         secrets: |
           "ACTION_GH_TOKEN=${{ secrets.ACTION_GH_TOKEN }}"
 
+
+    - name: Docker build central_node
+      uses: docker/build-push-action@v4
+      with:
+        context: .
+        file: Dockerfile.transcriptor_central_node
+        tags: |
+          ipeddocker/iped:transcriptor_central_node
+          ipeddocker/iped:transcriptor_central_node_${{ env.VERSION }}
+        provenance: false
+        push: true
+        build-args: |
+          "SNAPSHOT=false"
+        secrets: |
+          "ACTION_GH_TOKEN=${{ secrets.ACTION_GH_TOKEN }}"
 
