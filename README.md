@@ -149,7 +149,7 @@ It's strongly recommended to use the source directories of /mnt/ipedtmp and /mnt
     sudo dkr -v /mnt/evidences:/evidences \
            -v /mnt/ipedtmp:/mnt/ipedtmp \
            ipeddocker/iped java -jar \ 
-           /evidences/test/iped-output/indexador/lib/iped-search-app.jar 
+           /evidences/test/iped-output/iped/lib/iped-search-app.jar
 ```
 
 ## NEW FEATURE
