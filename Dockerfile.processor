@@ -75,10 +75,10 @@ RUN --mount=type=secret,id=ACTION_GH_TOKEN export ACTION_GH_TOKEN=$(cat /run/sec
     && echo "#####################################" \
     && sed -i -e "s/# huggingFaceModel = lgris/huggingFaceModel = lgris/" /opt/IPED/iped/conf/AudioTranscriptConfig.txt \
     && sed -i -e "s/# wav2vec2Service = 127.0.0.1:11111/wav2vec2Service = 127.0.0.1:11111/" /opt/IPED/iped/conf/AudioTranscriptConfig.txt \
-    && echo "#####################################" \
-    && echo "Removing IPED's TSK-JAVA-JNI lib to avoid conflict of libs" \
-    && echo "#####################################" \
-    && rm -v /opt/IPED/iped/lib/sleuthkit-4.12.0.p1.jar \
+    # && echo "#####################################" \
+    # && echo "Removing IPED's TSK-JAVA-JNI lib to avoid conflict of libs" \
+    # && echo "#####################################" \
+    # && rm -v /opt/IPED/iped/lib/sleuthkit-4.12.0.p1.jar \
     && echo "#####################################" \
     && echo "Cleaning UP the container " \
     && echo "#####################################" \    
