@@ -1,6 +1,7 @@
-1a2
-> import os 
-10a12,18
+1a2,3
+> import os
+> 
+10a13,19
 > try:
 >     if os.environ["IPED_CUDA_MULTIPLIER"]:
 >         cudaMultiplier = int(os.environ["IPED_CUDA_MULTIPLIER"])
@@ -8,16 +9,14 @@
 >     cudaMultiplier = 1
 > 
 > 
-21c29
+21c30
 <     cudaCount = torch.cuda.device_count()
 ---
 >     cudaCount = torch.cuda.device_count() * cudaMultiplier
-24c32,33
-< 
----
->     
->     import math 
-26c35
+24a34,35
+>     import math
+> 
+26c37
 <         deviceId = 'cuda:' + deviceNum
 ---
 >         deviceId = 'cuda:' + str(math.floor(int(deviceNum)/cudaMultiplier))
