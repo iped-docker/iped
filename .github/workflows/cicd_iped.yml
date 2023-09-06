@@ -48,8 +48,6 @@ jobs:
           ipeddocker/iped:processor
           ipeddocker/iped:processor_${{ env.VERSION }}
         push: true 
-        build-args: |
-          "SNAPSHOT=false"
         secrets: |
           "ACTION_GH_TOKEN=${{ secrets.ACTION_GH_TOKEN }}"
 

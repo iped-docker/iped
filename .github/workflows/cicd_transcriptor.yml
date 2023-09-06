@@ -32,9 +32,7 @@ jobs:
           ipeddocker/iped:transcriptor
           ipeddocker/iped:transcriptor_${{ env.VERSION }}
         provenance: false
-        push: true
-        build-args: |
-          "SNAPSHOT=false"
+        push: true        
         secrets: |
           "ACTION_GH_TOKEN=${{ secrets.ACTION_GH_TOKEN }}"
 
@@ -49,8 +47,6 @@ jobs:
           ipeddocker/iped:transcriptor_central_node_${{ env.VERSION }}
         provenance: false
         push: true
-        build-args: |
-          "SNAPSHOT=false"
         secrets: |
           "ACTION_GH_TOKEN=${{ secrets.ACTION_GH_TOKEN }}"
 
