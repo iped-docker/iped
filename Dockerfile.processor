@@ -67,6 +67,13 @@ RUN --mount=type=secret,id=ACTION_GH_TOKEN export ACTION_GH_TOKEN=$(cat /run/sec
     && echo "robustImageReading = true" >> /opt/IPED/iped/profiles/pedorobust/conf/FileSystemConfig.txt \
     && echo "enableExternalParsing = true" >> /opt/IPED/iped/profiles/pedorobust/conf/ParsingTaskConfig.txt \
     && echo "#####################################" \
+    && echo "OCR: enable excludeKnown and enableOCR" \
+    && echo "For child abuse cases where optical chacarter recognition (ocr) is needed" \
+    && echo "#####################################" \
+    && cp -r /opt/IPED/iped/profiles/pedo /opt/IPED/iped/profiles/ocr \
+    && echo "excludeKnown = true" >> /opt/IPED/iped/profiles/ocr/conf/HashDBLookupConfig.txt \
+    && echo "enableOCR = true" >> /opt/IPED/iped/profiles/ocr/conf/OCRConfig.txt \
+    && echo "#####################################" \
     && echo "Removing comentary from numFramesEquation" \
     && echo "#####################################" \
     && sed -i -e "s/#numFramesEquation =/numFramesEquation =/" /opt/IPED/iped/conf/VideoThumbsConfig.txt \    
