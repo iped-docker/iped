@@ -52,7 +52,7 @@ RUN mkdir -p ${PKGTMPDIR} && cd ${PKGTMPDIR} \
     && echo "#####################################" \
     && echo "deb http://security.ubuntu.com/ubuntu focal-security main" | tee /etc/apt/sources.list.d/focal-security.list \
     && apt-get update \
-    && apt-get install -y libssl-dev=1.1.1f-1ubuntu2.19 \
+    && apt-get install -y libssl-dev=1.1.1f-1ubuntu2.20 \
     && rm /etc/apt/sources.list.d/focal-security.list && apt-get update \
     && echo "#####################################" \
     && echo "install libbfio" \
@@ -222,7 +222,7 @@ RUN mkdir -p ${PKGTMPDIR} && cd ${PKGTMPDIR} \
     && echo "Instal ImageMagik" \
     && echo "#####################################" \
     && cd ${PKGTMPDIR} \
-    && git clone --branch "7.0.10-61" https://github.com/ImageMagick/ImageMagick \
+    && git clone --branch "7.1.1-21" https://github.com/ImageMagick/ImageMagick \
     && cd ${PKGTMPDIR}/ImageMagick \
     && ./configure --prefix=/usr \
     && make all install \
