@@ -11,8 +11,7 @@ ping = 'ping'
 
 def main():
 
-	modelName = 'medium'
-	modelName = 'dwhoelz/whisper-medium-pt-ct2'
+	modelName = 'large-v3'
 	#modelName = sys.argv[1]
 
 	deviceNum = sys.argv[2]
