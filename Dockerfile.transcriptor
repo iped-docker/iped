@@ -1,6 +1,6 @@
 FROM nvidia/cuda:11.6.2-cudnn8-runtime-ubuntu20.04
 
-ARG SNAPSHOT=true IPED_RELEASE_VERSION=4.2 SNAPSHOT_WORKFLOW_ID=6091785872 PKGTMPDIR=/tmp/pkgs 
+ARG SNAPSHOT=false IPED_RELEASE_VERSION=4.1.5 SNAPSHOT_WORKFLOW_ID=6091785872 PKGTMPDIR=/tmp/pkgs 
 
 ENV TZ=Brazil/East DEBIAN_FRONTEND=noninteractive LANG=C.UTF-8 LC_ALL=C.UTF-8 \
     SAL_USE_VCLPLUGIN='gtk' JAVA_HOME=/usr/lib/jvm/bellsoft-java11-runtime-amd64/ \
@@ -24,6 +24,7 @@ RUN mkdir -p ${PKGTMPDIR} && cd ${PKGTMPDIR} \
     && python -m pip install pip --upgrade \
     && python -m pip install torch==1.12.1+cu116 torchvision==0.13.1+cu116 torchaudio==0.12.1 --extra-index-url https://download.pytorch.org/whl/cu116 \
     && python -m pip install huggingsound \
+    && python -m pip install faster-whisper \
     && echo "#####################################" \
     && echo "Cleaning UP the container " \
     && echo "#####################################" \ 
@@ -52,7 +53,7 @@ RUN --mount=type=secret,id=ACTION_GH_TOKEN export ACTION_GH_TOKEN=$(cat /run/sec
             echo "#####################################" && \
             echo "Installing IPED from RELEASE " && \
             echo "#####################################" && \
-            curl -L https://github.com/sepinf-inc/IPED/releases/download/$IPED_RELEASE_VERSION/IPED-${IPED_RELEASE_VERSION}_and_plugins.zip --output ${PKGTMPDIR}/iped.zip && \
+            curl -L https://github.com/sepinf-inc/IPED/releases/download/$IPED_RELEASE_VERSION/IPED-${IPED_RELEASE_VERSION}_plus_java_plugins.zip --output ${PKGTMPDIR}/iped.zip && \
             unzip ${PKGTMPDIR}/iped.zip ;\
         fi \
     && echo "Creating IPED simbolic link..." \
@@ -73,16 +74,13 @@ RUN --mount=type=secret,id=ACTION_GH_TOKEN export ACTION_GH_TOKEN=$(cat /run/sec
     && echo "#####################################" \
     && echo "Uncommenting a default huggingfaceModel to enable entrypoint value filling" \
     && echo "#####################################" \
-    && sed -i -e "s/# huggingFaceModel = jonatasgrosman\/wav2vec2-xls-r-1b-portuguese/huggingFaceModel = jonatasgrosman\/wav2vec2-xls-r-1b-portuguese/" /opt/IPED/iped/conf/AudioTranscriptConfig.txt \
-    && echo "#####################################" \
-    && echo "Patching Wav2Vec2Process.py to use Enviroment Variable IPED_CUDA_MULTIPLIER" \
-    && echo "#####################################" \
-    && curl https://raw.githubusercontent.com/iped-docker/iped/master/resources/Wav2Vec2Process.py.patch --output ${PKGTMPDIR}/Wav2Vec2Process.py.patch \
-    && patch /opt/IPED/iped/scripts/tasks/Wav2Vec2Process.py < ${PKGTMPDIR}/Wav2Vec2Process.py.patch \
+    && sed -i -e "s/# huggingFaceModel = jonatasgrosman\/wav2vec2-xls-r-1b-portuguese/huggingFaceModel = large-v3/" /opt/IPED/iped/conf/AudioTranscriptConfig.txt \    
     && echo "#####################################" \
     && echo "Cleaning UP the container " \
     && echo "#####################################" \    
     && rm -rf ${PKGTMPDIR}
+
+COPY resources/Wav2Vec2Process.py-alpha /opt/IPED/iped/scripts/tasks/Wav2Vec2Process.py
 
 WORKDIR /opt/IPED/iped
 COPY entrypoint.sh /
