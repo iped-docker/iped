@@ -11,9 +11,7 @@ ping = 'ping'
 
 def main():
 
-	modelName = 'large-v3'
-	#modelName = sys.argv[1]
-
+	modelName = sys.argv[1]
 	deviceNum = sys.argv[2]
 	
 	import os
@@ -26,18 +24,15 @@ def main():
 	import torch
 	cudaCount = torch.cuda.device_count()
 	
-	## Run just on CPU for now
-	#cudaCount = 0
-
 	print(str(cudaCount), file=stdout, flush=True)
 
 	if cudaCount > 0:
-		deviceId = 'cuda:' + deviceNum
+		deviceId = 'cuda'
 	else:
-		deviceId = 'cpu:'
+		deviceId = 'cpu'
 	
 	try:
-		model = WhisperModel(modelName, device=deviceId, compute_type="int8")
+		model = WhisperModel(modelName, device=deviceId, device_index=int(deviceNum), compute_type="int8")
 
 	except Exception as e:
 		if deviceId != 'cpu':
