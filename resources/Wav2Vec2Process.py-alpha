@@ -23,11 +23,11 @@ def main():
 	
 	print(huggingsound_loaded, file=stdout, flush=True)
 	
-	#import torch
-	#cudaCount = torch.cuda.device_count()
+	import torch
+	cudaCount = torch.cuda.device_count()
 	
-	# Run just on CPU for now
-	cudaCount = 0
+	## Run just on CPU for now
+	#cudaCount = 0
 
 	print(str(cudaCount), file=stdout, flush=True)
 
