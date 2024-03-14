@@ -16,6 +16,12 @@ def main():
 	
 	import os
 	os.environ["OMP_NUM_THREADS"] = "6"
+	try:
+	    if os.environ["IPED_CUDA_MULTIPLIER"]:
+        	cudaMultiplier = int(os.environ["IPED_CUDA_MULTIPLIER"])
+	except:
+    	    cudaMultiplier = 1
+
 
 	from faster_whisper import WhisperModel
 	
@@ -31,8 +37,9 @@ def main():
 	else:
 		deviceId = 'cpu'
 	
-	try:
-		model = WhisperModel(modelName, device=deviceId, device_index=int(deviceNum), compute_type="int8")
+	try: 
+		from math import floor
+		model = WhisperModel(modelName, device=deviceId, device_index=floor(int(deviceNum)/cudaMultiplier), compute_type="int8")
 
 	except Exception as e:
 		if deviceId != 'cpu':
