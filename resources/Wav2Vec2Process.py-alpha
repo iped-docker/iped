@@ -28,7 +28,7 @@ def main():
 	print(huggingsound_loaded, file=stdout, flush=True)
 	
 	import torch
-	cudaCount = torch.cuda.device_count()
+	cudaCount = torch.cuda.device_count() * cudaMultiplier
 	
 	print(str(cudaCount), file=stdout, flush=True)
 
