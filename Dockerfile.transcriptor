@@ -4,7 +4,7 @@ ARG SNAPSHOT=true IPED_RELEASE_VERSION=4.2 SNAPSHOT_WORKFLOW_ID=8243028270 PKGTM
 
 ENV TZ=Brazil/East DEBIAN_FRONTEND=noninteractive LANG=C.UTF-8 LC_ALL=C.UTF-8 \
     SAL_USE_VCLPLUGIN='gtk' JAVA_HOME=/usr/lib/jvm/bellsoft-java11-runtime-amd64/ \
-    LD_LIBRARY_PATH=/usr/local/lib/python3.9/dist-packages/jep/ 
+    LD_LIBRARY_PATH=/usr/local/lib/python3.9/dist-packages/jep/:/usr/local/lib/python3.9/dist-packages/nvidia/cudnn/lib/
     
 
 RUN mkdir -p ${PKGTMPDIR} && cd ${PKGTMPDIR} \
