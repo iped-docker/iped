@@ -7,7 +7,7 @@ ENV TZ=Brazil/East DEBIAN_FRONTEND=noninteractive LANG=C.UTF-8 LC_ALL=C.UTF-8 SA
     JAVA_HOME=/usr/lib/jvm/bellsoft-java11-full-amd64/ LD_LIBRARY_PATH=/usr/local/lib/python3.9/dist-packages/jep/
 
 RUN mkdir -p ${PKGTMPDIR} && cd ${PKGTMPDIR} \
-    && apt-get update && apt-get install -y wget gnupg apt-utils apt-transport-https software-properties-common \
+    && apt-get update && apt-get install -y curl wget gnupg apt-utils apt-transport-https software-properties-common \
     && apt-get dist-upgrade -y \
     && add-apt-repository ppa:deadsnakes/ppa \
     && wget -q -O - https://download.bell-sw.com/pki/GPG-KEY-bellsoft | tee /etc/apt/trusted.gpg.d/bellsoft.asc \
