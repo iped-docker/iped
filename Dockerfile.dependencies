@@ -102,13 +102,13 @@ RUN mkdir -p ${PKGTMPDIR} && cd ${PKGTMPDIR} \
     && echo "install libewf" \
     && echo "#####################################" \
     && cd ${PKGTMPDIR} \
-    && git clone -b 20140808 https://github.com/libyal/libewf-legacy \
-    && cd ${PKGTMPDIR}/libewf-legacy \  
+    && git clone -b 20201230 https://github.com/sepinf-inc/libewf \
+    && cd ${PKGTMPDIR}/libewf \  
     && ./synclibs.sh \
     && ./autogen.sh \
     && ./configure --prefix=/usr \
     && make all install \
-    && rm -rf ${PKGTMPDIR}/libewf-legacy \
+    && rm -rf ${PKGTMPDIR}/libewf \
     && echo "#####################################" \
     && echo "install afflib" \
     && echo "#####################################" \
