@@ -125,6 +125,11 @@ RUN mkdir -p ${PKGTMPDIR} && cd ${PKGTMPDIR} \
     && cd ${PKGTMPDIR} \
     && git clone -b 4.12.0_iped_patch https://github.com/sepinf-inc/sleuthkit \
     && cd ${PKGTMPDIR}/sleuthkit/ \
+    && echo "Patching ewf.cpp to TSK uses libewf 20201230" \
+    && echo "#####################################" \
+    && curl https://raw.githubusercontent.com/iped-docker/iped/master/resources/ewf.cpp.patch --output ${PKGTMPDIR}/ewf.cpp.patch \
+    && patch tsk/img/ewf.cpp < ${PKGTMPDIR}/ewf.cpp.patch \
+    && echo "#####################################" \
     && ./bootstrap \ 
     && ./configure --prefix=/usr/ \
     && make && make install \
