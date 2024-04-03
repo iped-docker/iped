@@ -1,0 +1,4 @@
+70c70
+<     cnt = libewf_handle_read_random(ewf_info->handle,
+---
+>     cnt = libewf_handle_read_buffer_at_offset(ewf_info->handle,
