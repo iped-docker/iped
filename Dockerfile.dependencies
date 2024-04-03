@@ -102,7 +102,7 @@ RUN mkdir -p ${PKGTMPDIR} && cd ${PKGTMPDIR} \
     && echo "install libewf" \
     && echo "#####################################" \
     && cd ${PKGTMPDIR} \
-    && git clone -b 20201230 https://github.com/sepinf-inc/libewf \
+    && git clone -b 20231119 https://github.com/libyal/libewf \
     && cd ${PKGTMPDIR}/libewf \  
     && ./synclibs.sh \
     && ./autogen.sh \
@@ -125,7 +125,7 @@ RUN mkdir -p ${PKGTMPDIR} && cd ${PKGTMPDIR} \
     && cd ${PKGTMPDIR} \
     && git clone -b 4.12.0_iped_patch https://github.com/sepinf-inc/sleuthkit \
     && cd ${PKGTMPDIR}/sleuthkit/ \
-    && echo "Patching ewf.cpp to TSK uses libewf 20201230" \
+    && echo "Patching ewf.cpp to TSK (The SleuthKit) uses version 20231119 of libewf library" \
     && echo "#####################################" \
     && curl https://raw.githubusercontent.com/iped-docker/iped/master/resources/ewf.cpp.patch --output ${PKGTMPDIR}/ewf.cpp.patch \
     && patch tsk/img/ewf.cpp < ${PKGTMPDIR}/ewf.cpp.patch \
