@@ -58,7 +58,7 @@ RUN mkdir -p ${PKGTMPDIR} && cd ${PKGTMPDIR} \
     && echo "install libbfio" \
     && echo "#####################################" \
     && cd ${PKGTMPDIR} \
-    && git clone -b 20221025 https://github.com/libyal/libbfio \
+    && git clone -b 20240414 https://github.com/libyal/libbfio \
     && cd ${PKGTMPDIR}/libbfio \ 
     && ./synclibs.sh \
     && ./autogen.sh \
