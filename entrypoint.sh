@@ -107,7 +107,8 @@ for v in \
         iped_enableFaceRecognition \
         iped_enableVideoThumbs \
         iped_enableDocThumbs \
-        iped_enableHTMLReport 
+        iped_enableHTMLReport \
+        iped_enableOCR
 do
         echo ${v}=${!v}
         if [ "${!v}" ]
