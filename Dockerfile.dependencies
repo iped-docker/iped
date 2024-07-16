@@ -4,7 +4,7 @@ FROM ubuntu:22.04
 ARG PKGTMPDIR=/tmp/pkgs
 
 ENV TZ=Brazil/East DEBIAN_FRONTEND=noninteractive LANG=C.UTF-8 LC_ALL=C.UTF-8 SAL_USE_VCLPLUGIN='gtk' \
-    JAVA_HOME=/usr/lib/jvm/bellsoft-java11-full-amd64/ LD_LIBRARY_PATH=/usr/local/lib/python3.9/dist-packages/jep/
+    JAVA_HOME=/usr/lib/jvm/bellsoft-java11-full-amd64/ LD_LIBRARY_PATH=/usr/lib/:/usr/local/lib/python3.9/dist-packages/jep/
 
 RUN mkdir -p ${PKGTMPDIR} && cd ${PKGTMPDIR} \
     && apt-get update && apt-get install -y curl wget gnupg apt-utils apt-transport-https software-properties-common \
