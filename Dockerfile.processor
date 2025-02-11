@@ -1,4 +1,4 @@
-FROM localhost/iped:dependencies
+FROM ipeddocker/iped:dependencies
 
 ARG SNAPSHOT=false IPED_RELEASE_VERSION=4.2.0 SNAPSHOT_WORKFLOW_ID=12279329706 PKGTMPDIR=/tmp/pkgs
 
@@ -28,7 +28,6 @@ RUN --mount=type=secret,id=ACTION_GH_TOKEN export ACTION_GH_TOKEN=$(cat /run/sec
             curl -L https://github.com/sepinf-inc/IPED/releases/download/$IPED_RELEASE_VERSION/IPED-${IPED_RELEASE_VERSION}_plus_java_plugins.zip --output ${PKGTMPDIR}/iped.zip && \
             unzip ${PKGTMPDIR}/iped.zip ;\
         fi \
-    && unzip ${PKGTMPDIR}/iped.zip \
     && echo "Creating IPED simbolic link..." \
     && ls | grep "iped-" | xargs -i sh -c 'ln -s "{}" iped' \
     && echo "#####################################" \
