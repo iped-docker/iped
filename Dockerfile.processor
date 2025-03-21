@@ -41,7 +41,7 @@ RUN --mount=type=secret,id=ACTION_GH_TOKEN export ACTION_GH_TOKEN=$(cat /run/sec
     && sed -i -e "s/outputOnSSD =.*/outputOnSSD = false/" /opt/IPED/iped/LocalConfig.txt \
     && sed -i -e "s/numThreads =.*/numThreads = 8/" /opt/IPED/iped/LocalConfig.txt \
     && sed -i -e "s/#hashesDB =.*/hashesDB = \/mnt\/hashesdb\/iped-hashes.db/" /opt/IPED/iped/LocalConfig.txt \
-    && sed -i -e "s/#tskJarPath =.*/tskJarPath = \/usr\/share\/java\/sleuthkit-4.12.0.jar/" /opt/IPED/iped/LocalConfig.txt \    
+    && sed -i -e "s/#tskJarPath =.*/tskJarPath = \/usr\/share\/java\/sleuthkit-4.13.0.jar/" /opt/IPED/iped/LocalConfig.txt \    
     && sed -i -e "s/mplayerPath =.*/mplayerPath = \/usr\/bin\/mplayer/" /opt/IPED/iped/LocalConfig.txt \
     && echo "#####################################" \
     && echo "Configuring GraphConfig with our default values:BR" \
