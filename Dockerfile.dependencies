@@ -124,7 +124,7 @@ RUN mkdir -p ${PKGTMPDIR} && cd ${PKGTMPDIR} \
     && echo "#####################################################" \
     && cd ${PKGTMPDIR} \
     # && git clone -b 4.12.0_iped_patch https://github.com/sepinf-inc/sleuthkit \
-    && git clone -b release-4.13.0 https://github.com/sleuthkit/sleuthkit \
+    && git clone -b sleuthkit-4.13.0 https://github.com/sleuthkit/sleuthkit \
     && cd ${PKGTMPDIR}/sleuthkit/ \
     #&& echo "#####################################" \
     #&& echo "Patching ewf.cpp to TSK (The SleuthKit) uses version 20231119 of libewf library" \
