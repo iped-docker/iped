@@ -133,7 +133,7 @@ RUN mkdir -p ${PKGTMPDIR} && cd ${PKGTMPDIR} \
     #&& patch tsk/img/ewf.cpp < ${PKGTMPDIR}/ewf.cpp.patch \
     && echo "#####################################" \
     && ./bootstrap \ 
-    && ./configure --prefix=/usr/ \
+    && ./configure --prefix=/usr/ --enable-java \
     && make && make install \
     && rm -rf ${PKGTMPDIR}/sleuthkit/ \
     && echo "#####################################" \
