@@ -91,6 +91,24 @@ RUN --mount=type=secret,id=ACTION_GH_TOKEN export ACTION_GH_TOKEN=$(cat /run/sec
     && echo "#####################################" \
     && cp /usr/local/lib/python3.9/dist-packages/jep/jep-4.2.0.jar /opt/IPED/iped/lib/jep-4.0.3.jar \
     && echo "#####################################" \
+    && echo "Configure TaskBridge-Scripts" \
+    && echo "#####################################" \
+    && sed  -i -e 's/<task class="iped.engine.task.ParsingTask"><\/task>/<task class="iped.engine.task.ParsingTask"><\/task>\n    <task script="VirusScanningTask.py"><\/task>/' /opt/IPED/iped/conf/TaskInstaller.xml \
+    && sed  -i -e 's/<task script="SearchHardwareWallets.py"><\/task>/<task script="SearchHardwareWallets.py"><\/task>\n    <task script="AudioTranslateTask.py"><\/task>\n    <task script="ImageClassificationTask.py"><\/task>/' /opt/IPED/iped/conf/TaskInstaller.xml \
+    && git clone https://github.com/hilderonny/iped-audiotranslatetask.git \
+    && git clone https://github.com/hilderonny/iped-virusscantask.git \
+    && git clone https://github.com/hilderonny/iped-imageclassificationtask.git \
+    && cp iped-audiotranslatetask/conf/AudioTranslation.txt /opt/IPED/iped/conf/AudioTranslation.txt \
+    && cp iped-audiotranslatetask/scripts/tasks/AudioTranslateTask.py /opt/IPED/iped/scripts/tasks/AudioTranslateTask.py \
+    && cp iped-imageclassificationtask/conf/ImageClassification.txt /opt/IPED/iped/conf/ImageClassification.txt \
+    && cp iped-imageclassificationtask/scripts/tasks/ImageClassificationTask.py /opt/IPED/iped/scripts/tasks/ImageClassificationTask.py \
+    && cp iped-virusscantask/conf/VirusScanning.txt /opt/IPED/iped/conf/VirusScanning.txt \
+    && cp iped-virusscantask/scripts/tasks/VirusScanningTask.py /opt/IPED/iped/scripts/tasks/VirusScanningTask.py \
+    && echo "\nenableAudioTranslation = false" >> /opt/IPED/iped/IPEDConfig.txt \
+    && echo "\nenableVirusScanning = false" >> /opt/IPED/iped/IPEDConfig.txt \
+    && echo "\nenableImageClassification = false" >> /opt/IPED/iped/IPEDConfig.txt \
+    && pip install --no-cache-dir requests \
+    && echo "#####################################" \
     && echo "Cleaning UP the container " \
     && echo "#####################################" \    
     && rm -rfv ${PKGTMPDIR}/* && apt-get clean && rm -rfv /var/lib/apt/lists/*
