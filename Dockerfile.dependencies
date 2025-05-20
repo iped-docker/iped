@@ -15,7 +15,7 @@ RUN mkdir -p ${PKGTMPDIR} && cd ${PKGTMPDIR} \
     && apt-get update \    
     && apt-get install -y \
             git \
-            build-essential autoconf automake autopoint libtool pkg-config yasm gettext flex byacc ant ant-optional \
+            build-essential autoconf automake autopoint libtool pkg-config yasm gettext flex byacc ant ant-optional cmake \
             zlib1g-dev libncurses5-dev libcurl4-openssl-dev libexpat1-dev libreadline-dev \
             wget unzip patch \
             libaa1-dev libasound2-dev libcaca-dev libcdparanoia-dev libdca-dev \
