@@ -47,13 +47,14 @@ RUN mkdir -p ${PKGTMPDIR} && cd ${PKGTMPDIR} \
             rifiuti2 \
             python3.9 python3.9-distutils python3-pip python3.9-dev \
             sudo \ 
-    && echo "#####################################" \
-    && echo " Installing LIBSSL v1.1 to be used with sleuthkit IPED patch" \
-    && echo "#####################################" \
-    && echo "deb http://security.ubuntu.com/ubuntu focal-security main" | tee /etc/apt/sources.list.d/focal-security.list \
-    && apt-get update \
-    && apt-get install -y libssl-dev=1.1.1f-1ubuntu2.24 \
-    && rm /etc/apt/sources.list.d/focal-security.list && apt-get update \
+            libssl-dev \
+    # && echo "#####################################" \
+    # && echo " Installing LIBSSL v1.1 to be used with sleuthkit IPED patch" \
+    # && echo "#####################################" \
+    # && echo "deb http://security.ubuntu.com/ubuntu focal-security main" | tee /etc/apt/sources.list.d/focal-security.list \
+    # && apt-get update \
+    # && apt-get install -y libssl-dev=1.1.1f-1ubuntu2.24 \
+    # && rm /etc/apt/sources.list.d/focal-security.list && apt-get update \
     && echo "#####################################" \
     && echo "install libbfio" \
     && echo "#####################################" \
