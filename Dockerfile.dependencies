@@ -258,6 +258,7 @@ RUN mkdir -p ${PKGTMPDIR} && cd ${PKGTMPDIR} \
     && python -m pip install keras \
                           pillow \
                           bs4 \
+                          opencv-python \
                           face_recognition \       
     && echo "#####################################" \
     && echo "Cleaning UP the container " \
