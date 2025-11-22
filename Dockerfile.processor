@@ -58,6 +58,7 @@ RUN --mount=type=secret,id=ACTION_GH_TOKEN export ACTION_GH_TOKEN=$(cat /run/sec
     && echo "excludeKnown = true" >> /opt/IPED/iped/profiles/fastrobust/conf/HashDBLookupConfig.txt \
     && echo "robustImageReading = true" >> /opt/IPED/iped/profiles/fastrobust/conf/FileSystemConfig.txt \
     && echo "enableExternalParsing = true" >> /opt/IPED/iped/profiles/fastrobust/conf/ParsingTaskConfig.txt \
+    && sed -i -e "s/enableCarving = true/EnableCarving = false/" /opt/IPED/iped/profiles/fastrobust/IPEDConfig.txt \
     && echo "#####################################" \
     && echo "PedoRobust: enable excludeKffIgnorable, externalParsers and robustImageReading" \
     && echo "For child abuse cases where processing errors are occurring" \
