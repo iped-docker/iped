@@ -46,7 +46,9 @@ RUN mkdir -p ${PKGTMPDIR} && cd ${PKGTMPDIR} \
             rifiuti2 \
             python-is-python3 python3-setuptools python3-pip python3-dev \
             sudo \ 
-            libssl-dev \    
+            libssl-dev \
+            pff-tools \
+            libmsiecf-utils \
     && echo "#####################################" \
     && echo "install libbfio" \
     && echo "#####################################" \
@@ -183,28 +185,31 @@ RUN mkdir -p ${PKGTMPDIR} && cd ${PKGTMPDIR} \
     && ./configure --prefix=/usr \
     && make all install \
     && rm -rf ${PKGTMPDIR}/libesedb \
-    && echo "#####################################" \
-    && echo "Install libpff without branch also, because latest release got problems" \
-    && echo "#####################################" \
-    && cd ${PKGTMPDIR} \
-    && git clone https://github.com/libyal/libpff \
-    && cd ${PKGTMPDIR}/libpff \
-    && ./synclibs.sh \
-    && ./autogen.sh \
-    && ./configure --prefix=/usr \ 
-    && make all install \
-    && rm -rf ${PKGTMPDIR}/libpff \
-    && echo "#####################################" \
-    && echo "Install libmsiecf - master is th only working branch" \
-    && echo "#####################################" \
-    && cd ${PKGTMPDIR} \
-    && git clone https://github.com/libyal/libmsiecf \
-    && cd ${PKGTMPDIR}/libmsiecf \
-    && ./synclibs.sh \
-    && ./autogen.sh \
-    && ./configure --prefix=/usr \
-    && make all install \
-    && rm -rf ${PKGTMPDIR}/libmsiecf \
+    #
+    # pff-tools and libmsiecf-utils installed through apt due compatibility with IPED build process
+    # 
+    # && echo "#####################################" \
+    # && echo "Install libpff without branch also, because latest release got problems" \
+    # && echo "#####################################" \
+    # && cd ${PKGTMPDIR} \
+    # && git clone https://github.com/libyal/libpff \
+    # && cd ${PKGTMPDIR}/libpff \
+    # && ./synclibs.sh \
+    # && ./autogen.sh \
+    # && ./configure --prefix=/usr \ 
+    # && make all install \
+    # && rm -rf ${PKGTMPDIR}/libpff \
+    # && echo "#####################################" \
+    # && echo "Install libmsiecf - master is th only working branch" \
+    # && echo "#####################################" \
+    # && cd ${PKGTMPDIR} \
+    # && git clone https://github.com/libyal/libmsiecf \
+    # && cd ${PKGTMPDIR}/libmsiecf \
+    # && ./synclibs.sh \
+    # && ./autogen.sh \
+    # && ./configure --prefix=/usr \
+    # && make all install \
+    # && rm -rf ${PKGTMPDIR}/libmsiecf \
     && echo "#####################################" \
     && echo "rifiuti2 - rifiuti2 is being installed from packages due to gettext incompatibility" \
     && echo "Just creating rifiuti link" \
