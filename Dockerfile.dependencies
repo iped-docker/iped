@@ -1,4 +1,4 @@
-FROM ubuntu:22.04
+FROM ubuntu:24.04
 
 ARG PKGTMPDIR=/tmp/pkgs PIP_ROOT_USER_ACTION=ignore CMAKE_POLICY_VERSION_MINIMUM=3.5
 
@@ -7,8 +7,7 @@ ENV TZ=Brazil/East DEBIAN_FRONTEND=noninteractive LANG=C.UTF-8 LC_ALL=C.UTF-8 SA
 
 RUN mkdir -p ${PKGTMPDIR} && cd ${PKGTMPDIR} \
     && apt-get update && apt-get install -y curl wget gnupg apt-utils apt-transport-https software-properties-common \
-    && apt-get dist-upgrade -y \
-    && add-apt-repository ppa:deadsnakes/ppa \
+    && apt-get dist-upgrade -y \    
     && wget -q -O - https://download.bell-sw.com/pki/GPG-KEY-bellsoft | tee /etc/apt/trusted.gpg.d/bellsoft.asc \
     && echo "deb [arch=amd64] https://apt.bell-sw.com/ stable main" | tee /etc/apt/sources.list.d/bellsoft.list \
     && apt-get update \    
@@ -44,7 +43,7 @@ RUN mkdir -p ${PKGTMPDIR} && cd ${PKGTMPDIR} \
             bellsoft-java11-full \
             mplayer \
             rifiuti2 \
-            python3.9 python3.9-distutils python3-pip python3.9-dev \
+            python-is-python3 python3-setuptools python3-pip python3-dev \
             sudo \ 
             libssl-dev \    
     && echo "#####################################" \
@@ -116,8 +115,7 @@ RUN mkdir -p ${PKGTMPDIR} && cd ${PKGTMPDIR} \
     && echo " Installing Sleuthkit with IPED patch with libssl" \
     && echo "#####################################################" \
     && cd ${PKGTMPDIR} \
-    && git clone -b 4.12.0_iped_patch https://github.com/sepinf-inc/sleuthkit \    
-    # && git clone -b sleuthkit-4.14.0 https://github.com/sleuthkit/sleuthkit \    
+    && git clone -b 4.15.0_iped_patch https://github.com/sepinf-inc/sleuthkit \        
     && cd ${PKGTMPDIR}/sleuthkit/ \
     && echo "#####################################" \
     && echo "Patching ewf.cpp to TSK (The SleuthKit) uses version 20231119 of libewf library" \
@@ -236,16 +234,14 @@ RUN mkdir -p ${PKGTMPDIR} && cd ${PKGTMPDIR} \
     && echo " ->> Huggingsound REMOVED from default cuda image due incompatibility of pytorch+cuda version" \
     && echo " ->> On the default container Huggingsound transcription is to be used trough transcription server" \
     && echo "#####################################" \
-    && cd /root/ \
-    && update-alternatives --install /usr/bin/python python /usr/bin/python3.9 1 \
-    && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.9 1 \
-    && python -m pip install pip --upgrade \
-    && python -m pip install cmake \    
-    && python -m pip install jep==4.2.0 \
-    && python -m pip install numpy==1.26.4 \
-    && python -m pip install dlib==19.24.2 \
+    && cd /root/ \    
+    && python -m pip install cmake --break-system-packages\    
+    && python -m pip install jep==4.2.0 --break-system-packages\
+    && python -m pip install numpy==1.26.4 --break-system-packages\
+    && python -m pip install dlib==19.24.2 --break-system-packages\
     && python -m pip install face_recognition \
                              opencv-python==4.11.0.86 \
+                             bs4 --break-system-packages \
     && echo "#####################################" \
     && echo "Cleaning UP the container " \
     && echo "#####################################" \
