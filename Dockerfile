@@ -5,7 +5,7 @@ FROM ipeddocker/iped:processor
 RUN apt-get update && apt-get install -y \
           libreoffice \
           libreoffice-java-common \
-          libreoffice-gtk2 \      
+          libreoffice-gtk3 \      
           xdg-utils \
           libgl1-mesa-dri \
           vlc \
