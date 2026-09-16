@@ -55,8 +55,8 @@ RUN mkdir -p ${PKGTMPDIR} && cd ${PKGTMPDIR} \
     && mkdir -p ssl1 \
     && cd ssl1 \
     && wget http://security.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.1f-1ubuntu2.24_amd64.deb \
-    && wget http://security.ubuntu.com/ubuntu/pool/main/o/openssl/libssl-dev_1.1.1f-1ubuntu2.24_i386.deb \
-    && dpkg -i libssl1.1_1.1.1f-1ubuntu2.24_amd64.deb && dpkg -i libssl-dev_1.1.1f-1ubuntu2.24_i386.deb \
+    && wget http://security.ubuntu.com/ubuntu/pool/main/o/openssl/libssl-dev_1.1.1f-1ubuntu2.24_amd64.deb \
+    && dpkg -i libssl1.1_1.1.1f-1ubuntu2.24_amd64.deb && dpkg -i libssl-dev_1.1.1f-1ubuntu2.24_amd64.deb \
     && echo "#####################################" \
     && echo "install libbfio" \
     && echo "#####################################" \
