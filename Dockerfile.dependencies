@@ -138,9 +138,6 @@ RUN mkdir -p ${PKGTMPDIR} && cd ${PKGTMPDIR} \
     && ./bootstrap \ 
     && autoheader \
     && ./configure --prefix=/usr/ --enable-java --with-openssl=/usr \
-           CXXFLAGS="-Wno-error=deprecated-declarations -Wno-error=unused-parameter -Wno-error=sign-compare -Wno-error=format-security -I$PWD" \
-           CPPFLAGS="-DHAVE_LIBMBEDTLS=1" \
-           LIBS="-lmbedcrypto" \
     && make && make install \
     && rm -rf ${PKGTMPDIR}/sleuthkit/ \
     && echo "#####################################" \
