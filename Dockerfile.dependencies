@@ -135,7 +135,7 @@ RUN mkdir -p ${PKGTMPDIR} && cd ${PKGTMPDIR} \
     && patch tsk/img/ewf.cpp < ${PKGTMPDIR}/ewf.cpp.patch \
     && echo "#####################################" \
     && ./bootstrap \ 
-    && ./autoheader \
+    && autoheader \
     && ./configure --prefix=/usr/ --enable-java --with-openssl=/usr \
            CXXFLAGS="-Wno-error=deprecated-declarations -Wno-error=unused-parameter -Wno-error=sign-compare -Wno-error=format-security -I$PWD" \
            CPPFLAGS="-DHAVE_LIBMBEDTLS=1" \
