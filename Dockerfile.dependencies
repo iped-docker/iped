@@ -17,7 +17,7 @@ RUN mkdir -p ${PKGTMPDIR} && cd ${PKGTMPDIR} \
             zlib1g-dev libncurses5-dev libcurl4-openssl-dev libexpat1-dev libreadline-dev \
             wget unzip patch \
             libaa1-dev libasound2-dev libcaca-dev libcdparanoia-dev libdca-dev \
-            libdirectfb-dev libenca-dev libfontconfig1-dev libfreetype6-dev \
+            libenca-dev libfontconfig1-dev libfreetype6-dev \
             libfribidi-dev libgif-dev libgl1-mesa-dev libjack-jackd2-dev libopenal1 libpulse-dev \
             libsdl1.2-dev libvdpau-dev libxinerama-dev libxv-dev libxvmc-dev libxxf86dga-dev \
             libxxf86vm-dev librtmp-dev libsctp-dev libass-dev libfaac-dev libsmbclient-dev libtheora-dev \
