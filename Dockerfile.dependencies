@@ -71,8 +71,8 @@ RUN mkdir -p ${PKGTMPDIR} && cd ${PKGTMPDIR} \
     && make all install \
     && rm -rf ${PKGTMPDIR}/libde265 \
     && cd ${PKGTMPDIR} \   
-    && git clone https://github.com/strukturag/libheif.git 
-    && cd libheif/ 
+    && git clone https://github.com/strukturag/libheif.git \
+    && cd libheif/ \
     && ./autogen.sh \
     && ./configure \
     && make all install \
