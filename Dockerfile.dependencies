@@ -29,9 +29,7 @@ RUN mkdir -p ${PKGTMPDIR} && cd ${PKGTMPDIR} \
             libtiff-dev \
             libpng-dev \
             libwmf-dev \
-            libgif-dev \
-            libde265-dev \
-            libheif-dev \
+            libgif-dev \            
             libwebp-dev \
             librsvg2-dev \
             libopenexr-dev \
@@ -62,6 +60,23 @@ RUN mkdir -p ${PKGTMPDIR} && cd ${PKGTMPDIR} \
             libmsiecf-utils \
             libfuse3-dev \
             libmbedtls-dev \
+    && echo "#####################################" \
+    && echo "install installing HEIC support from src" \
+    && echo "#####################################" \
+    && cd ${PKGTMPDIR} \
+    && git clone https://github.com/strukturag/libde265.git \
+    && cd libde265/ \
+    && ./autogen.sh \
+    && ./configure \
+    && make all install \
+    && rm -rf ${PKGTMPDIR}/libde265 \
+    && cd ${PKGTMPDIR} \   
+    && git clone https://github.com/strukturag/libheif.git 
+    && cd libheif/ 
+    && ./autogen.sh \
+    && ./configure \
+    && make all install \
+    && rm -rf ${PKGTMPDIR}/libheif \
     && echo "#####################################" \
     && echo "install libSSL1-DEV for sleuthkit" \
     && echo "#####################################" \
