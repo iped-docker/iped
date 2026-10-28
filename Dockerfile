@@ -10,7 +10,7 @@ RUN apt-get update && apt-get install -y \
           libgl1-mesa-dri \
           vlc \
           packagekit-gtk3-module \
-          libcanberra-gtk-module \
+          libcanberra-gtk3-module \
           pulseaudio \
     && apt-get clean && rm -rf /var/lib/apt/lists/* \
     && mkdir -p /root/.local/share/applications/ \
