@@ -89,7 +89,7 @@ RUN --mount=type=secret,id=ACTION_GH_TOKEN export ACTION_GH_TOKEN=$(cat /run/sec
     && echo "#####################################" \
     && echo "TEMP PATCH JEP-4.2.0 to avoid conflict of libs" \
     && echo "#####################################" \
-    && cp /usr/local/lib/python3.12/dist-packages/jep/jep-4.2.0.jar /opt/IPED/iped/lib/jep-4.0.3.jar \
+    && cp /usr/local/lib/python3.14/dist-packages/jep/jep-4.2.0.jar /opt/IPED/iped/lib/jep-4.0.3.jar \
     && echo "#####################################" \
     && echo "Cleaning UP the container " \
     && echo "#####################################" \    
